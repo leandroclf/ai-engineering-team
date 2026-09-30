@@ -1,0 +1,15 @@
+version: 1
+projects:
+  - id: example
+    repository: owner/repository
+    purpose: ""
+    default_branch: main
+    adapter: AGENTS.md
+    openspec_root: openspec
+    environments:
+      production:
+        mutation_policy: explicit-approval
+    access:
+      read: true
+      write: false
+    notes: ""
