@@ -1,15 +1,19 @@
 version: 1
 projects:
-  - id: example
-    repository: owner/repository
-    purpose: ""
+  - id: ai-engineering-team
+    repository: leandroclf/ai-engineering-team
+    purpose: Engineering operating system and bootstrap source for the Engineering Dot
     default_branch: main
     adapter: AGENTS.md
     openspec_root: openspec
     environments:
+      repository:
+        mutation_policy: reversible-pr-preferred
       production:
         mutation_policy: explicit-approval
     access:
       read: true
-      write: false
-    notes: ""
+      write: true
+    validation:
+      command: python scripts/validate.py
+    notes: First/self-hosting project. Re-read repository state before every mutation.
