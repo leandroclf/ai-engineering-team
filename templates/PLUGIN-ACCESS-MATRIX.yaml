@@ -1,0 +1,18 @@
+version: 1
+connections:
+  - id: github
+    purpose: repository discovery and engineering workflow
+    scope: approved-repositories
+    permissions:
+      read: true
+      write: false
+    environments:
+      production_write: false
+    approval:
+      required_for:
+        - merge
+        - protected-branch-mutation
+        - release
+        - deployment
+        - repository-settings
+    denial_behavior: blocked
