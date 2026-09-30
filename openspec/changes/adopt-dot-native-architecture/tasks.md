@@ -1,70 +1,73 @@
 # Dot-Native Implementation Plan
+Status: IN_PROGRESS — pre-Codex preparation implemented.
 
 ## D0 — Architecture
-- [ ] Add Dot-native architecture document.
-- [ ] Record ADR making Dot the persistent coordinator and Codex the repository executor.
-- [ ] Update README architecture and final objective.
-- [ ] Mark custom persistence/runtime components as portability contracts, not competing runtime.
+- [x] Dot-native architecture document.
+- [x] ADR for Dot coordinator / Codex executor boundary.
+- [x] README final objective.
+- [x] Persistence/runtime documents reframed as portability/governance contracts.
 
 ## D1 — Dot bootstrap
-- [ ] Create Engineering Dot bootstrap instructions.
-- [ ] Create Custom Rules template.
-- [ ] Define mission, boundaries, escalation and reporting.
-- [ ] Define initial feedback/calibration procedure.
-- [ ] Define project onboarding procedure.
+- [x] Engineering Dot bootstrap.
+- [x] Custom Rules template.
+- [x] Mission, boundaries, escalation and reporting.
+- [x] Initial calibration and project onboarding procedure.
 
 ## D2 — Delegation
-- [ ] Create Dot -> Codex task envelope template.
-- [ ] Create Codex -> Dot completion/evidence contract.
-- [ ] Define retry, remediation and stop rules.
-- [ ] Define when Dot should use chat, Work or Codex.
+- [x] Dot -> Codex task envelope.
+- [x] Codex -> Dot result/evidence contract.
+- [x] Retry/remediation/stop model.
+- [x] Conversation vs Work vs Codex routing.
 
 ## D3 — Plugins and permissions
-- [ ] Create plugin/access matrix template.
-- [ ] Define least-privilege defaults.
-- [ ] Define GitHub read/write policy.
-- [ ] Define CI/observability access policy.
-- [ ] Define production/deployment approval policy.
-- [ ] Explicitly state that repository policy cannot override native safeguards.
+- [x] Plugin/access matrix template.
+- [x] Least-privilege defaults.
+- [x] GitHub policy.
+- [x] CI/observability policy.
+- [x] Production approval policy.
+- [x] Native safeguards explicitly authoritative.
 
 ## D4 — Portfolio/project context
-- [ ] Add project registry schema/template.
-- [ ] Add project adapter onboarding checklist.
-- [ ] Define stale-context/revalidation rules.
-- [ ] Define cross-project isolation rules.
+- [x] Project registry template and self-registration.
+- [x] Project onboarding checklist.
+- [x] Stale-context revalidation.
+- [x] Cross-project isolation guidance.
 
 ## D5 — Dot-native validation
-- [ ] Update live validation design to include Dot -> Codex handoff.
-- [ ] Add scenario: Dot routes repository task to Codex.
-- [ ] Add scenario: Dot does not delegate trivial conversational work.
-- [ ] Add scenario: stale remembered project context is revalidated.
-- [ ] Add scenario: plugin permission denial is surfaced, not bypassed.
-- [ ] Add scenario: R3/native approval composition.
-- [ ] Add scenario: Codex failure returns to Dot for bounded remediation.
-- [ ] Preserve existing S01-S06 where still applicable.
+- [x] Define Dot -> Codex validation requirement.
+- [x] Define repository routing scenario requirement.
+- [x] Define no-unnecessary-delegation requirement.
+- [x] Define stale-context scenario.
+- [x] Define permission-denial scenario.
+- [x] Define R3/native approval scenario.
+- [x] Define Codex failure/remediation scenario.
+- [x] Preserve Codex-layer S01-S06.
+- [ ] Execute live Dot-native scenarios.
 
 ## D6 — Operational model
-- [ ] Define daily/continuous operating loop concept without duplicating native scheduler.
-- [ ] Define evidence ledger and portfolio status report.
-- [ ] Define feedback -> rule/spec improvement loop.
-- [ ] Define incident/rollback/escalation path.
+- [x] Native operating-loop concept without custom scheduler.
+- [x] Evidence ledger and portfolio status template.
+- [x] Feedback -> rule/spec improvement loop.
+- [x] Failure/escalation model.
 
 ## D7 — Future specialized dots
-- [ ] Define criteria for promoting a Skill into a specialized Dot.
-- [ ] Define inter-dot delegation constraints.
-- [ ] Keep Tech Lead ownership singular unless evidence supports another topology.
+- [x] Promotion criteria from Skill to specialized Dot.
+- [x] Inter-dot delegation constraints.
+- [x] Singular integration ownership by default.
 
 ## D8 — Validation and closure
-- [ ] Run structural validation.
-- [ ] Execute live Dot bootstrap when the Dot surface is available to operator.
-- [ ] Execute Dot-native behavioral scenarios.
+- [ ] Run structural validator in an execution environment.
+- [ ] Confirm GitHub CI execution.
+- [ ] Execute Codex-layer behavioral scenarios.
+- [ ] Execute live Dot bootstrap when available.
+- [ ] Execute live Dot-native behavioral scenarios.
 - [ ] Remediate failures and rerun affected scenarios.
+- [ ] Produce validation/CODEX-PRE-DOT-REPORT.md.
 - [ ] Produce validation/DOT-NATIVE-FINAL-REPORT.md.
-- [ ] Update OpenSpec statuses and roadmap.
+- [ ] Mark proposal/roadmap DONE only with evidence.
+
+## Handoff
+Codex should begin with `codex-handoff.md`. Everything above that can be prepared statically is implemented. D8 intentionally remains open because it requires actual execution evidence.
 
 ## Mandatory gates
-- No repository rule weakens native safeguards/approvals.
-- Dot -> Codex delegation is bounded and evidence-backed.
-- Target repository instructions are re-read before mutation.
-- Permission denial is never treated as authorization.
-- No real destructive production operation is required for validation.
+No repository rule weakens native safeguards. Delegation is bounded/evidence-backed. Repository state is re-read before mutation. Permission denial is never authorization. No real destructive production operation is required for validation.
