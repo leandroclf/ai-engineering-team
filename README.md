@@ -1,31 +1,27 @@
 # ai-engineering-team
 
-A portable, evidence-driven agentic software-engineering operating model for Codex.
+Engineering operating system and bootstrap source for an OpenAI Engineering Dot.
 
-## What it provides
-A Tech Lead orchestration contract, reusable specialist skills, stack packs, engineering workflows, controlled-autonomy rules, quality gates, templates and an OpenSpec roadmap.
+## Final architecture
+Human -> Engineering Dot -> ai-engineering-team governance -> Codex / Plugins -> target repositories -> evidence / PR -> approval where required.
 
-## Quick start
-1. Adapt `templates/PROJECT-AGENTS.md` into the target repository as `AGENTS.md`.
-2. Use the Tech Lead skill for complex work.
-3. State the engineering objective rather than repeating a large procedural prompt.
-4. The workflow discovers context, classifies risk, selects relevant skills, executes, validates, reviews and reports evidence.
+The Dot is the persistent coordinator. Codex is the default executor for non-trivial repository engineering. This repository supplies OpenSpec, AGENTS rules, skills, project adapters, quality gates, delegation contracts and validation.
 
-Example: `Use the Tech Lead workflow. Implement <objective>, preserve existing contracts, run repository-native validation and report evidence.`
-
-## Architecture
-Operator -> AGENTS.md -> Tech Lead -> selected specialist/stack skills -> quality gates -> evidence-backed report.
+## Start here
+- `docs/DOT-NATIVE-ARCHITECTURE.md`
+- `templates/ENGINEERING-DOT-BOOTSTRAP.md`
+- `templates/DOT-CUSTOM-RULES.md`
+- `templates/DOT-CODEX-TASK.md`
+- `templates/PROJECT-REGISTRY.yaml`
+- `openspec/changes/adopt-dot-native-architecture/`
 
 ## Skills
 Core: tech-lead, architect, backend, qa, security, code-review, observability.
-Stack packs: java-spring, node-typescript, python-fastapi, aws, kubernetes.
+Stack: java-spring, node-typescript, python-fastapi, aws, kubernetes.
 Workflow: github-workflow.
 
-## OpenSpec
-See `openspec/project.md`, `openspec/changes/bootstrap-agentic-engineering-team/`, and `openspec/roadmap.md`.
+## Governance
+R0 read-only; R1 reversible local; R2 dependency/schema/infrastructure/security-sensitive; R3 production/destructive/irreversible. Native platform/plugin/provider safeguards remain authoritative; repository policy may be stricter, never weaker.
 
-## Safety model
-R0 read-only; R1 reversible local code; R2 dependency/schema/infrastructure/security-sensitive; R3 production/destructive/irreversible. R3 requires explicit authorization.
-
-## Current scope
-The repository is runtime-light: Markdown contracts and skills can be consumed by Codex without requiring an additional agent runtime. Persistence and explicit multi-agent execution are specified as evolutions rather than simulated.
+## Principle
+Do not build a competing agent runtime. Use native Dot capabilities for persistent/proactive coordination and Codex for repository execution while keeping engineering policy portable and version-controlled here.
