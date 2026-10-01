@@ -1,0 +1,20 @@
+schema_version: 1.0.0
+assurance_id: ""
+project_id: ""
+requested_by: atlas
+repository: ""
+pull_request: null
+base_sha: ""
+head_sha: ""
+objective: ""
+risk: R0
+acceptance_criteria: []
+requested_gates:
+  quality: true
+  security: true
+  architecture: false
+  observability: false
+evidence_locations: []
+sentinel_findings_to_reproduce: []
+atlas_rationale_location: ""
+review_mode: read-only
