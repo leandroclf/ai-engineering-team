@@ -1,0 +1,38 @@
+schema_version: 1.0.0
+assurance_id: ca02-admin-only-0adde4ae1a4d
+project_id: ai-engineering-team
+requested_by: atlas
+repository: leandroclf/ai-engineering-team
+pull_request: null
+base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
+head_sha: 0adde4ae1a4d9c29809f2db9d050e23caa7a45ac
+objective: Independently verify the CA02 HIGH/CRITICAL authorization remediation;
+  only the exact role "admin" may be authorized.
+risk: R2
+acceptance_criteria:
+- The exact role "admin" returns True; all other declared role strings return False.
+- Non-admin roles, case/whitespace variants and tested invalid inputs are denied.
+- Alternating calls do not retain authorization from earlier calls.
+- 'Regression tests pass: python3 -m unittest discover -s validation/fixtures/ca02-known-defect
+  -p ''test_*.py'' -v'
+- Repository validation scripts pass; independently inspect the base-to-head diff
+  and evidence.
+- Reproduce the original unconditional authorization at base_sha and verify it is
+  absent at head_sha; issue a revision-bound verdict without treating Atlas evidence
+  as approval.
+requested_gates:
+  quality: true
+  security: true
+  architecture: false
+  observability: false
+evidence_locations:
+- validation/evidence/ca02-remediation.md
+- validation/fixtures/ca02-known-defect/sample.py
+- validation/fixtures/ca02-known-defect/test_sample.py
+- validation/fixtures/ca02-known-defect/README.md
+sentinel_findings_to_reproduce:
+- 'Operator-reported prior Sentinel HIGH/CRITICAL: validation/fixtures/ca02-known-defect/sample.py
+  authorizes every role; helper must allow only "admin". Reproduce at base_sha and
+  assess remediation at head_sha.'
+atlas_rationale_location: validation/evidence/ca02-remediation.md
+review_mode: read-only
