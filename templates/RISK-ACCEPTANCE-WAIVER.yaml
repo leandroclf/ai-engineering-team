@@ -1,0 +1,12 @@
+schema_version: 1.0.0
+waiver_id: ""
+project_id: ""
+operator: ""
+finding_ids: []
+revision: ""
+scope: []
+rationale: ""
+compensating_controls: []
+expires_at: ""
+revisit_trigger: ""
+native_approval_still_required: true
