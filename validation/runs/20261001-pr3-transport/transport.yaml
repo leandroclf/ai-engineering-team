@@ -1,0 +1,8 @@
+pr_url: https://github.com/leandroclf/ai-engineering-team/pull/8
+head_sha: ba11aa5bc104d920c2430757b7951b1e92b6b00f
+branch: validation/20261001-pr3
+ci_run: 36920920665
+ci_conclusion: success
+status_sentinel/review: success PASS
+status_argus/assurance: success PASS_WITH_FINDINGS
+closed_unmerged: true

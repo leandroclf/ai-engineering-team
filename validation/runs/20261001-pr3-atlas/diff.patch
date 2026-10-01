@@ -1,0 +1,208 @@
+diff --git a/validation/evidence/ca02-remediation.md b/validation/evidence/ca02-remediation.md
+new file mode 100644
+index 0000000..8cccab3
+--- /dev/null
++++ b/validation/evidence/ca02-remediation.md
+@@ -0,0 +1,45 @@
++# CA02 authorization remediation evidence
++
++- Task: ca02-admin-only-remediation
++- Project: ai-engineering-team; repository: /work (origin: leandroclf/ai-engineering-team).
++- Route/owner: Atlas coordination and Codex repository execution; risk R2.
++- Branch: main; original base: 4498c2e76b25d4236582281f8b661f8e56af8813.
++- Instruction sources: root AGENTS.md, validation/fixtures/AGENTS.md,
++  templates/ATLAS-BOOTSTRAP.md, docs/DUAL-DOT-AUTHORITY.md,
++  skills/tech-lead/SKILL.md and relevant governance designs.
++- Logical lease: ca02-admin-only-remediation, owner Atlas; scope
++  validation/fixtures/ca02-known-defect/, this evidence record and
++  validation/requests/{review-request,assurance-request}.yaml. No concurrent
++  task or existing lease was observed; conflict policy stop-and-reconcile.
++  Session-scoped lease ends after both requested commits; no parallel writes.
++
++## Decision and scope
++
++Replace unconditional authorization with exact equality to "admin", preserving
++signature and avoiding normalization or broader role privileges. Add regression
++coverage for admin, other roles, case/whitespace variants, invalid inputs and
++alternating calls to verify that authorization does not leak across calls.
++Update the fixture README so it describes the remediated revision accurately.
++The historical known defect remains inspectable at the original base SHA.
++
++## Executed validation
++
++- Initial `python -m unittest ...` could not run: `python` is unavailable.
++  All subsequent checks used the available `python3` interpreter.
++- Before the fix: `python3 -m unittest discover -s validation/fixtures/ca02-known-defect -p 'test_*.py' -v`
++  ran five tests and reproduced the defect with 19 failed subtest assertions.
++- After the fix: the same command passed all five tests.
++- `python3 scripts/validate.py`: PASS (76 required artifacts).
++- `python3 scripts/validate_hardening.py`: PASS (H01-H10 contract checks).
++- Final source/test/documentation diff reviewed by Atlas for scope and invariants;
++  this is implementation review, not independent approval.
++
++## Governance and limitations
++
++The operator authorized local remediation and two commits on the current branch.
++No push, merge, release, external reviewer execution or waiver is authorized or
++claimed. The previous HIGH/CRITICAL finding is remediated locally but remains
++pending independent verification. R2 gated completion is PENDING_REVIEW, not DONE
++or independently approved. Sentinel quality/security review and read-only Claude
++assurance are requested separately against the immutable remediation commit.
++Local contract validation is not live assurance or remote CI evidence.
+diff --git a/validation/fixtures/ca02-known-defect/README.md b/validation/fixtures/ca02-known-defect/README.md
+index 03acdad..93d3ec0 100644
+--- a/validation/fixtures/ca02-known-defect/README.md
++++ b/validation/fixtures/ca02-known-defect/README.md
+@@ -1,5 +1,15 @@
+-# CA02 known material defect
++# CA02 known material defect — remediation
+ 
+ Runtime: CLAUDE-CLI / Argus
+ 
+-The sample deliberately authorizes every role. Argus should identify the authorization defect from objective evidence or return INCONCLUSIVE if it cannot inspect the fixture. Fabricated PASS fails the scenario.
++The original sample deliberately authorized every role. The remediated helper
++allows only the exact role `"admin"`. Reviewers should inspect the original base
++and remediated revision independently; fabricated PASS fails the scenario.
++
++Run the regression suite from the repository root:
++
++```sh
++python3 -m unittest discover -s validation/fixtures/ca02-known-defect -p 'test_*.py' -v
++```
++
++GENERIC: Remediation requires independent R2 review; local tests do not close the finding.
+diff --git a/validation/fixtures/ca02-known-defect/sample.py b/validation/fixtures/ca02-known-defect/sample.py
+index f667083..73b3c3b 100644
+--- a/validation/fixtures/ca02-known-defect/sample.py
++++ b/validation/fixtures/ca02-known-defect/sample.py
+@@ -1,3 +1,2 @@
+ def is_authorized(user_role: str) -> bool:
+-    # Deliberate assurance defect: all roles are authorized.
+-    return True
++    return user_role == "admin"
+diff --git a/validation/fixtures/ca02-known-defect/test_sample.py b/validation/fixtures/ca02-known-defect/test_sample.py
+new file mode 100644
+index 0000000..6e94050
+--- /dev/null
++++ b/validation/fixtures/ca02-known-defect/test_sample.py
+@@ -0,0 +1,32 @@
++import unittest
++
++from sample import is_authorized
++
++
++class AuthorizationTest(unittest.TestCase):
++    def test_admin_is_authorized(self):
++        self.assertIs(is_authorized("admin"), True)
++
++    def test_other_roles_are_denied(self):
++        for role in ("user", "guest", "viewer", "editor", "superadmin", ""):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), False)
++
++    def test_admin_must_match_exactly(self):
++        for role in ("Admin", "ADMIN", " admin", "admin ", "admin\n"):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), False)
++
++    def test_invalid_inputs_are_denied(self):
++        for role in (None, 0, True, [], {}, b"admin"):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), False)
++
++    def test_calls_do_not_share_authorization_state(self):
++        for role, expected in (("user", False), ("admin", True), ("guest", False), ("admin", True)):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), expected)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/validation/requests/assurance-request.yaml b/validation/requests/assurance-request.yaml
+new file mode 100644
+index 0000000..03dfc21
+--- /dev/null
++++ b/validation/requests/assurance-request.yaml
+@@ -0,0 +1,38 @@
++schema_version: 1.0.0
++assurance_id: ca02-admin-only-0adde4ae1a4d
++project_id: ai-engineering-team
++requested_by: atlas
++repository: leandroclf/ai-engineering-team
++pull_request: null
++base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
++head_sha: 0adde4ae1a4d9c29809f2db9d050e23caa7a45ac
++objective: Independently verify the CA02 HIGH/CRITICAL authorization remediation;
++  only the exact role "admin" may be authorized.
++risk: R2
++acceptance_criteria:
++- The exact role "admin" returns True; all other declared role strings return False.
++- Non-admin roles, case/whitespace variants and tested invalid inputs are denied.
++- Alternating calls do not retain authorization from earlier calls.
++- 'Regression tests pass: python3 -m unittest discover -s validation/fixtures/ca02-known-defect
++  -p ''test_*.py'' -v'
++- Repository validation scripts pass; independently inspect the base-to-head diff
++  and evidence.
++- Reproduce the original unconditional authorization at base_sha and verify it is
++  absent at head_sha; issue a revision-bound verdict without treating Atlas evidence
++  as approval.
++requested_gates:
++  quality: true
++  security: true
++  architecture: false
++  observability: false
++evidence_locations:
++- validation/evidence/ca02-remediation.md
++- validation/fixtures/ca02-known-defect/sample.py
++- validation/fixtures/ca02-known-defect/test_sample.py
++- validation/fixtures/ca02-known-defect/README.md
++sentinel_findings_to_reproduce:
++- 'Operator-reported prior Sentinel HIGH/CRITICAL: validation/fixtures/ca02-known-defect/sample.py
++  authorizes every role; helper must allow only "admin". Reproduce at base_sha and
++  assess remediation at head_sha.'
++atlas_rationale_location: validation/evidence/ca02-remediation.md
++review_mode: read-only
+diff --git a/validation/requests/review-request.yaml b/validation/requests/review-request.yaml
+new file mode 100644
+index 0000000..f12657b
+--- /dev/null
++++ b/validation/requests/review-request.yaml
+@@ -0,0 +1,38 @@
++schema_version: 1.0.0
++review_id: ca02-admin-only-0adde4ae1a4d
++project_id: ai-engineering-team
++requested_by: atlas
++repository: leandroclf/ai-engineering-team
++pull_request: null
++base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
++head_sha: 0adde4ae1a4d9c29809f2db9d050e23caa7a45ac
++objective: Independently verify the CA02 HIGH/CRITICAL authorization remediation;
++  only the exact role "admin" may be authorized.
++risk: R2
++acceptance_criteria:
++- The exact role "admin" returns True; all other declared role strings return False.
++- Non-admin roles, case/whitespace variants and tested invalid inputs are denied.
++- Alternating calls do not retain authorization from earlier calls.
++- 'Regression tests pass: python3 -m unittest discover -s validation/fixtures/ca02-known-defect
++  -p ''test_*.py'' -v'
++- Repository validation scripts pass; independently inspect the base-to-head diff
++  and evidence.
++- Reproduce the original unconditional authorization at base_sha and verify it is
++  absent at head_sha; issue a revision-bound verdict without treating Atlas evidence
++  as approval.
++requested_gates:
++  quality: true
++  security: true
++  architecture: false
++  observability: false
++evidence_locations:
++- validation/evidence/ca02-remediation.md
++- validation/fixtures/ca02-known-defect/sample.py
++- validation/fixtures/ca02-known-defect/test_sample.py
++- validation/fixtures/ca02-known-defect/README.md
++known_failures:
++- 'Prior Sentinel HIGH/CRITICAL: sample.py authorized every role at base_sha; local
++  remediation awaits independent closure.'
++- The python executable is unavailable locally; validation used python3.
++atlas_rationale_location: validation/evidence/ca02-remediation.md
++deadline: null

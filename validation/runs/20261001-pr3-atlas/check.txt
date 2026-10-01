@@ -1,0 +1,5 @@
+$ git log --oneline -3
+exit=0
+ba11aa5 docs: request independent CA02 review and assurance at remediation SHA
+0adde4a fix: restrict CA02 authorization to admin with regression coverage
+4498c2e feat(validation): adiciona transporte da cadeia via GitHub PR/CI

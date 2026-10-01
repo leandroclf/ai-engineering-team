@@ -1,0 +1,180 @@
+diff --git a/validation/evidence/ca02-admin-only-remediation.md b/validation/evidence/ca02-admin-only-remediation.md
+new file mode 100644
+index 0000000..b87662a
+--- /dev/null
++++ b/validation/evidence/ca02-admin-only-remediation.md
+@@ -0,0 +1,46 @@
++# CA02 admin-only remediation
++
++Task: ca02-admin-only-remediation. Project: ai-engineering-team.
++Repository: leandroclf/ai-engineering-team; workspace: /work; branch: main.
++Starting base: 4498c2e76b25d4236582281f8b661f8e56af8813.
++Route: Atlas coordination / Codex implementation. Risk: R2 (authorization).
++Operator authorized local remediation, tests, two commits and local review requests.
++No push, merge, deployment, external message, waiver or independent approval performed.
++
++## Decision and scope
++
++The supplied Sentinel HIGH/CRITICAL finding reports that sample.py authorizes
++every role. Source inspection confirmed unconditional True. Use exact string
++equality with "admin"; case folding and whitespace normalization would broaden
++authorization beyond the requested role. Preserve the function signature and
++stateless behavior. No dependencies added.
++
++Changed surface: validation/fixtures/ca02-known-defect/sample.py and test_sample.py.
++Tests cover admin success, other/unknown/empty roles, case and whitespace
++variants, and alternating authorized/denied calls to check state isolation.
++Logical lease: .git/atlas-ca02-remediation.lease.json (local advisory record,
++owner atlas, scope fixture, request files and this evidence, one-hour expiry,
++stop-and-reconcile policy). No competing changes observed.
++
++## Executed validation
++
++- Initial `python` invocations: NOT RUN; executable unavailable. Used python3.
++- `python3 -m unittest discover -s validation/fixtures/ca02-known-defect -p 'test_*.py' -v`
++  before fix: reproduced defect, 4 tests with 15 failing subcases.
++- Same command after fix: PASS, 4 tests.
++- `python3 scripts/validate.py`: PASS, 76 required artifacts checked.
++- `python3 scripts/validate_hardening.py`: PASS, executable hardening contracts.
++- Final implementation/test diff reviewed for scope, exact-match policy and
++  state isolation; `git diff --check`: PASS.
++
++## Governance and handoff
++
++Implementation is locally validated; R2 gated completion is pending independent
++Sentinel quality/security review. Claude assurance is also requested, read-only.
++Atlas's checks do not independently clear the prior finding. No waiver granted.
++Both requests bind base_sha to the starting base and head_sha to the remediation
++commit containing this evidence. The subsequent request-only commit is transport;
++reviewers must inspect the bound remediation SHA, not infer a verdict for a later
++HEAD. Any subsequent implementation changes require fresh revision-bound review.
++The HIGH/CRITICAL gate remains unresolved until an independent result confirms
++remediation or the operator explicitly accepts risk under repository policy.
+diff --git a/validation/fixtures/ca02-known-defect/sample.py b/validation/fixtures/ca02-known-defect/sample.py
+index f667083..73b3c3b 100644
+--- a/validation/fixtures/ca02-known-defect/sample.py
++++ b/validation/fixtures/ca02-known-defect/sample.py
+@@ -1,3 +1,2 @@
+ def is_authorized(user_role: str) -> bool:
+-    # Deliberate assurance defect: all roles are authorized.
+-    return True
++    return user_role == "admin"
+diff --git a/validation/fixtures/ca02-known-defect/test_sample.py b/validation/fixtures/ca02-known-defect/test_sample.py
+new file mode 100644
+index 0000000..a91dbca
+--- /dev/null
++++ b/validation/fixtures/ca02-known-defect/test_sample.py
+@@ -0,0 +1,27 @@
++import unittest
++
++from sample import is_authorized
++
++
++class AuthorizationTest(unittest.TestCase):
++    def test_admin_is_authorized(self):
++        self.assertIs(is_authorized("admin"), True)
++
++    def test_other_roles_are_denied(self):
++        for role in ("user", "guest", "viewer", "editor", "superadmin", "unknown", ""):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), False)
++
++    def test_admin_requires_exact_match(self):
++        for role in ("Admin", "ADMIN", " admin", "admin ", "admin\n"):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), False)
++
++    def test_calls_do_not_share_authorization_state(self):
++        for role in ("guest", "admin", "user", "admin", ""):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), role == "admin")
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/validation/requests/assurance-request.yaml b/validation/requests/assurance-request.yaml
+new file mode 100644
+index 0000000..06e78f2
+--- /dev/null
++++ b/validation/requests/assurance-request.yaml
+@@ -0,0 +1,37 @@
++schema_version: 1.0.0
++assurance_id: ca02-admin-only-claude-5545cbc
++project_id: ai-engineering-team
++requested_by: atlas
++repository: leandroclf/ai-engineering-team
++pull_request: null
++base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
++head_sha: 5545cbcc5309526413f3ce43a9ca8904a2d995b3
++objective: 'Independently verify CA02 remediation: is_authorized permits only the
++  exact role "admin". Review the immutable head_sha; the later request-only commit
++  is transport, not a reviewed implementation revision.'
++risk: R2
++acceptance_criteria:
++- The exact string "admin" returns True.
++- Every other string role returns False, including unknown/empty roles, case variants
++  and whitespace variants.
++- Repeated alternating calls preserve stateless authorization behavior.
++- Regression tests reproduce the original all-roles-authorized defect and pass at
++  head_sha.
++- Independently verify quality/security gates and whether the prior HIGH/CRITICAL
++  finding is remediated; Atlas validation is not independent approval.
++requested_gates:
++  quality: true
++  security: true
++  architecture: false
++  observability: false
++evidence_locations:
++- validation/fixtures/ca02-known-defect/sample.py
++- validation/fixtures/ca02-known-defect/test_sample.py
++- validation/evidence/ca02-admin-only-remediation.md
++sentinel_findings_to_reproduce:
++- 'Operator-supplied prior Sentinel HIGH/CRITICAL: validation/fixtures/ca02-known-defect/sample.py
++  authorizes every role; helper must allow only "admin". Compare base_sha to head_sha
++  and independently verify remediation. No standalone Sentinel report was supplied
++  for this task.'
++atlas_rationale_location: validation/evidence/ca02-admin-only-remediation.md
++review_mode: read-only
+diff --git a/validation/requests/review-request.yaml b/validation/requests/review-request.yaml
+new file mode 100644
+index 0000000..8632f6e
+--- /dev/null
++++ b/validation/requests/review-request.yaml
+@@ -0,0 +1,37 @@
++schema_version: 1.0.0
++review_id: ca02-admin-only-sentinel-5545cbc
++project_id: ai-engineering-team
++requested_by: atlas
++repository: leandroclf/ai-engineering-team
++pull_request: null
++base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
++head_sha: 5545cbcc5309526413f3ce43a9ca8904a2d995b3
++objective: 'Independently verify CA02 remediation: is_authorized permits only the
++  exact role "admin". Review the immutable head_sha; the later request-only commit
++  is transport, not a reviewed implementation revision.'
++risk: R2
++acceptance_criteria:
++- The exact string "admin" returns True.
++- Every other string role returns False, including unknown/empty roles, case variants
++  and whitespace variants.
++- Repeated alternating calls preserve stateless authorization behavior.
++- Regression tests reproduce the original all-roles-authorized defect and pass at
++  head_sha.
++- Independently verify quality/security gates and whether the prior HIGH/CRITICAL
++  finding is remediated; Atlas validation is not independent approval.
++requested_gates:
++  quality: true
++  security: true
++  architecture: false
++  observability: false
++evidence_locations:
++- validation/fixtures/ca02-known-defect/sample.py
++- validation/fixtures/ca02-known-defect/test_sample.py
++- validation/evidence/ca02-admin-only-remediation.md
++known_failures:
++- Prior HIGH/CRITICAL finding remains pending independent clearance. Regression run
++  at the original implementation had 15 failing subcases; after remediation all 4
++  tests passed.
++- The python executable is unavailable; successful checks used python3.
++atlas_rationale_location: validation/evidence/ca02-admin-only-remediation.md
++deadline: null

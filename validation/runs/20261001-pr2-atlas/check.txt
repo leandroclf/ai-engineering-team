@@ -1,0 +1,5 @@
+$ git log --oneline -3
+exit=0
+572740b chore: request independent CA02 Sentinel and Claude review
+2b6793c fix: restrict CA02 authorization to admin with regression tests
+4498c2e feat(validation): adiciona transporte da cadeia via GitHub PR/CI

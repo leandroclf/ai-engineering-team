@@ -44,3 +44,9 @@ The harness clones HEAD into the gitignored `.runs/` directory, which must be un
 - An agent can read its **own** account credentials inside its container. Scan evidence for tokens before committing it.
 - Outbound network is open, because the CLIs need their provider APIs. Do not mount host secrets, SSH agents or the Docker socket.
 - OPENAI-CLI-B is Sentinel's repository-execution plane. It does not replace the live Sentinel Dot (OPENAI-DOT-B).
+
+## GitHub PR/CI transport
+```
+scripts/pr_chain.sh <tag> <atlas-prompt> <sentinel-prompt> <argus-prompt>
+```
+The orchestrator runs on the host with the operator's identity: the SSH alias `github-hotmail` for push and `gh` user `leandroclf` for the PR, statuses and comments. Agents never receive GitHub credentials. Flow: Atlas commits in its clone → branch `validation/<tag>` → draft PR → wait for CI on the head SHA → Sentinel and Argus review `refs/pull/<n>/head` fetched over public HTTPS, and the run fails if the SHA differs → verdicts published as commit statuses `sentinel/review` and `argus/assurance` plus PR comments → PR closed unmerged and branch deleted. Statuses are per-SHA, so a new push to the PR never inherits earlier verdicts. Evidence: `validation/runs/<tag>-transport/transport.yaml`.
