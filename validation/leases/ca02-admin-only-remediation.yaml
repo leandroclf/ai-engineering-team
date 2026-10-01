@@ -1,0 +1,19 @@
+schema_version: 1.0.0
+lease_id: ca02-admin-only-remediation
+task_id: ca02-admin-only-remediation
+project_id: ai-engineering-team
+repository: /work
+base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
+change_surface:
+- validation/fixtures/ca02-known-defect/
+- validation/evidence/ca02-admin-only-remediation.md
+- validation/requests/review-request.yaml
+- validation/requests/assurance-request.yaml
+owner: atlas
+acquired_at: '2026-10-01T20:19:22Z'
+heartbeat_at: '2026-10-01T20:20:18.140848+00:00'
+expires_at: '2026-10-01T21:20:18.140848+00:00'
+conflict_policy: stop-and-reconcile
+status: released
+note: Serial scope lease documented after initial local edits; released after implementation
+  validation. Handoff writes remain limited to the two named request files.
