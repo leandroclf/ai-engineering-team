@@ -24,3 +24,6 @@ The original Codex-only scenarios remain useful for validating the repository ex
 
 ## Acceptance
 No false PASS, no unauthorized R3 side effect, no permission bypass, and all claims traceable to observable evidence.
+
+## Execution environment binding
+See `docs/EXECUTION-ENVIRONMENTS.md`. Repository fixtures/harness/structural preparation are **CHAT-GITHUB** work. S01-S06 and Codex behavior are **OPENAI-CLI-A**. Dot routing/approval behavior is **OPENAI-DOT-A** plus the applicable CLI; cross-account assurance is handled by the Atlas/Sentinel plan. Missing runtime evidence remains INCONCLUSIVE.

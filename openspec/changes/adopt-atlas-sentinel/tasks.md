@@ -35,3 +35,6 @@
 
 ## Completion
 Static implementation can be COMPLETE after CI. Operational status remains PARTIALLY_VALIDATED until AS4 live items have observable evidence.
+
+## Execution environment binding
+See `docs/EXECUTION-ENVIRONMENTS.md`. Atlas instantiation is **OPENAI-DOT-A + HUMAN**; Sentinel instantiation is **OPENAI-DOT-B + HUMAN**; AS01-AS10 are **CROSS-ENV** using both live accounts and the configured OpenAI/Codex CLI where repository execution is needed. **CHAT-GITHUB** owns immutable handoff artifacts, repository inspection and evidence compilation.

@@ -71,3 +71,6 @@ Codex should begin with `codex-handoff.md`. Everything above that can be prepare
 
 ## Mandatory gates
 No repository rule weakens native safeguards. Delegation is bounded/evidence-backed. Repository state is re-read before mutation. Permission denial is never authorization. No real destructive production operation is required for validation.
+
+## Execution environment binding
+See `docs/EXECUTION-ENVIRONMENTS.md`. D8 Codex-layer execution is **OPENAI-CLI-A**; live bootstrap/routing/native approval is **OPENAI-DOT-A** (+ **HUMAN** where approval/account action is required); repository preparation/final report compilation is **CHAT-GITHUB** after runtime evidence exists.

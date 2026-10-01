@@ -42,3 +42,6 @@
 
 ## Completion rule
 Implementation is structurally complete when H0-H5 and static H6 pass. The change becomes VALIDATED/DONE only after the three live H6 items have real evidence; unavailable runtime capabilities must remain INCONCLUSIVE, never PASS.
+
+## Execution environment binding
+See `docs/EXECUTION-ENVIRONMENTS.md`. H6 live Dot/Codex scenarios require **OPENAI-DOT-A + OPENAI-CLI-A**. Native approval additionally requires **HUMAN**. Portfolio concurrency requires the live Dot plus two controlled CLI/repository tasks. **CHAT-GITHUB** prepares fixtures and audits evidence only.
