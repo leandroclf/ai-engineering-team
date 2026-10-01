@@ -27,7 +27,7 @@ CLAUDE_TOOLS = ["Read", "Grep", "Glob", "Bash"]
 # Bash is limited to read-only git and running tests; anything else is denied in -p mode.
 CLAUDE_ALLOWED = ["Read", "Grep", "Glob", "Bash(git log:*)", "Bash(git show:*)", "Bash(git diff:*)",
                   "Bash(git rev-parse:*)", "Bash(git status:*)", "Bash(python3 -m unittest:*)",
-                  "Bash(python3 -B -m unittest:*)", 
+                  "Bash(python3 -B -m unittest:*)",
                   "Bash(python3 scripts/validate.py:*)", "Bash(python3 scripts/validate_hardening.py:*)",
                   "Bash(python3 -B scripts/validate.py:*)", "Bash(python3 -B scripts/validate_hardening.py:*)"]
 CLAUDE_DENIED = ["Edit", "Write", "NotebookEdit", "WebFetch", "WebSearch", "Agent"]
