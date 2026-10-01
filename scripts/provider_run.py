@@ -24,7 +24,8 @@ CLAUDE_DENIED = ["Edit", "Write", "Bash", "NotebookEdit", "WebFetch", "WebSearch
 
 
 def sh(cmd, cwd, **kw):
-    return subprocess.run(cmd, cwd=cwd, shell=isinstance(cmd, str), text=True, capture_output=True, **kw)
+    return subprocess.run(cmd, cwd=cwd, shell=isinstance(cmd, str), text=True, capture_output=True,
+                          stdin=subprocess.DEVNULL, **kw)
 
 
 def now():
