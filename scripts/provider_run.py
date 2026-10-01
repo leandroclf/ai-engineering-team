@@ -23,8 +23,11 @@ AGENTS = {"OPENAI-CLI-A": ("Atlas", "openai"), "OPENAI-CLI-B": ("Sentinel", "ope
 # runtimes/compose.yaml service per environment; each has its own account home volume.
 SERVICES = {"OPENAI-CLI-A": "atlas-cli", "OPENAI-CLI-B": "sentinel-cli", "CLAUDE-CLI": "argus-cli"}
 COMPOSE = ["docker", "compose", "-f", str(ROOT / "runtimes" / "compose.yaml"), "run", "--rm", "-T"]
-CLAUDE_READ_ONLY = ["Read", "Grep", "Glob"]
-CLAUDE_DENIED = ["Edit", "Write", "Bash", "NotebookEdit", "WebFetch", "WebSearch", "Agent"]
+CLAUDE_TOOLS = ["Read", "Grep", "Glob", "Bash"]
+# Bash is limited to read-only git and running tests; anything else is denied in -p mode.
+CLAUDE_ALLOWED = ["Read", "Grep", "Glob", "Bash(git log:*)", "Bash(git show:*)", "Bash(git diff:*)",
+                  "Bash(git rev-parse:*)", "Bash(git status:*)", "Bash(python3 -m unittest:*)"]
+CLAUDE_DENIED = ["Edit", "Write", "NotebookEdit", "WebFetch", "WebSearch", "Agent"]
 
 
 def sh(cmd, cwd, **kw):
@@ -45,7 +48,7 @@ def provider_cmd(env, prompt, run_dir, container=False):
     return ["claude", "-p", prompt, "--output-format", "stream-json", "--verbose",
             "--setting-sources", "project", "--no-session-persistence", "--strict-mcp-config",
             # --tools is the effective allow-list; --allowedTools only pre-approves.
-            "--tools", *CLAUDE_READ_ONLY, "--allowedTools", *CLAUDE_READ_ONLY,
+            "--tools", *CLAUDE_TOOLS, "--allowedTools", *CLAUDE_ALLOWED,
             "--disallowedTools", *CLAUDE_DENIED]
 
 
@@ -89,8 +92,8 @@ def main():
     started = now()
     cmd = provider_cmd(a.env, prompt, run_dir, a.container)
     if a.container:
-        # Sentinel is a reviewer: its checkout is mounted read-only, enforced by Docker, not by the agent.
-        ro = ":ro" if a.env == "OPENAI-CLI-B" else ""
+        # Reviewers (Sentinel, Argus) get a read-only checkout, enforced by Docker, not by the agent.
+        ro = ":ro" if a.env in ("OPENAI-CLI-B", "CLAUDE-CLI") else ""
         cmd = COMPOSE + ["-e", "PYTHONDONTWRITEBYTECODE=1", "-v", f"{clone}:/work{ro}",
                          "-v", f"{run_dir}:/evidence", SERVICES[a.env]] + cmd
     proc = sh(cmd, clone, timeout=1800)
