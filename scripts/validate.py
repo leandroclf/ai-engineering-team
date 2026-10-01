@@ -123,7 +123,7 @@ for rel in fixture_required:
 
 for manifest in sorted((ROOT / "validation/runs").glob("*/manifest.yaml")):
     statuses = [l.split(":", 1)[1].strip() for l in manifest.read_text(encoding="utf-8").splitlines() if l.startswith("status:")]
-    if statuses != [statuses[0]] or statuses[0] not in {"PASS", "FAIL", "BLOCKED", "INCONCLUSIVE"}:
+    if len(statuses) != 1 or statuses[0] not in {"PASS", "FAIL", "BLOCKED", "INCONCLUSIVE"}:
         errors.append(f"run manifest without single allowed status: {manifest.relative_to(ROOT)}")
 
 if errors:
