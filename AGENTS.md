@@ -45,6 +45,7 @@ Parallel mutation requires non-overlapping scope or explicit reconciliation. Use
 - Avoid unrelated refactors.
 - Prefer repository-native commands and conventions.
 - Add/update tests for changed behavior when feasible.
+- Before completion, check how the change interacts with existing state and invariants (identity/uniqueness, ordering, lifecycle, shared state), and test that interaction, not only the new path.
 - Review the final diff before completion.
 - Treat memory/summaries as hints; mutable source truth must be re-read.
 - Never expose secrets or move sensitive context across projects without authorization.
