@@ -1,0 +1,19 @@
+schema_version: 1.0.0
+assurance_id: ""
+provider: anthropic
+executor: claude-code
+project_id: ""
+repository: ""
+head_sha: ""
+verdict: INCONCLUSIVE
+gates:
+  quality: INCONCLUSIVE
+  security: INCONCLUSIVE
+  architecture: INCONCLUSIVE
+  observability: INCONCLUSIVE
+findings: []
+checks_executed: []
+evidence: []
+permission_limits: []
+residual_risks: []
+reviewed_at: ""
