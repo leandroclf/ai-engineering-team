@@ -9,7 +9,7 @@ base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
 head_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
 started_at: '2026-10-01T20:18:35+00:00'
 finished_at: '2026-10-01T20:20:53+00:00'
-status: INCONCLUSIVE
+status: PASS
 risk: R2
 objective: ''
 fixture_paths: []
@@ -41,5 +41,9 @@ evidence_locations:
 - validation/runs/20261001-pr3-atlas/last-message.md
 - validation/runs/20261001-pr3-atlas/prompt.md
 failures: []
-residual_risks: []
-notes: status pending evaluator review
+residual_risks:
+- 'GitHub transport (PR #8, closed unmerged); Atlas/Sentinel share one OpenAI user
+  under W-001.'
+notes: 'Atlas remediated CA02 (admin True, guest/Admin False, tests OK) with review
+  requests; reported pending independent review; head ba11aa5 pushed as PR #8 by the
+  orchestrator.'

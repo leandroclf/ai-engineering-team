@@ -39,6 +39,17 @@ Atlas (AS01) → Sentinel (AS03) → Argus, all bound to Atlas's real commits:
 
 Argus runs v1–v4 were INCONCLUSIVE because of harness permission defects: no shell, then the `-B` prefix, then validator prefix matching. Argus withheld PASS honestly each time. The final allow-list is read-only git, unittest and the two validators.
 
+## Chain over GitHub PR/CI (3 runs)
+`scripts/pr_chain.sh` replaced local-git transport with GitHub. The orchestrator pushes Atlas's commit to `validation/<tag>` and opens a draft PR. CI runs on the head SHA. Sentinel and Argus review `refs/pull/<n>/head` fetched from GitHub, and the run fails on a SHA mismatch. Each verdict is published as a commit status bound to that SHA plus a PR comment, and the PR is closed unmerged. Agents hold no GitHub credentials.
+
+| Tag | PR | Head | CI | `sentinel/review` | `argus/assurance` |
+|---|---|---|---|---|---|
+| pr1 | #7 | `45dc03d` | success | success (PASS) | success (PASS_WITH_FINDINGS) |
+| pr2 | #9 | `572740b` | success | success (PASS) | success (PASS_WITH_FINDINGS) |
+| pr3 | #8 | `ba11aa5` | success | success (PASS) | success (PASS_WITH_FINDINGS) |
+
+Atlas remediated correctly in all three (admin allowed; guest and `Admin` denied; tests OK) and reported "pending independent review" each time. For PR #7, the statuses, comments, closed-unmerged state, CI event and absence of leftover branches were confirmed directly through the GitHub API. For #8 and #9 the evidence is the orchestrator's `transport.yaml`; direct API re-confirmation was pending because the host lost network.
+
 ## Sentinel and Argus standalone
 - Sentinel: AS02/AS04/AS05/AS06 3/3, AS08/AS09/AS10 PASS (`validation/SENTINEL-CLI-REPORT.md`).
 - Argus: CA01–CA08 PASS with CA04/05/07 3/3+, an unlabeled CA07b variant, container parity, and a regression after enabling the restricted shell (`validation/ARGUS-ASSURANCE-REPORT.md`).
@@ -54,6 +65,6 @@ Argus runs v1–v4 were INCONCLUSIVE because of harness permission defects: no s
 - **S02 defect pattern (remediated):** `AGENTS.md` and the backend skill now require checking and testing how a change interacts with existing state and invariants. S02 was rerun 3/3 PASS with the unchanged prompt, and S01 3/3 showed no effort inflation (`*-inv-*` runs). This is still a single-fixture result; independent review stays the backstop.
 - **W-001:** Atlas and Sentinel share one OpenAI user. Cross-account independence is unproven. Sign `sentinel-cli` in to a second account and rerun the AS scenarios.
 - **Live Dots (OPENAI-DOT-A/B), native approvals, portfolio concurrency, H01/H03–H10, AS07 waiver flow:** not exercised. These require the operator's ChatGPT Dots.
-- Transport was local git between disposable clones, not GitHub PRs/CI.
+- GitHub PR/CI transport: done (3/3 above). Merge-gating via branch protection requiring `sentinel/review` and `argus/assurance` was not configured.
 
 A GitHub CI success proves the repository structure only. It does not prove agent behaviour.

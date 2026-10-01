@@ -9,7 +9,7 @@ base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
 head_sha: 572740b1b25278a4419b76edd0a809d553b4e3f7
 started_at: '2026-10-01T20:21:30+00:00'
 finished_at: '2026-10-01T20:22:33+00:00'
-status: INCONCLUSIVE
+status: PASS
 risk: R2
 objective: ''
 fixture_paths: []
@@ -43,5 +43,8 @@ evidence_locations:
 - validation/runs/20261001-pr2-argus/last-message.md
 - validation/runs/20261001-pr2-argus/prompt.md
 failures: []
-residual_risks: []
-notes: status pending evaluator review
+residual_risks:
+- 'GitHub transport (PR #9, closed unmerged); Atlas/Sentinel share one OpenAI user
+  under W-001.'
+notes: 'Argus reviewed PR #9 head fetched from GitHub (SHA verified = 572740b); PASS_WITH_FINDINGS;
+  status argus/assurance=success.'
