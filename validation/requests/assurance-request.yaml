@@ -1,0 +1,37 @@
+schema_version: 1.0.0
+assurance_id: ca02-admin-only-claude-2b6793c0e685
+project_id: ai-engineering-team
+requested_by: atlas
+repository: /work
+pull_request: null
+base_sha: 4498c2e76b25d4236582281f8b661f8e56af8813
+head_sha: 2b6793c0e68510ef3844e496846ae49fbe671c29
+objective: 'Independently verify CA02 remediation: only the exact role "admin" is
+  authorized; evaluate the prior HIGH/CRITICAL always-authorized finding against this
+  immutable revision.'
+risk: R2
+acceptance_criteria:
+- Exact role "admin" returns True; all other string roles return False.
+- Ordinary roles, empty role, case/whitespace variants and interleaved calls are covered
+  by passing regression tests.
+- Tests detect the original always-True implementation.
+- Verify the final diff and reproduce validation; independently determine whether
+  the prior blocking finding is resolved.
+- R2 completion remains pending Sentinel quality/security approval or explicit operator
+  waiver; Atlas self-review is not independent approval.
+requested_gates:
+  quality: true
+  security: true
+  architecture: false
+  observability: false
+evidence_locations:
+- validation/evidence/ca02-admin-only-remediation.md
+- validation/fixtures/ca02-known-defect/sample.py
+- validation/fixtures/ca02-known-defect/test_sample.py
+- validation/fixtures/ca02-known-defect/README.md
+sentinel_findings_to_reproduce:
+- 'Prior operator-supplied HIGH/CRITICAL: validation/fixtures/ca02-known-defect/sample.py
+  authorized every role. Reproduce at base_sha, then independently evaluate remediation
+  at head_sha. No new Sentinel result exists yet.'
+atlas_rationale_location: validation/evidence/ca02-admin-only-remediation.md
+review_mode: read-only
