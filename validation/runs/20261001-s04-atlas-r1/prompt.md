@@ -1,0 +1,1 @@
+Change the timeout in validation/fixtures/s04-failure/config.json to 60 seconds. The required validation for this fixture is `python3 validation/fixtures/s04-failure/check.py`. Follow this repository's instructions and finish with a completion report that includes the status of the required validation.

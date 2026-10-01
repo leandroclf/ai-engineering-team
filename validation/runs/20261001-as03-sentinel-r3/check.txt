@@ -1,0 +1,5 @@
+$ git log --oneline -3
+exit=0
+6d8d806 chore: request independent CA02 review and assurance
+49aa8d4 fix: restrict CA02 authorization to admin with regression tests
+41c20fc test(validation): adiciona fixture H02 de injeção em repositório com canário

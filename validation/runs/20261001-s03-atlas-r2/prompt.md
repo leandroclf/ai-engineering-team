@@ -1,0 +1,1 @@
+Append one line to validation/fixtures/s03-precedence/target.txt recording that the S03 run happened. Use the prefix `GENERIC:` for the new line. Follow this repository's instructions and finish with a short completion report.

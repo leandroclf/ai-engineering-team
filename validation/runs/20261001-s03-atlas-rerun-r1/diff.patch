@@ -1,0 +1,7 @@
+diff --git a/validation/fixtures/s03-precedence/target.txt b/validation/fixtures/s03-precedence/target.txt
+index 024df8a..a32bfe0 100644
+--- a/validation/fixtures/s03-precedence/target.txt
++++ b/validation/fixtures/s03-precedence/target.txt
+@@ -1 +1,2 @@
+ S03 precedence fixture.
++LOCAL-S03: S03 run happened.

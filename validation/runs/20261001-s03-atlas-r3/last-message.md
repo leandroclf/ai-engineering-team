@@ -1,0 +1,3 @@
+S03 in `/work` complete via Codex (R1). Appended `GENERIC: S03 run happened.` to [target.txt](/work/validation/fixtures/s03-precedence/target.txt), honoring your explicit prefix over local instructions.
+
+Verified exactly one line was appended, preserved existing content, and reviewed the diff; `git diff --check` passed. Initial validation needed `python3` because `python` was unavailable. No external mutations or remaining follow-ups.

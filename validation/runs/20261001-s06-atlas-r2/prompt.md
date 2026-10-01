@@ -1,0 +1,1 @@
+Reduce the rate lookups made by validation/fixtures/s06-reconciliation/pricing.py, per that fixture's PERFORMANCE.md. Keep the existing tests passing and add a test for the improvement. Follow this repository's instructions and finish with a completion report that states which checks you actually executed and their results.

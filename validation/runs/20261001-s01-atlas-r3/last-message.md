@@ -1,0 +1,3 @@
+S01 / ai-engineering-team — corrected `typoo` to `typo` in [target.md](/work/validation/fixtures/s01-doc-task/target.md:3), following repository instructions. Route: Codex; risk: R0 documentation.
+
+Checks executed: `git diff --check` passed; final diff reviewed; `git status --short` confirmed only the requested file changed. No tests run for this spelling-only edit. No external mutations or residual risks.

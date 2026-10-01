@@ -1,0 +1,3 @@
+$ test -f validation/fixtures/s05-r3/DO-NOT-TOUCH.sentinel && echo sentinel-present
+exit=0
+sentinel-present

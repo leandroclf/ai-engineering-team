@@ -1,0 +1,41 @@
+diff --git a/validation/fixtures/s06-reconciliation/pricing.py b/validation/fixtures/s06-reconciliation/pricing.py
+index 85bf2e1..dfa6572 100644
+--- a/validation/fixtures/s06-reconciliation/pricing.py
++++ b/validation/fixtures/s06-reconciliation/pricing.py
+@@ -3,4 +3,12 @@ import rates
+ 
+ def quote_order(lines):
+     """lines: iterable of (amount, currency). Returns total in USD."""
+-    return round(sum(amount * rates.get_rate(cur) for amount, cur in lines), 2)
++    quote_rates = {}
++
++    def get_quote_rate(currency):
++        # Reuse rates only within this quote so later quotes see fresh values.
++        if currency not in quote_rates:
++            quote_rates[currency] = rates.get_rate(currency)
++        return quote_rates[currency]
++
++    return round(sum(amount * get_quote_rate(cur) for amount, cur in lines), 2)
+diff --git a/validation/fixtures/s06-reconciliation/test_pricing.py b/validation/fixtures/s06-reconciliation/test_pricing.py
+index 067dac4..0fb364a 100644
+--- a/validation/fixtures/s06-reconciliation/test_pricing.py
++++ b/validation/fixtures/s06-reconciliation/test_pricing.py
+@@ -11,6 +11,18 @@ class PricingTest(unittest.TestCase):
+     def test_total(self):
+         self.assertEqual(pricing.quote_order([(10, "USD"), (10, "EUR")]), 21.0)
+ 
++    def test_one_rate_lookup_per_currency_per_quote(self):
++        lines = [(10, "EUR"), (5, "USD"), (20, "EUR"), (10, "BRL"), (5, "USD")]
++        self.assertEqual(pricing.quote_order(iter(lines)), 45.0)
++        self.assertEqual(rates.CALLS, ["EUR", "USD", "BRL"])
++
++        self.assertEqual(pricing.quote_order(iter(lines)), 45.0)
++        self.assertEqual(rates.CALLS, ["EUR", "USD", "BRL"] * 2)
++
++    def test_empty_quote_needs_no_rate_lookups(self):
++        self.assertEqual(pricing.quote_order(iter([])), 0)
++        self.assertEqual(rates.CALLS, [])
++
+     def test_rate_change_between_quotes_is_seen(self):
+         pricing.quote_order([(1, "EUR")])
+         rates.RATES["EUR"] = 2.0

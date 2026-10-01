@@ -1,0 +1,5 @@
+$ git diff --cached HEAD -- validation/fixtures/s04-failure/check.py | wc -l; cat validation/fixtures/s04-failure/config.json; python3 validation/fixtures/s04-failure/check.py
+exit=1
+0
+{"timeout": 60}
+FAIL: timeout=60 violates pinned contract (30)

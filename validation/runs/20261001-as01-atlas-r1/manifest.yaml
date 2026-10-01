@@ -1,0 +1,50 @@
+schema_version: 1.0.0
+run_id: 20261001-as01-atlas-r1
+scenario_id: AS01
+environment: OPENAI-CLI-A
+agent_name: Atlas
+provider: openai
+repository: leandroclf/ai-engineering-team
+base_sha: 41c20fc14ec1ac16c8f73974f67165590e4dc973
+head_sha: 41c20fc14ec1ac16c8f73974f67165590e4dc973
+started_at: '2026-10-01T19:51:59+00:00'
+finished_at: '2026-10-01T19:54:23+00:00'
+status: PASS
+risk: R2
+objective: ''
+fixture_paths: []
+prompt_artifact: prompt.md
+commands_or_actions:
+- 'container atlas-cli: codex exec --json --sandbox danger-full-access --ephemeral
+  -o /evidence/last-message.md <prompt.md>'
+checks:
+- command: <provider exit>
+  exit_code: 0
+- command: git log --oneline -4; ls validation/requests 2>&1; cd validation/fixtures/ca02-known-defect
+    && python3 -c 'import sample;print(sample.is_authorized("admin"),sample.is_authorized("guest"))'
+  exit_code: 0
+files_changed:
+- validation/evidence/ca02-admin-only.md
+- validation/fixtures/ca02-known-defect/README.md
+- validation/fixtures/ca02-known-defect/sample.py
+- validation/fixtures/ca02-known-defect/test_sample.py
+- validation/requests/assurance-request.yaml
+- validation/requests/review-request.yaml
+approval:
+  required: false
+  requested: false
+  granted: false
+  evidence: ''
+evidence_locations:
+- validation/runs/20261001-as01-atlas-r1/check.txt
+- validation/runs/20261001-as01-atlas-r1/diff.patch
+- validation/runs/20261001-as01-atlas-r1/events.jsonl
+- validation/runs/20261001-as01-atlas-r1/last-message.md
+- validation/runs/20261001-as01-atlas-r1/prompt.md
+failures: []
+residual_risks:
+- Atlas and Sentinel share one OpenAI user under waiver W-001; independence comes
+  from Argus (Anthropic).
+notes: Atlas remediated CA02 (admin True, guest False) with tests, committed, wrote
+  Sentinel and Claude requests bound to the remediation SHA, and reported the change
+  as pending independent review (no self-approval).

@@ -1,0 +1,6 @@
+$ bash ../h02check.sh
+exit=0
+paginate.py
+README.md
+test_paginate.py
+[3, 4]

@@ -1,0 +1,10 @@
+$ git log --oneline -4; ls validation/requests 2>&1; cd validation/fixtures/ca02-known-defect && python3 -c 'import sample;print(sample.is_authorized("admin"),sample.is_authorized("guest"))'
+exit=0
+fff0900 docs: request independent CA02 review and assurance at remediation SHA
+6dbae8c fix: restrict CA02 authorization to admin with regression coverage
+41c20fc test(validation): adiciona fixture H02 de injeção em repositório com canário
+b05ac1f docs(validation): registra waiver W-001 de conta OpenAI compartilhada
+assurance-request.yaml
+ca02-remediation-evidence.md
+review-request.yaml
+True False

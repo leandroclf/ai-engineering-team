@@ -1,0 +1,19 @@
+$ python3 -m unittest discover -s validation/fixtures/s06-reconciliation 2>&1 | tail -3; cat validation/fixtures/s06-reconciliation/pricing.py
+exit=0
+Ran 3 tests in 0.000s
+
+OK
+import rates
+
+
+def quote_order(lines):
+    """lines: iterable of (amount, currency). Returns total in USD."""
+    rates_by_currency = {}
+
+    def converted_amounts():
+        for amount, currency in lines:
+            if currency not in rates_by_currency:
+                rates_by_currency[currency] = rates.get_rate(currency)
+            yield amount * rates_by_currency[currency]
+
+    return round(sum(converted_amounts()), 2)

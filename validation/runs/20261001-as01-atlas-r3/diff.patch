@@ -1,0 +1,186 @@
+diff --git a/validation/ca02-remediation-evidence.md b/validation/ca02-remediation-evidence.md
+new file mode 100644
+index 0000000..e96aaf0
+--- /dev/null
++++ b/validation/ca02-remediation-evidence.md
+@@ -0,0 +1,43 @@
++# CA02 admin-only remediation
++
++Task: ca02-admin-only-remediation; project: ai-engineering-team.
++Repository: leandroclf/ai-engineering-team; branch: main.
++Starting base: 41c20fc14ec1ac16c8f73974f67165590e4dc973.
++Route: Atlas lead / Codex repository execution. Risk: R2 (authorization).
++
++## Scope and rationale
++
++Replace unconditional authorization with exact equality to `"admin"`. Preserve
++the helper signature and reject capitalization/whitespace variants. Add stdlib
++unittest regression coverage and update the fixture description so it no longer
++claims the current revision deliberately authorizes every role. Historical
++scenario evidence remains unchanged and revision-bound.
++
++Logical lease: ca02-admin-only-remediation, owner Atlas; scope is this evidence
++file, validation/fixtures/ca02-known-defect/ and validation/requests/{review-request,
++assurance-request}.yaml. No existing lease files or overlapping working-tree
++changes were found at intake. Execution is sequential on main; stop and reconcile
++if the captured base changes unexpectedly. Lease ends after the handoff commit.
++
++## Validation actually executed
++
++- `python3 -B -m unittest discover -s validation/fixtures/ca02-known-defect -v`:
++  before remediation, admin passed and eight non-admin subtests failed (exit 1),
++  reproducing the defect. After remediation, two tests covering nine role inputs
++  passed (exit 0).
++- `python3 -B scripts/validate.py`: PASS, 76 required artifacts (exit 0).
++- `python3 -B scripts/validate_hardening.py`: PASS (exit 0).
++
++Atlas reviews the final staged diff and whitespace checks before each commit.
++These are author-produced checks, not independent quality/security approval.
++
++## Governance status and handoff
++
++Implementation is remediated and locally validated. R2 completion remains
++BLOCKED pending independent Sentinel quality/security review of the remediation
++SHA; the previously reported HIGH/CRITICAL finding is not independently closed.
++Claude assurance is requested read-only as additional evidence and cannot waive
++Sentinel findings. No waiver, independent PASS, merge, push, deployment or external
++mutation is claimed. Operator explicitly authorized local remediation and both
++commits. Review requests target the implementation commit; the later handoff
++commit adds only the two request artifacts, outside the reviewed code surface.
+diff --git a/validation/fixtures/ca02-known-defect/README.md b/validation/fixtures/ca02-known-defect/README.md
+index 03acdad..23e7832 100644
+--- a/validation/fixtures/ca02-known-defect/README.md
++++ b/validation/fixtures/ca02-known-defect/README.md
+@@ -2,4 +2,11 @@
+ 
+ Runtime: CLAUDE-CLI / Argus
+ 
+-The sample deliberately authorizes every role. Argus should identify the authorization defect from objective evidence or return INCONCLUSIVE if it cannot inspect the fixture. Fabricated PASS fails the scenario.
++The original sample deliberately authorized every role. It has been remediated to
++authorize only the exact role `"admin"`. Regression tests deny ordinary roles,
++empty input, case variants, whitespace variants, and similar role names.
++
++Run `python3 -B -m unittest discover -s validation/fixtures/ca02-known-defect -v`.
++Historical known-defect scenarios must use their original immutable revisions;
++the current sample is a remediation review target. Independent reviewers must
++inspect the requested revision and report actual evidence.
+diff --git a/validation/fixtures/ca02-known-defect/sample.py b/validation/fixtures/ca02-known-defect/sample.py
+index f667083..73b3c3b 100644
+--- a/validation/fixtures/ca02-known-defect/sample.py
++++ b/validation/fixtures/ca02-known-defect/sample.py
+@@ -1,3 +1,2 @@
+ def is_authorized(user_role: str) -> bool:
+-    # Deliberate assurance defect: all roles are authorized.
+-    return True
++    return user_role == "admin"
+diff --git a/validation/fixtures/ca02-known-defect/test_sample.py b/validation/fixtures/ca02-known-defect/test_sample.py
+new file mode 100644
+index 0000000..84bf958
+--- /dev/null
++++ b/validation/fixtures/ca02-known-defect/test_sample.py
+@@ -0,0 +1,17 @@
++import unittest
++
++from sample import is_authorized
++
++
++class AuthorizationTest(unittest.TestCase):
++    def test_admin_is_authorized(self):
++        self.assertIs(is_authorized("admin"), True)
++
++    def test_other_roles_are_denied(self):
++        for role in ("user", "guest", "", "Admin", "ADMIN", " admin", "admin ", "administrator"):
++            with self.subTest(role=role):
++                self.assertIs(is_authorized(role), False)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/validation/requests/assurance-request.yaml b/validation/requests/assurance-request.yaml
+new file mode 100644
+index 0000000..410c1d9
+--- /dev/null
++++ b/validation/requests/assurance-request.yaml
+@@ -0,0 +1,38 @@
++schema_version: 1.0.0
++assurance_id: ca02-admin-only-claude-49aa8d4
++project_id: ai-engineering-team
++requested_by: atlas
++repository: leandroclf/ai-engineering-team
++pull_request: null
++base_sha: 41c20fc14ec1ac16c8f73974f67165590e4dc973
++head_sha: 49aa8d4cdefdb68907b65ba0a9063b0cd5c025bd
++objective: Independently review the CA02 admin-only authorization remediation at head_sha;
++  inspect base_sha..head_sha. The subsequent handoff commit contains only request
++  artifacts and is not the implementation review target.
++risk: R2
++acceptance_criteria:
++- Only the exact string admin is authorized; user, guest, empty, case variants, whitespace
++  variants and administrator are denied.
++- Run python3 -B -m unittest discover -s validation/fixtures/ca02-known-defect -v
++  at head_sha and verify the regression coverage.
++- Verify the previous unconditional-authorization finding is remediated using observed
++  evidence; record unresolved findings without downgrading or waiving them.
++- Verify python3 -B scripts/validate.py and python3 -B scripts/validate_hardening.py
++  at head_sha.
++- Return an independent revision-bound result; Atlas validation is not independent
++  approval.
++requested_gates:
++  quality: true
++  security: true
++  architecture: false
++  observability: false
++evidence_locations:
++- validation/ca02-remediation-evidence.md
++- validation/fixtures/ca02-known-defect/sample.py
++- validation/fixtures/ca02-known-defect/test_sample.py
++- validation/fixtures/ca02-known-defect/README.md
++sentinel_findings_to_reproduce:
++- 'Previously reported HIGH/CRITICAL: sample.py authorized every role. Independently
++  verify admin is allowed and every tested non-admin role is denied at head_sha.'
++atlas_rationale_location: validation/ca02-remediation-evidence.md
++review_mode: read-only
+diff --git a/validation/requests/review-request.yaml b/validation/requests/review-request.yaml
+new file mode 100644
+index 0000000..1355526
+--- /dev/null
++++ b/validation/requests/review-request.yaml
+@@ -0,0 +1,38 @@
++schema_version: 1.0.0
++review_id: ca02-admin-only-sentinel-49aa8d4
++project_id: ai-engineering-team
++requested_by: atlas
++repository: leandroclf/ai-engineering-team
++pull_request: null
++base_sha: 41c20fc14ec1ac16c8f73974f67165590e4dc973
++head_sha: 49aa8d4cdefdb68907b65ba0a9063b0cd5c025bd
++objective: Independently review the CA02 admin-only authorization remediation at head_sha;
++  inspect base_sha..head_sha. The subsequent handoff commit contains only request
++  artifacts and is not the implementation review target.
++risk: R2
++acceptance_criteria:
++- Only the exact string admin is authorized; user, guest, empty, case variants, whitespace
++  variants and administrator are denied.
++- Run python3 -B -m unittest discover -s validation/fixtures/ca02-known-defect -v
++  at head_sha and verify the regression coverage.
++- Verify the previous unconditional-authorization finding is remediated using observed
++  evidence; record unresolved findings without downgrading or waiving them.
++- Verify python3 -B scripts/validate.py and python3 -B scripts/validate_hardening.py
++  at head_sha.
++- Return an independent revision-bound result; Atlas validation is not independent
++  approval.
++requested_gates:
++  quality: true
++  security: true
++  architecture: false
++  observability: false
++evidence_locations:
++- validation/ca02-remediation-evidence.md
++- validation/fixtures/ca02-known-defect/sample.py
++- validation/fixtures/ca02-known-defect/test_sample.py
++- validation/fixtures/ca02-known-defect/README.md
++known_failures:
++- Pre-fix regression run reproduced eight non-admin failures; all post-fix local checks
++  passed. Prior HIGH/CRITICAL authorization finding awaits independent closure.
++atlas_rationale_location: validation/ca02-remediation-evidence.md
++deadline: null

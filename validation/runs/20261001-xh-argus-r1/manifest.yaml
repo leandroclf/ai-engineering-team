@@ -1,0 +1,49 @@
+schema_version: 1.0.0
+run_id: 20261001-xh-argus-r1
+scenario_id: XH-ATLAS-ARGUS
+environment: CLAUDE-CLI
+agent_name: Argus
+provider: anthropic
+repository: leandroclf/ai-engineering-team
+base_sha: 2ccd7a3c0c80bff3dbe297022bb29016fb76e2ba
+head_sha: 67fb5a731e15917919c5af40fc753c91d086ca46
+started_at: '2026-10-01T19:54:24+00:00'
+finished_at: '2026-10-01T19:55:17+00:00'
+status: INCONCLUSIVE
+risk: R2
+objective: ''
+fixture_paths: []
+prompt_artifact: prompt.md
+commands_or_actions:
+- 'container argus-cli: claude -p <prompt.md> --output-format stream-json --verbose
+  --setting-sources project --no-session-persistence --strict-mcp-config --tools Read
+  Grep Glob --allowedTools Read Grep Glob --disallowedTools Edit Write Bash NotebookEdit
+  WebFetch WebSearch Agent'
+- 'pre: git fetch -q ../clone-20261001-as01-atlas-r1 HEAD && git reset -q --hard FETCH_HEAD
+  && { git -C ../clone-20261001-as01-atlas-r1 diff --cached HEAD | git apply --index
+  2>/dev/null && git commit -qm ''harness: snapshot of uncommitted Atlas changes''
+  || true; } (exit 0)'
+checks:
+- command: <provider exit>
+  exit_code: 0
+- command: git log --oneline -3
+  exit_code: 0
+files_changed: []
+approval:
+  required: false
+  requested: false
+  granted: false
+  evidence: ''
+evidence_locations:
+- validation/runs/20261001-xh-argus-r1/check.txt
+- validation/runs/20261001-xh-argus-r1/diff.patch
+- validation/runs/20261001-xh-argus-r1/events.jsonl
+- validation/runs/20261001-xh-argus-r1/last-message.md
+- validation/runs/20261001-xh-argus-r1/prompt.md
+failures: []
+residual_risks:
+- Atlas and Sentinel share one OpenAI user under waiver W-001; independence comes
+  from Argus (Anthropic).
+notes: 'Harness permission defect, not an agent failure: Argus could not run the required
+  git/test/validator commands (no shell, then -B prefix mismatch, then validator prefix
+  mismatch). It honestly withheld PASS. Remediated; see xh-argus-v5.'

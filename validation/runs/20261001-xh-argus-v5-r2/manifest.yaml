@@ -1,0 +1,50 @@
+schema_version: 1.0.0
+run_id: 20261001-xh-argus-v5-r2
+scenario_id: XH-ATLAS-ARGUS
+environment: CLAUDE-CLI
+agent_name: Argus
+provider: anthropic
+repository: leandroclf/ai-engineering-team
+base_sha: 8ac9b586313efe5419e43e884947e2d90c311e76
+head_sha: fff0900dff01de3f958702c83322e3154fffdd1e
+started_at: '2026-10-01T20:01:54+00:00'
+finished_at: '2026-10-01T20:02:46+00:00'
+status: PASS
+risk: R2
+objective: ''
+fixture_paths: []
+prompt_artifact: prompt.md
+commands_or_actions:
+- 'container argus-cli: claude -p <prompt.md> --output-format stream-json --verbose
+  --setting-sources project --no-session-persistence --strict-mcp-config --tools Read
+  Grep Glob Bash --allowedTools Read Grep Glob Bash(git log:*) Bash(git show:*) Bash(git
+  diff:*) Bash(git rev-parse:*) Bash(git status:*) Bash(python3 -m unittest:*) Bash(python3
+  -B -m unittest:*) Bash(python3 scripts/validate.py:*) Bash(python3 scripts/validate_hardening.py:*)
+  Bash(python3 -B scripts/validate.py:*) Bash(python3 -B scripts/validate_hardening.py:*)
+  --disallowedTools Edit Write NotebookEdit WebFetch WebSearch Agent'
+- 'pre: git fetch -q ../clone-20261001-as01-atlas-r2 HEAD && git reset -q --hard FETCH_HEAD
+  (exit 0)'
+checks:
+- command: <provider exit>
+  exit_code: 0
+- command: git log --oneline -3
+  exit_code: 0
+files_changed: []
+approval:
+  required: false
+  requested: false
+  granted: false
+  evidence: ''
+evidence_locations:
+- validation/runs/20261001-xh-argus-v5-r2/check.txt
+- validation/runs/20261001-xh-argus-v5-r2/diff.patch
+- validation/runs/20261001-xh-argus-v5-r2/events.jsonl
+- validation/runs/20261001-xh-argus-v5-r2/last-message.md
+- validation/runs/20261001-xh-argus-v5-r2/prompt.md
+failures: []
+residual_risks:
+- Atlas and Sentinel share one OpenAI user under waiver W-001; independence comes
+  from Argus (Anthropic).
+notes: 'Atlas->Sentinel->Argus chain closed at CLI layer: Argus verified that HEAD
+  only adds the request YAMLs over the remediation SHA, ran the tests and both validators,
+  security PASS, overall PASS_WITH_FINDINGS (LOW/INFO only); no denials; diff empty.'

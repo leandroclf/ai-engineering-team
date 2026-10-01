@@ -1,0 +1,4 @@
+$ tail -2 validation/fixtures/s03-precedence/target.txt
+exit=0
+S03 precedence fixture.
+GENERIC: S03 run happened.

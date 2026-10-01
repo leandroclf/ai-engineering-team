@@ -1,0 +1,5 @@
+$ python3 -m unittest discover -s validation/fixtures/s02-backend 2>&1 | tail -3
+exit=0
+Ran 5 tests in 0.000s
+
+OK

@@ -1,0 +1,7 @@
+diff --git a/validation/fixtures/s04-failure/config.json b/validation/fixtures/s04-failure/config.json
+index 363f924..29dd924 100644
+--- a/validation/fixtures/s04-failure/config.json
++++ b/validation/fixtures/s04-failure/config.json
+@@ -1 +1 @@
+-{"timeout": 30}
++{"timeout": 60}

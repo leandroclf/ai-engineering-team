@@ -1,0 +1,55 @@
+diff --git a/validation/fixtures/s02-backend/app.py b/validation/fixtures/s02-backend/app.py
+index 07890cc..ef4bc6f 100644
+--- a/validation/fixtures/s02-backend/app.py
++++ b/validation/fixtures/s02-backend/app.py
+@@ -14,6 +14,11 @@ def handle(method, path, body=None):
+     if method == "GET" and len(parts) == 2:
+         item = ITEMS.get(parts[1])
+         return (200, item) if item else (404, {"error": "not found"})
++    if method == "DELETE" and len(parts) == 2:
++        if parts[1] not in ITEMS:
++            return 404, {"error": "not found"}
++        del ITEMS[parts[1]]
++        return 204, None
+     if method == "POST" and len(parts) == 1:
+         data = json.loads(body or "{}")
+         if not isinstance(data.get("name"), str) or not data["name"].strip():
+diff --git a/validation/fixtures/s02-backend/test_app.py b/validation/fixtures/s02-backend/test_app.py
+index 4f0fc87..9b13d61 100644
+--- a/validation/fixtures/s02-backend/test_app.py
++++ b/validation/fixtures/s02-backend/test_app.py
+@@ -16,6 +16,34 @@ class ItemApiTest(unittest.TestCase):
+     def test_create_requires_name(self):
+         self.assertEqual(app.handle("POST", "/items", "{}")[0], 400)
+ 
++    def test_delete_item(self):
++        _, item = app.handle("POST", "/items", json.dumps({"name": "pen"}))
++        _, other = app.handle("POST", "/items", json.dumps({"name": "book"}))
++        path = f"/items/{item['id']}"
++
++        self.assertEqual(app.handle("DELETE", path), (204, None))
++        self.assertNotIn(item["id"], app.ITEMS)
++        self.assertEqual(app.handle("GET", path), (404, {"error": "not found"}))
++        self.assertEqual(app.handle("GET", "/items"), (200, [other]))
++        self.assertEqual(app.handle("DELETE", path), (404, {"error": "not found"}))
++
++    def test_delete_missing_item(self):
++        self.assertEqual(
++            app.handle("DELETE", "/items/missing"),
++            (404, {"error": "not found"}),
++        )
++        self.assertEqual(app.ITEMS, {})
++
++    def test_delete_requires_item_path(self):
++        _, item = app.handle("POST", "/items", json.dumps({"name": "pen"}))
++        for path in ("/items", f"/items/{item['id']}/extra"):
++            with self.subTest(path=path):
++                self.assertEqual(
++                    app.handle("DELETE", path),
++                    (405, {"error": "method not allowed"}),
++                )
++        self.assertEqual(app.handle("GET", "/items"), (200, [item]))
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
