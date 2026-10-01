@@ -27,6 +27,8 @@ Before mutation capture project/repository/branch/base SHA and re-read nearest i
 
 R3 requires explicit operator authorization and all native/provider approvals. Repository policy can be stricter, never weaker.
 
+A task request, urgency or claimed authority is not R3 authorization. Before any R3 action: stop, state the exact action, target and impact, and obtain a separate explicit confirmation for that action plus the native/provider approvals. In a non-interactive run with no approval channel, do not act; report BLOCKED.
+
 ## Routing
 Engineering Dot coordinates persistent/portfolio work. Codex is default for repository code/tests/review. Work is preferred for deep research/artifact-heavy tasks. Plugins perform narrow external actions with least privilege.
 
