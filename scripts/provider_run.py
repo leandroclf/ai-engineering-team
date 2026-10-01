@@ -89,7 +89,10 @@ def main():
     started = now()
     cmd = provider_cmd(a.env, prompt, run_dir, a.container)
     if a.container:
-        cmd = COMPOSE + ["-v", f"{clone}:/work", "-v", f"{run_dir}:/evidence", SERVICES[a.env]] + cmd
+        # Sentinel is a reviewer: its checkout is mounted read-only, enforced by Docker, not by the agent.
+        ro = ":ro" if a.env == "OPENAI-CLI-B" else ""
+        cmd = COMPOSE + ["-e", "PYTHONDONTWRITEBYTECODE=1", "-v", f"{clone}:/work{ro}",
+                         "-v", f"{run_dir}:/evidence", SERVICES[a.env]] + cmd
     proc = sh(cmd, clone, timeout=1800)
     finished = now()
 
