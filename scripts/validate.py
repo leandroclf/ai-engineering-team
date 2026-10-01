@@ -18,6 +18,8 @@ required = [
     "docs/VERSIONING-MIGRATIONS.md", "docs/ROUTING-MATRIX.md",
     "docs/CONTEXT-BUDGETS.md", "docs/PORTFOLIO-GOVERNANCE.md", "docs/DOT-CALIBRATION.md",
     "docs/adr/0001-dot-native-runtime-boundary.md",
+    "docs/ATLAS-SENTINEL-ARCHITECTURE.md", "docs/DUAL-DOT-AUTHORITY.md",
+    "docs/DUAL-DOT-DISAGREEMENT.md",
     "templates/PROJECT-AGENTS.md", "templates/COMPLETION-REPORT.md",
     "templates/ENGINEERING-DOT-BOOTSTRAP.md", "templates/DOT-CUSTOM-RULES.md",
     "templates/DOT-CODEX-TASK.md", "templates/CODEX-DOT-RESULT.md",
@@ -25,8 +27,12 @@ required = [
     "templates/TASK-ENVELOPE.yaml", "templates/WORK-LEASE.yaml",
     "templates/EVIDENCE-RECORD.yaml", "templates/INCIDENT-RECORD.md",
     "templates/POLICY-MANIFEST.yaml",
+    "templates/ATLAS-BOOTSTRAP.md", "templates/SENTINEL-BOOTSTRAP.md",
+    "templates/ATLAS-SENTINEL-REVIEW-REQUEST.yaml", "templates/SENTINEL-REVIEW-RESULT.yaml",
+    "templates/RISK-ACCEPTANCE-WAIVER.yaml", "templates/DUAL-DOT-REGISTRY.yaml",
+    "runbooks/ATLAS-PRIMARY-ACCOUNT.md", "runbooks/SENTINEL-SECONDARY-ACCOUNT.md",
     "validation/README.md", "validation/EVIDENCE-TEMPLATE.md",
-    "validation/HARDENING-SCENARIOS.md",
+    "validation/HARDENING-SCENARIOS.md", "validation/DUAL-DOT-SCENARIOS.md",
     "openspec/changes/adopt-dot-native-architecture/proposal.md",
     "openspec/changes/adopt-dot-native-architecture/design.md",
     "openspec/changes/adopt-dot-native-architecture/tasks.md",
@@ -34,6 +40,9 @@ required = [
     "openspec/changes/harden-engineering-dot/proposal.md",
     "openspec/changes/harden-engineering-dot/design.md",
     "openspec/changes/harden-engineering-dot/tasks.md",
+    "openspec/changes/adopt-atlas-sentinel/proposal.md",
+    "openspec/changes/adopt-atlas-sentinel/design.md",
+    "openspec/changes/adopt-atlas-sentinel/tasks.md",
 ]
 errors = []
 for rel in required:
@@ -70,6 +79,16 @@ scenarios = (ROOT / "validation/HARDENING-SCENARIOS.md").read_text(encoding="utf
 for token in ["stale context", "prompt injection", "idempotent retry", "lease conflict", "release separation"]:
     if token not in scenarios:
         errors.append(f"hardening scenarios missing: {token}")
+
+dual = (ROOT / "templates/DUAL-DOT-REGISTRY.yaml").read_text(encoding="utf-8")
+for token in ["atlas", "sentinel", "independent_approval: false", "production_write: false", "direct_dot_to_dot_required: false"]:
+    if token not in dual:
+        errors.append(f"dual-dot registry missing: {token}")
+
+dual_scenarios = (ROOT / "validation/DUAL-DOT-SCENARIOS.md").read_text(encoding="utf-8")
+for token in ["no self-approval", "independent blocking finding", "stale verdict", "permission asymmetry", "explicit waiver", "review independence"]:
+    if token not in dual_scenarios:
+        errors.append(f"dual-dot scenarios missing: {token}")
 
 if errors:
     print("\n".join(errors))
