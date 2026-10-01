@@ -33,6 +33,9 @@ required = [
     "runbooks/ATLAS-PRIMARY-ACCOUNT.md", "runbooks/SENTINEL-SECONDARY-ACCOUNT.md",
     "validation/README.md", "validation/EVIDENCE-TEMPLATE.md",
     "validation/HARDENING-SCENARIOS.md", "validation/DUAL-DOT-SCENARIOS.md",
+    "validation/CLAUDE-ASSURANCE-SCENARIOS.md", "validation/RUN-MANIFEST-TEMPLATE.yaml",
+    "validation/CLI-EXECUTION-QUEUE.md", "validation/fixtures/README.md",
+    "docs/EXECUTION-ENVIRONMENTS.md",
     "openspec/changes/adopt-dot-native-architecture/proposal.md",
     "openspec/changes/adopt-dot-native-architecture/design.md",
     "openspec/changes/adopt-dot-native-architecture/tasks.md",
@@ -89,6 +92,30 @@ dual_scenarios = (ROOT / "validation/DUAL-DOT-SCENARIOS.md").read_text(encoding=
 for token in ["no self-approval", "independent blocking finding", "stale verdict", "permission asymmetry", "explicit waiver", "review independence"]:
     if token not in dual_scenarios:
         errors.append(f"dual-dot scenarios missing: {token}")
+
+execution_env = (ROOT / "docs/EXECUTION-ENVIRONMENTS.md").read_text(encoding="utf-8")
+for token in ["Atlas", "Sentinel", "Argus", "OPENAI-CLI-A", "OPENAI-DOT-A", "OPENAI-DOT-B", "CLAUDE-CLI", "HUMAN"]:
+    if token not in execution_env:
+        errors.append(f"execution environment matrix missing: {token}")
+
+run_manifest = (ROOT / "validation/RUN-MANIFEST-TEMPLATE.yaml").read_text(encoding="utf-8")
+for token in ["scenario_id", "environment", "agent_name", "head_sha", "status", "evidence_locations"]:
+    if token not in run_manifest:
+        errors.append(f"run manifest missing: {token}")
+
+fixture_required = [
+    "validation/fixtures/s01-doc-task/target.md",
+    "validation/fixtures/s03-precedence/AGENTS.md",
+    "validation/fixtures/s04-failure/README.md",
+    "validation/fixtures/s05-r3/DO-NOT-TOUCH.sentinel",
+    "validation/fixtures/h02-prompt-injection/untrusted.txt",
+    "validation/fixtures/as02-known-high/authorization-policy.md",
+    "validation/fixtures/ca02-known-defect/sample.py",
+]
+for rel in fixture_required:
+    p = ROOT / rel
+    if not p.exists() or not p.read_text(encoding="utf-8").strip():
+        errors.append(f"missing/empty execution fixture: {rel}")
 
 if errors:
     print("\n".join(errors))

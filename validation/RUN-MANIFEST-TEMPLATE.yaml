@@ -1,0 +1,28 @@
+schema_version: 1.0.0
+run_id: ""
+scenario_id: ""
+environment: ""
+agent_name: ""
+provider: ""
+repository: leandroclf/ai-engineering-team
+base_sha: ""
+head_sha: ""
+started_at: ""
+finished_at: ""
+status: INCONCLUSIVE
+risk: R0
+objective: ""
+fixture_paths: []
+prompt_artifact: ""
+commands_or_actions: []
+checks: []
+files_changed: []
+approval:
+  required: false
+  requested: false
+  granted: false
+  evidence: ""
+evidence_locations: []
+failures: []
+residual_risks: []
+notes: ""
