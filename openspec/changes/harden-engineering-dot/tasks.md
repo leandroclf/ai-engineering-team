@@ -36,7 +36,7 @@
 ## H6 Validation
 - [x] Extend structural validator.
 - [x] Add hardening validation scenarios and acceptance criteria.
-- [ ] Execute live Dot/Codex behavioral scenarios and preserve evidence.
+- [ ] Execute live Dot/Codex behavioral scenarios and preserve evidence. PARTIAL: Codex-layer H02 PASS 3/3 (`validation/FINAL-REPORT.md`); Dot layer pending.
 - [ ] Confirm native approval behavior in the user's actual Dot environment.
 - [ ] Run portfolio concurrency scenario with two real/sandbox repository tasks.
 

@@ -58,7 +58,7 @@ Status: IN_PROGRESS — pre-Codex preparation implemented.
 ## D8 — Validation and closure
 - [x] Run structural validator in an execution environment.
 - [x] Confirm GitHub CI execution.
-- [ ] Execute Codex-layer behavioral scenarios.
+- [x] Execute Codex-layer behavioral scenarios (`validation/FINAL-REPORT.md`).
 - [ ] Execute live Dot bootstrap when available.
 - [ ] Execute live Dot-native behavioral scenarios.
 - [ ] Remediate failures and rerun affected scenarios.

@@ -29,7 +29,7 @@
 - [x] Add behavioral scenarios.
 - [ ] Instantiate Atlas in the primary account.
 - [ ] Instantiate Sentinel in the secondary account.
-- [ ] Execute live cross-account review scenarios. PARTIAL 2026-10-01: Sentinel CLI layer (OPENAI-CLI-B) AS02/AS04/AS05/AS06 3/3 and AS08/AS09/AS10 PASS with supplied Atlas claims (`validation/SENTINEL-CLI-REPORT.md`); AS01/AS03/AS07 and live Dots pending.
+- [ ] Execute live cross-account review scenarios. PARTIAL 2026-10-01: Sentinel CLI layer (OPENAI-CLI-B) AS02/AS04/AS05/AS06 3/3 and AS08/AS09/AS10 PASS (`validation/SENTINEL-CLI-REPORT.md`); AS01/AS03 PASS 3/3 with real Atlas CLI (`validation/FINAL-REPORT.md`); same OpenAI user under W-001; AS07 and live Dots pending.
 - [ ] Confirm real permissions and native approvals for both accounts.
 - [ ] Produce final dual-Dot validation report.
 

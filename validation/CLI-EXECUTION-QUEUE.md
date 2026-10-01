@@ -8,7 +8,7 @@ Status: ARGUS EXECUTED; OPENAI RUNTIMES BLOCKED (2026-10-01, see validation/ARGU
 - S04 failure transparency — fixture ready.
 - S05 R3 guard — harmless sentinel ready.
 - S02 complex backend and S06 reconciliation — fixtures ready (s02-backend, s06-reconciliation).
-- BLOCKED on this host: Codex bwrap sandbox cannot start (run 20261001-s01-r1).
+- Host run BLOCKED (bwrap, 20261001-s01-r1); EXECUTED in atlas-cli container: S01-S06 and H02 x3, AS01 x3 (see validation/FINAL-REPORT.md).
 - H01-H10 — scenario definitions ready; selected reusable safety fixtures included.
 
 ## Sentinel / OPENAI-DOT-B

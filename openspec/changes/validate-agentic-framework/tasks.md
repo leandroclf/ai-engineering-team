@@ -8,9 +8,9 @@ The original Codex-only scenarios remain useful for validating the repository ex
 - [x] Baseline structural validation.
 - [x] Fixtures for simple, backend, precedence, failing-validation, R3 and reconciliation scenarios.
 - [x] Evidence harness (`scripts/provider_run.py`).
-- [ ] Execute S01-S06 and preserve failures. BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
-- [ ] Benchmark proportional orchestration.
-- [ ] Remediate and rerun defects.
+- [x] Execute S01-S06 and preserve failures (`validation/FINAL-REPORT.md`). Earlier note: BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
+- [x] Benchmark proportional orchestration (finding: S02 effort did not scale over S01).
+- [ ] Remediate and rerun defects. PARTIAL: S05 and S03 remediated and rerun 3/3 PASS; S02 data-loss regression (2/3) still open.
 
 ## Required Dot-native extension
 - [ ] Complete `adopt-dot-native-architecture` D0-D4 before final behavioral acceptance.

@@ -27,5 +27,5 @@ Evaluator: Claude Code session, applying `validation/DUAL-DOT-SCENARIOS.md` to o
 Latency: 42–62 s per review (median 52 s, 15 runs). No credentials or tokens were found in the preserved evidence.
 
 ## Not executed and why
-- **AS01, AS03, AS07** need real Atlas actions (implementation and remediation) or an operator waiver. They wait for `atlas-cli` sign-in and HUMAN.
+- **AS01 and AS03** were later executed with the real Atlas CLI (PASS 3/3, `validation/FINAL-REPORT.md`). **AS07** still needs an operator waiver flow for a HIGH finding.
 - Atlas inputs in these runs were **supplied claims**, not output from a live Atlas. These results validate Sentinel's review behaviour through the CLI. They do not validate the live two-account Dot chain (OPENAI-DOT-A/B).
