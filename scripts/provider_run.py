@@ -18,7 +18,11 @@ import sys
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-AGENTS = {"OPENAI-CLI-A": ("Atlas", "openai"), "CLAUDE-CLI": ("Argus", "anthropic")}
+AGENTS = {"OPENAI-CLI-A": ("Atlas", "openai"), "OPENAI-CLI-B": ("Sentinel", "openai"),
+          "CLAUDE-CLI": ("Argus", "anthropic")}
+# runtimes/compose.yaml service per environment; each has its own account home volume.
+SERVICES = {"OPENAI-CLI-A": "atlas-cli", "OPENAI-CLI-B": "sentinel-cli", "CLAUDE-CLI": "argus-cli"}
+COMPOSE = ["docker", "compose", "-f", str(ROOT / "runtimes" / "compose.yaml"), "run", "--rm", "-T"]
 CLAUDE_READ_ONLY = ["Read", "Grep", "Glob"]
 CLAUDE_DENIED = ["Edit", "Write", "Bash", "NotebookEdit", "WebFetch", "WebSearch", "Agent"]
 
@@ -32,10 +36,12 @@ def now():
     return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
 
 
-def provider_cmd(env, prompt, run_dir):
-    if env == "OPENAI-CLI-A":
-        return ["codex", "exec", "--json", "--sandbox", "workspace-write", "--ephemeral",
-                "-o", str(run_dir / "last-message.md"), prompt]
+def provider_cmd(env, prompt, run_dir, container=False):
+    if env.startswith("OPENAI-CLI"):
+        # In a container the container is the sandbox (only the clone and evidence dir are mounted).
+        sandbox = "danger-full-access" if container else "workspace-write"
+        out = "/evidence/last-message.md" if container else str(run_dir / "last-message.md")
+        return ["codex", "exec", "--json", "--sandbox", sandbox, "--ephemeral", "-o", out, prompt]
     return ["claude", "-p", prompt, "--output-format", "stream-json", "--verbose",
             "--setting-sources", "project", "--no-session-persistence", "--strict-mcp-config",
             # --tools is the effective allow-list; --allowedTools only pre-approves.
@@ -62,7 +68,10 @@ def main():
     ap.add_argument("--prompt-file", required=True)
     ap.add_argument("--pre", help="shell command run in the clone before the provider (fixture setup)")
     ap.add_argument("--check", help="evaluator shell command run in the clone after the provider")
-    ap.add_argument("--workdir", default="/tmp", help="parent dir for the disposable clone")
+    ap.add_argument("--container", action="store_true",
+                    help="run the CLI in its runtimes/compose.yaml service instead of on the host")
+    # Docker Desktop shares /home but not /tmp, so clones live in the gitignored .runs/.
+    ap.add_argument("--workdir", default=str(ROOT / ".runs"), help="parent dir for the disposable clone")
     a = ap.parse_args()
 
     run_dir = ROOT / "validation" / "runs" / a.run_id
@@ -78,7 +87,10 @@ def main():
     prompt = pathlib.Path(a.prompt_file).read_text()
     (run_dir / "prompt.md").write_text(prompt)
     started = now()
-    proc = sh(provider_cmd(a.env, prompt, run_dir), clone, timeout=1800)
+    cmd = provider_cmd(a.env, prompt, run_dir, a.container)
+    if a.container:
+        cmd = COMPOSE + ["-v", f"{clone}:/work", "-v", f"{run_dir}:/evidence", SERVICES[a.env]] + cmd
+    proc = sh(cmd, clone, timeout=1800)
     finished = now()
 
     events = []
@@ -109,7 +121,8 @@ def main():
         run_id=a.run_id, scenario_id=a.scenario, environment=a.env, agent_name=agent, provider=provider,
         base_sha=base_sha, head_sha=head_sha, started_at=started, finished_at=finished, risk=a.risk,
         prompt_artifact="prompt.md", files_changed=files_changed, checks=checks,
-        commands_or_actions=[" ".join(provider_cmd(a.env, "<prompt.md>", pathlib.Path("<run>")))]
+        commands_or_actions=[(f"container {SERVICES[a.env]}: " if a.container else "host: ")
+                             + " ".join(provider_cmd(a.env, "<prompt.md>", pathlib.Path("<run>"), a.container))]
         + ([f"pre: {a.pre} (exit {pre.returncode})"] if pre else []),
         evidence_locations=[f"validation/runs/{a.run_id}/{n}" for n in sorted(p.name for p in run_dir.iterdir())],
         notes="status pending evaluator review",

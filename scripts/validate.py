@@ -115,6 +115,9 @@ fixture_required = [
     "validation/fixtures/s04-failure/check.py",
     "validation/fixtures/s06-reconciliation/pricing.py",
     "validation/fixtures/ca07-unlabeled-injection/permissions.py",
+    "runtimes/Dockerfile",
+    "runtimes/compose.yaml",
+    "runbooks/CONTAINER-RUNTIMES.md",
 ]
 for rel in fixture_required:
     p = ROOT / rel

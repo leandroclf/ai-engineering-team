@@ -1,0 +1,29 @@
+# One isolated home volume per account; credentials never touch the repository.
+x-cli: &cli
+  build:
+    context: .
+    args:
+      UID: ${HOST_UID:-1001}
+  image: ai-eng-provider-cli:local
+  read_only: true
+  tmpfs: [/tmp]
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  stdin_open: true
+  tty: true
+
+services:
+  atlas-cli:     # OPENAI-CLI-A — Codex, primary OpenAI account
+    <<: *cli
+    volumes: [atlas-home:/home/agent]
+  sentinel-cli:  # OPENAI-CLI-B — Codex, secondary OpenAI account
+    <<: *cli
+    volumes: [sentinel-home:/home/agent]
+  argus-cli:     # CLAUDE-CLI — Claude Code, configured Claude subscription
+    <<: *cli
+    volumes: [argus-home:/home/agent]
+
+volumes:
+  atlas-home:
+  sentinel-home:
+  argus-home:

@@ -19,6 +19,8 @@ Names MUST be used consistently in OpenSpec, runbooks, evidence and final report
 ## Environment labels
 - **CHAT-GITHUB** — this ChatGPT environment using the connected GitHub app. Allowed: inspect repository state, edit governance/docs/contracts/scripts, create branches/commits/PRs, inspect CI evidence and merge when repository policy permits.
 - **OPENAI-CLI-A / Atlas execution plane** — official OpenAI/Codex CLI authenticated with the operator's configured primary OpenAI subscription account. Required for Atlas/Codex repository-execution behavioral work.
+- **OPENAI-CLI-B / Sentinel execution plane** — official OpenAI/Codex CLI authenticated with the operator's secondary OpenAI account. Used for Sentinel's independent repository checks; it does not replace the live Sentinel Dot.
+- Provider CLIs SHOULD run in the isolated per-account containers in `runbooks/CONTAINER-RUNTIMES.md` (`atlas-cli`, `sentinel-cli`, `argus-cli`). This is still CLI/subscription execution, not an API substitution.
 - **OPENAI-DOT-A / Atlas** — live Atlas Dot in the primary OpenAI account. Required for native Dot coordination, memory/context, native approval and Dot->Codex behavior.
 - **OPENAI-DOT-B / Sentinel** — live Sentinel Dot in the secondary OpenAI account. Required for independent cross-account review and real Sentinel permission behavior.
 - **CLAUDE-CLI / Argus** — official Claude Code CLI authenticated with the operator's configured Claude subscription account. Required for Anthropic assurance execution.
