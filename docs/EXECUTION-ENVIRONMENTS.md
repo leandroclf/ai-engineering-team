@@ -5,12 +5,23 @@ Status: ACTIVE
 ## Purpose
 Bind every remaining executable task to the environment that is actually authorized to execute it. A task MUST NOT be silently moved to another environment merely because that environment is convenient.
 
+## Named agent roster
+The architecture uses these canonical names everywhere:
+
+- **Atlas** — primary OpenAI Engineering Lead Dot, running in the operator's primary OpenAI account.
+- **Sentinel** — secondary OpenAI Quality & Security Dot, running in the operator's second OpenAI account.
+- **Argus** — Anthropic Claude assurance bot, executed through Claude Code CLI with the operator's configured Claude subscription. Argus is the cross-vendor independent reviewer and does not replace Atlas or Sentinel.
+
+Canonical flow: **Atlas -> Codex -> GitHub/OpenSpec/CI -> Sentinel -> Argus (Claude) -> Atlas/operator**.
+
+Names MUST be used consistently in OpenSpec, runbooks, evidence and final reports. Generic terms such as "Claude bot", "primary Dot" or "secondary Dot" may explain the provider/runtime, but do not replace the canonical agent name.
+
 ## Environment labels
 - **CHAT-GITHUB** — this ChatGPT environment using the connected GitHub app. Allowed: inspect repository state, edit governance/docs/contracts/scripts, create branches/commits/PRs, inspect CI evidence and merge when repository policy permits.
-- **OPENAI-CLI-A** — official OpenAI/Codex CLI authenticated with the operator's configured primary OpenAI subscription account. Required for Atlas/Codex repository-execution behavioral work.
-- **OPENAI-DOT-A** — live Atlas Dot in the primary OpenAI account. Required for native Dot coordination, memory/context, native approval and Dot->Codex behavior.
-- **OPENAI-DOT-B** — live Sentinel Dot in the secondary OpenAI account. Required for independent cross-account review and real Sentinel permission behavior.
-- **CLAUDE-CLI** — official Claude Code CLI authenticated with the operator's configured Claude subscription account. Required for Anthropic assurance execution.
+- **OPENAI-CLI-A / Atlas execution plane** — official OpenAI/Codex CLI authenticated with the operator's configured primary OpenAI subscription account. Required for Atlas/Codex repository-execution behavioral work.
+- **OPENAI-DOT-A / Atlas** — live Atlas Dot in the primary OpenAI account. Required for native Dot coordination, memory/context, native approval and Dot->Codex behavior.
+- **OPENAI-DOT-B / Sentinel** — live Sentinel Dot in the secondary OpenAI account. Required for independent cross-account review and real Sentinel permission behavior.
+- **CLAUDE-CLI / Argus** — official Claude Code CLI authenticated with the operator's configured Claude subscription account. Required for Anthropic assurance execution.
 - **CROSS-ENV** — scenario requires evidence from two or more of the environments above.
 - **HUMAN** — explicit operator action/approval that cannot be delegated, especially account sign-in, permission grant, risk acceptance or native R3 approval.
 
@@ -37,11 +48,11 @@ If an environment is unavailable, record BLOCKED/INCONCLUSIVE. Do not substitute
 | Instantiate Sentinel | OPENAI-DOT-B + HUMAN | Supply bootstrap/runbook | Live Dot identity/config evidence |
 | Atlas/Sentinel AS01-AS10 | OPENAI-DOT-A + OPENAI-DOT-B + OPENAI-CLI-A | Prepare immutable review artifacts; inspect PR/CI | Cross-account evidence |
 | Confirm Atlas/Sentinel permissions | OPENAI-DOT-A + OPENAI-DOT-B + HUMAN | Verify repo-side permissions where visible | Native/provider permission evidence |
-| Claude controlled fixture | CLAUDE-CLI | Prepare request/fixture; inspect resulting GitHub evidence | Claude CLI evidence |
-| Claude CA01-CA08 | CLAUDE-CLI | Prepare scenarios; validate SHA/evidence artifacts | Per-scenario Claude result |
+| Argus (Claude) controlled fixture | CLAUDE-CLI / Argus | Prepare request/fixture; inspect resulting GitHub evidence | Claude CLI evidence |
+| Argus (Claude) CA01-CA08 | CLAUDE-CLI / Argus | Prepare scenarios; validate SHA/evidence artifacts | Per-scenario Claude result |
 | OpenAI side of Claude handoff | OPENAI-CLI-A | Prepare contracts and GitHub transport | OpenAI CLI evidence |
 | Confirm CLI authentication/permissions | OPENAI-CLI-A + CLAUDE-CLI + HUMAN | Never handle secrets; record non-secret metadata only | Authenticated CLI behavior |
-| End-to-end Atlas->Sentinel->Claude | CROSS-ENV | GitHub/OpenSpec transport and evidence inspection | Revision-bound handoff chain |
+| End-to-end Atlas->Sentinel->Argus | CROSS-ENV | GitHub/OpenSpec transport and evidence inspection | Revision-bound handoff chain |
 | Final reports | CHAT-GITHUB after runtime evidence exists | Compile evidence, update OpenSpec/status, PR/merge | Reports traceable to observed evidence |
 | Future provider onboarding | provider official CLI + HUMAN | Add contracts/runbook after approval | Provider-specific evidence |
 | API fallback exception | HUMAN + architecture change | Document/implement only after explicit approval | Approved ADR/OpenSpec |
