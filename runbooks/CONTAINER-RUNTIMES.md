@@ -30,6 +30,8 @@ docker compose -f runtimes/compose.yaml run --rm -T atlas-cli    codex login sta
 docker compose -f runtimes/compose.yaml run --rm -T sentinel-cli codex login status
 docker compose -f runtimes/compose.yaml run --rm -T argus-cli    claude auth status
 ```
+`codex login status` does not show which account is signed in. Device auth reuses whatever ChatGPT session the browser already has, so sign in to each OpenAI account in a separate private/incognito window, signing out first. Then confirm that the two containers hold **different** users by comparing a hash of the id_token `sub` claim. Atlas and Sentinel on the same user breaks the independence model.
+
 Credentials live only in the named Docker volumes. Never copy them into the repository, prompts or evidence. To revoke access, run `logout` in the service or `docker volume rm <volume>`.
 
 ## Run a scenario

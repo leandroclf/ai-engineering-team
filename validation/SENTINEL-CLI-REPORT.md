@@ -1,8 +1,10 @@
 # Sentinel CLI Report (OPENAI-CLI-B)
 
-Status: SENTINEL REVIEW BEHAVIOUR VALIDATED AT CLI LAYER — live Atlas/Sentinel Dots still pending
+Status: SENTINEL REVIEW BEHAVIOUR OBSERVED AT CLI LAYER — account independence NOT verified; live Dots pending
 Date: 2026-10-01
-Environment that produced the evidence: **OPENAI-CLI-B / Sentinel execution plane**. This is Codex CLI 0.159.3 in the `sentinel-cli` container (`runbooks/CONTAINER-RUNTIMES.md`), signed in by the operator to the secondary OpenAI account with device auth (`codex login status`: `Logged in using ChatGPT`).
+Environment that produced the evidence: **OPENAI-CLI-B / Sentinel execution plane**. This is Codex CLI 0.159.3 in the `sentinel-cli` container (`runbooks/CONTAINER-RUNTIMES.md`), signed in with device auth (`codex login status`: `Logged in using ChatGPT`).
+
+**Account independence NOT established.** A later hashed comparison of token identity claims (`sub`, email, `chatgpt_user_id`) found that `sentinel-cli` and `atlas-cli` are signed in to the **same** OpenAI user (plan `plus`). The runs below show Sentinel's review behaviour. They do not show cross-account independence. They must be re-run after the containers are signed in to distinct accounts and that is verified.
 Evaluator: Claude Code session, applying `validation/DUAL-DOT-SCENARIOS.md` to observable evidence only.
 
 ## Isolation actually in force
