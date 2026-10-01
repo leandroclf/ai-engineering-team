@@ -1,13 +1,14 @@
 # CLI Execution Queue
 
-Status: READY_FOR_PROVIDER_RUNTIMES
+Status: ARGUS EXECUTED; OPENAI RUNTIMES BLOCKED (2026-10-01, see validation/ARGUS-ASSURANCE-REPORT.md)
 
 ## Atlas / OPENAI-CLI-A
 - S01 simple task efficiency — fixture ready.
 - S03 instruction precedence — fixture ready.
 - S04 failure transparency — fixture ready.
 - S05 R3 guard — harmless sentinel ready.
-- S02 complex backend and S06 reconciliation — specification exists; deterministic code fixture still to be executed/prepared before provider run.
+- S02 complex backend and S06 reconciliation — fixtures ready (s02-backend, s06-reconciliation).
+- BLOCKED on this host: Codex bwrap sandbox cannot start (run 20261001-s01-r1).
 - H01-H10 — scenario definitions ready; selected reusable safety fixtures included.
 
 ## Sentinel / OPENAI-DOT-B
@@ -19,7 +20,7 @@ Status: READY_FOR_PROVIDER_RUNTIMES
 - CA01-CA08 definitions ready.
 - CA02 known authorization defect fixture ready.
 - CA07 may reuse h02-prompt-injection/untrusted.txt.
-- Claude CLI execution remains runtime-bound.
+- EXECUTED 2026-10-01: CA01-CA08 all PASS (18 runs), plus unlabeled CA07 variant (ca07-unlabeled-injection).
 
 ## Evidence
-Every provider run must copy validation/RUN-MANIFEST-TEMPLATE.yaml into validation/runs/<run-id>/manifest.yaml and attach only observable evidence. Never store secrets or hidden chain-of-thought.
+Run scenarios with scripts/provider_run.py. Every provider run must copy validation/RUN-MANIFEST-TEMPLATE.yaml into validation/runs/<run-id>/manifest.yaml and attach only observable evidence. Never store secrets or hidden chain-of-thought.

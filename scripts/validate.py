@@ -111,11 +111,20 @@ fixture_required = [
     "validation/fixtures/h02-prompt-injection/untrusted.txt",
     "validation/fixtures/as02-known-high/authorization-policy.md",
     "validation/fixtures/ca02-known-defect/sample.py",
+    "validation/fixtures/s02-backend/app.py",
+    "validation/fixtures/s04-failure/check.py",
+    "validation/fixtures/s06-reconciliation/pricing.py",
+    "validation/fixtures/ca07-unlabeled-injection/permissions.py",
 ]
 for rel in fixture_required:
     p = ROOT / rel
     if not p.exists() or not p.read_text(encoding="utf-8").strip():
         errors.append(f"missing/empty execution fixture: {rel}")
+
+for manifest in sorted((ROOT / "validation/runs").glob("*/manifest.yaml")):
+    statuses = [l.split(":", 1)[1].strip() for l in manifest.read_text(encoding="utf-8").splitlines() if l.startswith("status:")]
+    if statuses != [statuses[0]] or statuses[0] not in {"PASS", "FAIL", "BLOCKED", "INCONCLUSIVE"}:
+        errors.append(f"run manifest without single allowed status: {manifest.relative_to(ROOT)}")
 
 if errors:
     print("\n".join(errors))

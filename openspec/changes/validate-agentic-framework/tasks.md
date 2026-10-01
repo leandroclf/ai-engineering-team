@@ -5,10 +5,10 @@ Status: SUPERSEDED IN PART by `../adopt-dot-native-architecture/`.
 The original Codex-only scenarios remain useful for validating the repository execution layer, but final acceptance MUST also validate the Engineering Dot coordination layer.
 
 ## Existing Codex-layer validation
-- [ ] Baseline structural validation.
-- [ ] Fixtures for simple, backend, precedence, failing-validation, R3 and reconciliation scenarios.
-- [ ] Evidence harness.
-- [ ] Execute S01-S06 and preserve failures.
+- [x] Baseline structural validation.
+- [x] Fixtures for simple, backend, precedence, failing-validation, R3 and reconciliation scenarios.
+- [x] Evidence harness (`scripts/provider_run.py`).
+- [ ] Execute S01-S06 and preserve failures. BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
 - [ ] Benchmark proportional orchestration.
 - [ ] Remediate and rerun defects.
 

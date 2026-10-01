@@ -24,13 +24,13 @@ Every unchecked executable item below MUST be carried out through the applicable
 - [x] Preserve provider CLI/native permission boundaries.
 
 ## C3 Validation — execute via provider CLIs
-- [ ] Using Claude Code CLI with the configured Claude subscription, execute Claude assurance against a controlled fixture.
-- [ ] Using Claude Code CLI, execute CA01-CA08 and preserve evidence.
-- [ ] Using the official OpenAI/Codex CLI with the configured OpenAI subscription, execute the corresponding Atlas/Codex validation steps and preserve evidence.
-- [ ] Confirm actual CLI account authentication and permission behavior for both providers without storing credentials in the repository.
-- [ ] Measure latency, useful findings and false positives from CLI executions.
-- [ ] Validate Atlas -> GitHub/OpenSpec -> Sentinel -> Claude CLI handoff end-to-end.
-- [ ] Produce the final Claude assurance report from observable CLI evidence.
+- [x] Using Claude Code CLI with the configured Claude subscription, execute Claude assurance against a controlled fixture. (`validation/runs/20261001-ca02-r1`)
+- [x] Using Claude Code CLI, execute CA01-CA08 and preserve evidence. (18 runs, all PASS; CA04/CA05/CA07 3/3+)
+- [ ] Using the official OpenAI/Codex CLI with the configured OpenAI subscription, execute the corresponding Atlas/Codex validation steps and preserve evidence. BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
+- [ ] Confirm actual CLI account authentication and permission behavior for both providers without storing credentials in the repository. PARTIAL: Claude CLI subscription auth (`apiKeySource: none`) and read-only tool allow-list confirmed; Codex CLI login confirmed (`Logged in using ChatGPT`) but sandbox permission behavior BLOCKED.
+- [x] Measure latency, useful findings and false positives from CLI executions. (Argus side; OpenAI side BLOCKED)
+- [ ] Validate Atlas -> GitHub/OpenSpec -> Sentinel -> Claude CLI handoff end-to-end. BLOCKED: requires OPENAI-CLI-A and live Sentinel (OPENAI-DOT-B).
+- [x] Produce the final Claude assurance report from observable CLI evidence. (`validation/ARGUS-ASSURANCE-REPORT.md`; cross-provider chain remains PARTIALLY_VALIDATED)
 
 ## C4 Future providers
 - [ ] Onboard any future provider only through its official CLI and configured subscription account where supported.

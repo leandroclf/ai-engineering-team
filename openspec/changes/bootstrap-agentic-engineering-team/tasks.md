@@ -64,7 +64,7 @@
 - [x] Create acceptance scenarios.
 - [x] Add executable structural validator.
 - [x] Add CI workflow for structural validation.
-- [ ] Execute live Codex benchmark: simple vs complex tasks.
+- [ ] Execute live Codex benchmark: simple vs complex tasks. BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
 - [ ] Execute behavioral instruction-precedence scenario.
 - [ ] Execute behavioral failure-transparency scenario.
 - [ ] Execute behavioral R3 approval-gate scenario.
