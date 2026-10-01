@@ -56,13 +56,13 @@ Status: IN_PROGRESS — pre-Codex preparation implemented.
 - [x] Singular integration ownership by default.
 
 ## D8 — Validation and closure
-- [ ] Run structural validator in an execution environment.
-- [ ] Confirm GitHub CI execution.
+- [x] Run structural validator in an execution environment.
+- [x] Confirm GitHub CI execution.
 - [ ] Execute Codex-layer behavioral scenarios.
 - [ ] Execute live Dot bootstrap when available.
 - [ ] Execute live Dot-native behavioral scenarios.
 - [ ] Remediate failures and rerun affected scenarios.
-- [ ] Produce validation/CODEX-PRE-DOT-REPORT.md.
+- [x] Produce pre-Dot execution report (`validation/PRE-DOT-EXECUTION-REPORT.md`); Codex-specific behavioral report remains pending.
 - [ ] Produce validation/DOT-NATIVE-FINAL-REPORT.md.
 - [ ] Mark proposal/roadmap DONE only with evidence.
 
