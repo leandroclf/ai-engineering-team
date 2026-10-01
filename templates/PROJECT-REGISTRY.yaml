@@ -1,4 +1,5 @@
-version: 1
+schema_version: 1.0.0
+governance_version: 1.0.0
 projects:
   - id: ai-engineering-team
     repository: leandroclf/ai-engineering-team
@@ -6,9 +7,10 @@ projects:
     default_branch: main
     adapter: AGENTS.md
     openspec_root: openspec
+    risk_profile: engineering-governance
     environments:
       repository:
-        mutation_policy: reversible-pr-preferred
+        mutation_policy: branch-pr-preferred
       production:
         mutation_policy: explicit-approval
     access:
@@ -16,4 +18,10 @@ projects:
       write: true
     validation:
       command: python scripts/validate.py
-    notes: First/self-hosting project. Re-read repository state before every mutation.
+    freshness:
+      bind_base_sha: true
+      revalidate_before_merge: true
+    concurrency:
+      lease_required_for_material_mutation: true
+    compatible_governance: ">=1.0.0 <2.0.0"
+    notes: First/self-hosting project. Re-read repository state before every consequential mutation.
