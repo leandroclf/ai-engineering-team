@@ -72,3 +72,6 @@
 
 ## Exit criteria
 Static framework implementation is complete. Final behavioral validation remains open until the scenarios are executed in a live Codex runtime and evidence is recorded. No unexecuted behavioral check may be marked passing.
+
+## Execution environment for remaining Phase 8 work
+See `docs/EXECUTION-ENVIRONMENTS.md`. The unchecked live Codex benchmark and behavioral scenarios are **OPENAI-CLI-A** tasks using the configured OpenAI subscription account; R3 approval additionally requires **HUMAN**. This ChatGPT/GitHub environment may prepare fixtures and inspect evidence, but must not mark those runtime scenarios PASS.
