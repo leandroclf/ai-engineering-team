@@ -1,0 +1,15 @@
+# Incident record
+- Task ID:
+- Project:
+- Detected at:
+- Severity:
+- Current mutation state: FROZEN
+- Trigger:
+- Actions already performed:
+- Approvals:
+- Blast radius:
+- Evidence:
+- Recovery plan:
+- Recovery validation:
+- Residual risk:
+- Regression scenario:
