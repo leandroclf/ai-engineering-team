@@ -1,0 +1,26 @@
+schema_version: 1.0.0
+task_id: ""
+project_id: ""
+objective: ""
+route: dot
+risk: R0
+repository:
+  full_name: ""
+  branch: ""
+  base_sha: ""
+governance:
+  policy_version: "1.0.0"
+  openspec_change: ""
+scope:
+  include: []
+  exclude: []
+budgets:
+  max_changed_files: null
+  max_external_writes: 0
+  max_retries: 3
+  max_elapsed_minutes: null
+idempotency_key: ""
+required_validation: []
+approval:
+  required: false
+  reason: ""

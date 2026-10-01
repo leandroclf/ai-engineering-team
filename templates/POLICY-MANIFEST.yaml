@@ -1,0 +1,17 @@
+schema_version: 1.0.0
+governance_version: 1.0.0
+precedence:
+  - native_platform_and_safety
+  - explicit_operator
+  - nearest_repository_agents
+  - parent_repository_agents
+  - openspec
+  - skills
+policies:
+  reliability: docs/DOT-RELIABILITY.md
+  freshness: docs/CONTEXT-FRESHNESS.md
+  untrusted_content: docs/UNTRUSTED-CONTENT.md
+  concurrency: docs/CONCURRENCY.md
+  delivery: docs/DELIVERY-LIFECYCLE.md
+  recovery: docs/INCIDENT-RECOVERY.md
+  routing: docs/ROUTING-MATRIX.md

@@ -10,16 +10,19 @@ AGENTS.md, skills, workflows, gates and project adapter. Implemented.
 Java/Spring, Node/TypeScript, Python/FastAPI, AWS and Kubernetes. Implemented baseline.
 
 ## M3 — Dot-native alignment
-Engineering Dot becomes persistent coordinator; Codex becomes repository executor; add bootstrap, Custom Rules, delegation, project registry and plugin policy.
+Engineering Dot as persistent coordinator; Codex as repository executor; bootstrap, Custom Rules, delegation, project registry and plugin policy. Implemented baseline.
 
-## M4 — Dot-native validation
-Validate Dot routing, Dot -> Codex handoff, repository revalidation, permission denial, R3/native approval composition, failure remediation and existing engineering scenarios.
+## M4 — Production hardening
+Freshness/isolation, untrusted-content defense, idempotency/retry/circuit controls, leases, routing, delivery lifecycle, recovery, versioning, portfolio governance and context budgets. Implemented structurally; live validation pending.
 
-## M5 — Portfolio operation
-Project registry, evidence ledger, cross-project isolation, feedback-to-spec loop and status reporting.
+## M5 — Dot-native behavioral validation
+Validate routing, Dot -> Codex handoff, repository revalidation, permission denial, prompt injection, R3/native approval composition, idempotent retry, lease conflict, failure remediation and engineering scenarios with preserved evidence.
 
-## M6 — Specialized dots
-Evaluate promotion of proven specialist Skills into specialized dots when platform support and measured benefit justify it. Preserve bounded delegation.
+## M6 — Portfolio operation
+Operate multiple registered projects with isolated context, leases, evidence ledger, feedback-to-spec loop and status reporting. Measure rework, false completion, stale-context incidents and unnecessary delegation.
 
-## M7 — Continuous engineering
+## M7 — Specialized dots
+Evaluate promotion of proven specialist Skills into specialized dots only when platform support and measured recurring benefit justify it. Preserve bounded delegation and isolated permissions.
+
+## M8 — Continuous engineering
 Use native proactive/always-on Dot capabilities for controlled portfolio monitoring and bounded work. Do not recreate a competing scheduler/runtime.

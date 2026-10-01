@@ -1,0 +1,19 @@
+schema_version: 1.0.0
+task_id: ""
+project_id: ""
+started_at: ""
+completed_at: ""
+route: ""
+risk: ""
+repository:
+  base_sha: ""
+  head_sha: ""
+policy_versions: []
+commands: []
+checks: []
+external_mutations: []
+approvals: []
+failures: []
+residual_risks: []
+status: INCONCLUSIVE
+notes: ""
