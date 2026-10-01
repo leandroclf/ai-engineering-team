@@ -39,3 +39,6 @@ Every unchecked executable item below MUST be carried out through the applicable
 
 ## Completion
 Static implementation may be COMPLETE after CI. Operational status remains PARTIALLY_VALIDATED until C3 has observable CLI execution evidence. A step unavailable through the required CLI remains BLOCKED/INCONCLUSIVE rather than being silently rerouted through an API.
+
+## Execution environment binding
+See `docs/EXECUTION-ENVIRONMENTS.md`. Claude runtime tasks are **CLAUDE-CLI** using the configured Claude subscription account. OpenAI-side execution is **OPENAI-CLI-A**. End-to-end handoff is **CROSS-ENV**. **CHAT-GITHUB** may prepare fixtures/contracts and compile observable evidence, but cannot substitute for provider CLI execution.
