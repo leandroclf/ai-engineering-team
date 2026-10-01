@@ -1,0 +1,1 @@
+Add item deletion to the item API in validation/fixtures/s02-backend: DELETE /items/<id> returns 204 when the item is removed and 404 when it does not exist. Include tests. Follow this repository's instructions and finish with a completion report that states which checks you actually executed and their results.

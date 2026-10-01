@@ -1,0 +1,62 @@
+diff --git a/validation/fixtures/s02-backend/app.py b/validation/fixtures/s02-backend/app.py
+index 07890cc..eb94ed3 100644
+--- a/validation/fixtures/s02-backend/app.py
++++ b/validation/fixtures/s02-backend/app.py
+@@ -14,11 +14,16 @@ def handle(method, path, body=None):
+     if method == "GET" and len(parts) == 2:
+         item = ITEMS.get(parts[1])
+         return (200, item) if item else (404, {"error": "not found"})
++    if method == "DELETE" and len(parts) == 2:
++        if parts[1] not in ITEMS:
++            return 404, {"error": "not found"}
++        del ITEMS[parts[1]]
++        return 204, None
+     if method == "POST" and len(parts) == 1:
+         data = json.loads(body or "{}")
+         if not isinstance(data.get("name"), str) or not data["name"].strip():
+             return 400, {"error": "name required"}
+-        item_id = str(len(ITEMS) + 1)
++        item_id = str(max((int(item_id) for item_id in ITEMS), default=0) + 1)
+         ITEMS[item_id] = {"id": item_id, "name": data["name"].strip()}
+         return 201, ITEMS[item_id]
+     return 405, {"error": "method not allowed"}
+diff --git a/validation/fixtures/s02-backend/test_app.py b/validation/fixtures/s02-backend/test_app.py
+index 4f0fc87..f06b4fa 100644
+--- a/validation/fixtures/s02-backend/test_app.py
++++ b/validation/fixtures/s02-backend/test_app.py
+@@ -16,6 +16,35 @@ class ItemApiTest(unittest.TestCase):
+     def test_create_requires_name(self):
+         self.assertEqual(app.handle("POST", "/items", "{}")[0], 400)
+ 
++    def test_delete_existing_item(self):
++        _, item = app.handle("POST", "/items", json.dumps({"name": "pen"}))
++        path = f"/items/{item['id']}"
++        self.assertEqual(app.handle("DELETE", path), (204, None))
++        self.assertEqual(app.handle("GET", path), (404, {"error": "not found"}))
++        self.assertEqual(app.handle("GET", "/items"), (200, []))
++        self.assertEqual(app.handle("DELETE", path), (404, {"error": "not found"}))
++
++    def test_delete_missing_item_preserves_existing_items(self):
++        _, item = app.handle("POST", "/items", json.dumps({"name": "pen"}))
++        self.assertEqual(app.handle("DELETE", "/items/unknown"),
++                         (404, {"error": "not found"}))
++        self.assertEqual(app.handle("GET", "/items"), (200, [item]))
++
++    def test_create_after_delete_preserves_surviving_item(self):
++        _, first = app.handle("POST", "/items", json.dumps({"name": "pen"}))
++        _, second = app.handle("POST", "/items", json.dumps({"name": "pencil"}))
++        self.assertEqual(app.handle("DELETE", f"/items/{first['id']}"), (204, None))
++        status, third = app.handle("POST", "/items", json.dumps({"name": "paper"}))
++        self.assertEqual(status, 201)
++        self.assertNotEqual(third["id"], second["id"])
++        self.assertEqual(app.handle("GET", f"/items/{second['id']}"), (200, second))
++        self.assertEqual(app.handle("GET", "/items"), (200, [second, third]))
++
++    def test_delete_requires_item_path(self):
++        self.assertEqual(app.handle("DELETE", "/items")[0], 405)
++        self.assertEqual(app.handle("DELETE", "/items/1/extra")[0], 405)
++        self.assertEqual(app.handle("DELETE", "/other/1")[0], 404)
++
+ 
+ if __name__ == "__main__":
+     unittest.main()

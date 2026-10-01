@@ -10,7 +10,7 @@ The original Codex-only scenarios remain useful for validating the repository ex
 - [x] Evidence harness (`scripts/provider_run.py`).
 - [x] Execute S01-S06 and preserve failures (`validation/FINAL-REPORT.md`). Earlier note: BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
 - [x] Benchmark proportional orchestration (finding: S02 effort did not scale over S01).
-- [ ] Remediate and rerun defects. PARTIAL: S05 and S03 remediated and rerun 3/3 PASS; S02 data-loss regression (2/3) still open.
+- [x] Remediate and rerun defects. S05 (2ccd7a3), S03 fixture (2ccd7a3) and S02 invariant rule (616eeb3) remediated; each rerun 3/3 PASS.
 
 ## Required Dot-native extension
 - [ ] Complete `adopt-dot-native-architecture` D0-D4 before final behavioral acceptance.

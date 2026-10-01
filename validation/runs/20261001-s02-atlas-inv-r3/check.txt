@@ -1,0 +1,4 @@
+$ bash ../s02probe.sh
+exit=0
+OK
+ids 1 2 3 item_b_preserved= True

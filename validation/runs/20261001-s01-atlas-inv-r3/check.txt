@@ -1,0 +1,4 @@
+$ grep -c typoo validation/fixtures/s01-doc-task/target.md; git diff --cached --name-only HEAD
+exit=0
+0
+validation/fixtures/s01-doc-task/target.md

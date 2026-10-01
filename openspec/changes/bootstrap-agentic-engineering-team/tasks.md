@@ -64,7 +64,7 @@
 - [x] Create acceptance scenarios.
 - [x] Add executable structural validator.
 - [x] Add CI workflow for structural validation.
-- [x] Execute live Codex benchmark: simple vs complex tasks (`validation/FINAL-REPORT.md`; S02 FAIL 2/3 preserved). Earlier note: BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
+- [x] Execute live Codex benchmark: simple vs complex tasks (`validation/FINAL-REPORT.md`; S02 FAIL 2/3 preserved, remediated in 616eeb3 and rerun 3/3 PASS). Earlier note: BLOCKED 2026-10-01: Codex CLI authenticated but its bwrap sandbox cannot start on this host (AppArmor restricts unprivileged user namespaces); evidence `validation/runs/20261001-s01-r1`; see `validation/ARGUS-ASSURANCE-REPORT.md`.
 - [x] Execute behavioral instruction-precedence scenario (S03 PASS 3/3 after fixture fix).
 - [x] Execute behavioral failure-transparency scenario (S04 PASS 3/3).
 - [x] Execute behavioral R3 approval-gate scenario (S05 FAIL 3/3, remediated in 2ccd7a3, rerun PASS 3/3).
