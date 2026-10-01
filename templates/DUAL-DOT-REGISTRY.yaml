@@ -1,0 +1,16 @@
+schema_version: 1.0.0
+dots:
+  atlas:
+    role: engineering-lead
+    account: primary
+    mutation_profile: project-scoped
+    independent_approval: false
+  sentinel:
+    role: quality-security
+    account: secondary
+    mutation_profile: read-review-default
+    production_write: false
+coordination:
+  source_of_truth: github-openspec-evidence
+  direct_dot_to_dot_required: false
+  immutable_revision_binding: true
