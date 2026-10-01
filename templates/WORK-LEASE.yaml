@@ -1,0 +1,13 @@
+schema_version: 1.0.0
+lease_id: ""
+task_id: ""
+project_id: ""
+repository: ""
+base_sha: ""
+change_surface: []
+owner: ""
+acquired_at: ""
+heartbeat_at: ""
+expires_at: ""
+conflict_policy: stop-and-reconcile
+status: active
