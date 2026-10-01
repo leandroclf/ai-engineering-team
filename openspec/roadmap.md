@@ -26,3 +26,6 @@ Evaluate promotion of proven specialist Skills into specialized dots only when p
 
 ## M8 — Continuous engineering
 Use native proactive/always-on Dot capabilities for controlled portfolio monitoring and bounded work. Do not recreate a competing scheduler/runtime.
+
+## M9 — Atlas + Sentinel independent assurance
+Operate Atlas on the primary account as Engineering Lead and Sentinel on the secondary account as independent Quality/Security reviewer. Coordinate through immutable GitHub/OpenSpec/evidence contracts, asymmetric permissions and explicit disagreement/waiver handling. Structural model implemented; live two-account validation pending.

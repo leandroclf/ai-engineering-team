@@ -1,0 +1,18 @@
+schema_version: 1.0.0
+review_id: ""
+reviewed_by: sentinel
+project_id: ""
+repository: ""
+head_sha: ""
+verdict: INCONCLUSIVE
+gates:
+  quality: INCONCLUSIVE
+  security: INCONCLUSIVE
+  architecture: INCONCLUSIVE
+  observability: INCONCLUSIVE
+findings: []
+checks_executed: []
+evidence: []
+permission_limits: []
+residual_risks: []
+reviewed_at: ""
