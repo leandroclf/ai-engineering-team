@@ -48,7 +48,7 @@ Argus runs v1–v4 were INCONCLUSIVE because of harness permission defects: no s
 | pr2 | #9 | `572740b` | success | success (PASS) | success (PASS_WITH_FINDINGS) |
 | pr3 | #8 | `ba11aa5` | success | success (PASS) | success (PASS_WITH_FINDINGS) |
 
-Atlas remediated correctly in all three (admin allowed; guest and `Admin` denied; tests OK) and reported "pending independent review" each time. For PR #7, the statuses, comments, closed-unmerged state, CI event and absence of leftover branches were confirmed directly through the GitHub API. For #8 and #9 the evidence is the orchestrator's `transport.yaml`; direct API re-confirmation was pending because the host lost network.
+Atlas remediated correctly in all three (admin allowed; guest and `Admin` denied; tests OK) and reported "pending independent review" each time. For all three PRs (#7, #8, #9), the following were confirmed directly through the GitHub API: closed and unmerged, 3 comments each, both statuses `success` on the head SHA, CI `pull_request` success on that SHA, and no leftover `validation/*` branches.
 
 ## Sentinel and Argus standalone
 - Sentinel: AS02/AS04/AS05/AS06 3/3, AS08/AS09/AS10 PASS (`validation/SENTINEL-CLI-REPORT.md`).
