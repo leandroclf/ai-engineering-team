@@ -29,3 +29,6 @@ Use native proactive/always-on Dot capabilities for controlled portfolio monitor
 
 ## M9 — Atlas + Sentinel independent assurance
 Operate Atlas on the primary account as Engineering Lead and Sentinel on the secondary account as independent Quality/Security reviewer. Coordinate through immutable GitHub/OpenSpec/evidence contracts, asymmetric permissions and explicit disagreement/waiver handling. Structural model implemented; live two-account validation pending.
+
+## M10 — Execution environment enforcement
+Bind every remaining task to its authorized runtime: CHAT-GITHUB for repository governance/preparation/evidence inspection, OPENAI-CLI-A for Codex execution with the configured OpenAI subscription, OPENAI-DOT-A/B for live Atlas/Sentinel behavior, CLAUDE-CLI for Claude Code with the configured Claude subscription, CROSS-ENV for end-to-end scenarios, and HUMAN for explicit account/approval actions. No silent environment substitution; unavailable runtime evidence remains BLOCKED/INCONCLUSIVE.
