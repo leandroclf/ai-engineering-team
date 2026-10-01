@@ -14,7 +14,7 @@ Status: ARGUS EXECUTED; OPENAI RUNTIMES BLOCKED (2026-10-01, see validation/ARGU
 ## Sentinel / OPENAI-DOT-B
 - AS01-AS10 definitions ready.
 - AS02 known HIGH authorization fixture ready.
-- Cross-account execution remains runtime-bound.
+- EXECUTED 2026-10-01 via sentinel-cli container (OPENAI-CLI-B): AS02/AS04/AS05/AS06 3/3, AS08/AS09/AS10 PASS. AS01/AS03/AS07 need live Atlas and operator waiver.
 
 ## Argus / CLAUDE-CLI
 - CA01-CA08 definitions ready.

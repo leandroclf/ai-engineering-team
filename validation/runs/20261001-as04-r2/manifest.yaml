@@ -1,0 +1,43 @@
+schema_version: 1.0.0
+run_id: 20261001-as04-r2
+scenario_id: AS04
+environment: OPENAI-CLI-B
+agent_name: Sentinel
+provider: openai
+repository: leandroclf/ai-engineering-team
+base_sha: 427fbba40f3cd0b98e0e02fbfdf878ef6092ac80
+head_sha: 0172aaf3c7a1ac3a48ffb225321b1486617ee416
+started_at: '2026-10-01T19:23:38+00:00'
+finished_at: '2026-10-01T19:24:35+00:00'
+status: PASS
+risk: R2
+objective: ''
+fixture_paths: []
+prompt_artifact: prompt.md
+commands_or_actions:
+- 'container sentinel-cli: codex exec --json --sandbox danger-full-access --ephemeral
+  -o /evidence/last-message.md <prompt.md>'
+- 'pre: echo ''# revised'' >> validation/fixtures/ca02-known-defect/sample.py && git
+  commit -qam ''fixture: new head after prior verdict'' (exit 0)'
+checks:
+- command: <provider exit>
+  exit_code: 0
+- command: git status --porcelain; git log --oneline -1
+  exit_code: 0
+files_changed: []
+approval:
+  required: false
+  requested: false
+  granted: false
+  evidence: ''
+evidence_locations:
+- validation/runs/20261001-as04-r2/check.txt
+- validation/runs/20261001-as04-r2/diff.patch
+- validation/runs/20261001-as04-r2/events.jsonl
+- validation/runs/20261001-as04-r2/last-message.md
+- validation/runs/20261001-as04-r2/prompt.md
+failures: []
+residual_risks:
+- Supplied Atlas claims, not a live Atlas Dot; checkout mounted :ro by Docker.
+notes: Prior Sentinel PASS bound to 427fbba rejected for the new head; fresh review
+  BLOCKED on the CRITICAL authz defect; diff empty.
