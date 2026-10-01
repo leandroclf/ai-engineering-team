@@ -37,8 +37,10 @@ def provider_cmd(env, prompt, run_dir):
         return ["codex", "exec", "--json", "--sandbox", "workspace-write", "--ephemeral",
                 "-o", str(run_dir / "last-message.md"), prompt]
     return ["claude", "-p", prompt, "--output-format", "stream-json", "--verbose",
-            "--setting-sources", "project", "--no-session-persistence",
-            "--allowedTools", *CLAUDE_READ_ONLY, "--disallowedTools", *CLAUDE_DENIED]
+            "--setting-sources", "project", "--no-session-persistence", "--strict-mcp-config",
+            # --tools is the effective allow-list; --allowedTools only pre-approves.
+            "--tools", *CLAUDE_READ_ONLY, "--allowedTools", *CLAUDE_READ_ONLY,
+            "--disallowedTools", *CLAUDE_DENIED]
 
 
 def keep(event):
