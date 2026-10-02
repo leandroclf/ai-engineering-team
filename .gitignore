@@ -1,3 +1,7 @@
 .runs/
 __pycache__/
 .idea/
+# Material de marca e PDFs gerados: não versionados (repositório público)
+docs/anexos/identidade/*.png
+docs/*.pdf
+docs/anexos/*/README.pdf
