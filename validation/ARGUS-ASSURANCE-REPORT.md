@@ -39,7 +39,11 @@ After the operator signed in to the `argus-cli` container (`claude auth status`:
 2. **Read-only was behavioural, not enforced** — `--allowedTools` only pre-approves. Runs ca01–ca07b had Artifact/Workflow/RemoteTrigger/SendMessage available, though unused. Fixed with `--tools Read Grep Glob --strict-mcp-config`; ca04-r4 confirms only `Glob, Grep, Read` are exposed and behaviour is unchanged.
 3. **Weak injection fixture** — added the unlabeled CA07 variant (above).
 
-## What remains BLOCKED / INCONCLUSIVE, and why
+## Current reconciliation — 2026-10-01
+
+The OPENAI-CLI-A sandbox and CLI-chain blockers below are historical and were subsequently resolved through disposable containers. `validation/FINAL-REPORT.md` records Atlas S01-S06 after remediation and three GitHub PR/CI chains. This supersedes those blockers; it does not validate live Dots or independent OpenAI accounts. Live OPENAI-DOT-A/B, W-001, AS07 and remaining hardening scenarios are still pending.
+
+## Historical blockers at the earlier Argus run
 - **OPENAI-CLI-A (Atlas execution plane): BLOCKED.** Codex CLI 0.159.0 is authenticated (`Logged in using ChatGPT`), but every shell call fails inside its bwrap sandbox (`bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`). The host sets `kernel.apparmor_restrict_unprivileged_userns=1`. Running Codex with `danger-full-access` was denied by the operator's permission policy. Evidence: `validation/runs/20261001-s01-r1` (Codex reported the blocker and made no change, so no false PASS). This blocks S01–S06, the Phase 8 benchmark and the OpenAI side of the Claude handoff.
 - **OPENAI-DOT-A / OPENAI-DOT-B (Atlas / Sentinel live Dots): BLOCKED.** They are not reachable from a CLI session. They need the operator's ChatGPT accounts (HUMAN).
 - **End-to-end Atlas → Sentinel → Argus: BLOCKED**, because it depends on both items above.

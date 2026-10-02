@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "task_id": "task-1",
+  "project_id": "team",
+  "objective": "controlled task",
+  "risk": "R1",
+  "repository": {
+    "full_name": "leandroclf/ai-engineering-team",
+    "branch": "feature/test",
+    "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "authorization": {
+    "scope_id": "scope-1",
+    "task_id": "task-1",
+    "project_id": "team",
+    "revision": 1,
+    "repository": {
+      "full_name": "leandroclf/ai-engineering-team",
+      "branch": "feature/test",
+      "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "issued_at": "2026-10-01T23:00:00Z",
+    "expires_at": "2026-10-02T01:00:00Z",
+    "allowed_actions": [
+      "read_repo",
+      "modify_branch",
+      "run_tests",
+      "create_commit",
+      "create_pr"
+    ],
+    "denied_actions": [
+      "deploy"
+    ],
+    "allowed_paths": [
+      "scripts",
+      "tests"
+    ]
+  },
+  "budgets": {
+    "max_attempts": 2,
+    "max_elapsed_seconds": 600,
+    "max_external_writes": 1
+  },
+  "required_validation": [
+    "python -m unittest"
+  ]
+}

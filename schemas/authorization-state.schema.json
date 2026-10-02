@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-engineering-team:authorization-state:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "scope_id",
+    "revision",
+    "revoked",
+    "repository",
+    "attempts_used",
+    "elapsed_seconds",
+    "external_writes_used",
+    "circuit_open",
+    "task_id",
+    "project_id"
+  ],
+  "properties": {
+    "scope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "revoked": {
+      "type": "boolean"
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full_name",
+        "branch",
+        "base_sha"
+      ],
+      "properties": {
+        "full_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "attempts_used": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "elapsed_seconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "external_writes_used": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "circuit_open": {
+      "type": "boolean"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

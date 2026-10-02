@@ -1,0 +1,76 @@
+{
+  "environment": "CHAT-GITHUB",
+  "baseline_sha": "1c6e681f7b1176401f383da79c6b14aca2e0f852",
+  "recorded_at": "2026-10-02T00:43:11.915340+00:00",
+  "checks": [
+    {
+      "command": [
+        "python",
+        "scripts/validate.py"
+      ],
+      "exit_code": 0,
+      "artifact": "01-validate.txt",
+      "sha256": "067ad460ba64b042463161c63e3265d5505deadad7ab8963136f9b489bf18a8d"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_hardening.py"
+      ],
+      "exit_code": 0,
+      "artifact": "02-validate_hardening.txt",
+      "sha256": "973c7e2eb6f32ebe5e75d1d3cadd94b5169800cf3ae67a0920636c91d71fd0ab"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_native_operations.py"
+      ],
+      "exit_code": 0,
+      "artifact": "03-validate_native_operations.txt",
+      "sha256": "060ca80e8ed343b527be60715f40bf3dc1e140ce15ada000dfdc382e9ce60abc"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/unit",
+        "-v"
+      ],
+      "exit_code": 0,
+      "artifact": "04-unit-tests.txt",
+      "sha256": "b9e47c7dee8a8c61923f432c062db9742399ecafae9f5fa701e959029b11adc7"
+    },
+    {
+      "command": [
+        "python",
+        "docs/anexos/build/verificar_docs.py"
+      ],
+      "exit_code": 0,
+      "artifact": "05-verificar_docs.txt",
+      "sha256": "6154d83c079ffade3cf3a72c6827cfbcb3e24ecc6b3f2ff8934d5da80a138cdb"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/preflight.py"
+      ],
+      "exit_code": 2,
+      "artifact": "06-preflight.txt",
+      "sha256": "7b31155510ddd796a4fdf2062b660ba833ebcccb3ea7b64273d033c2705ebd35"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "artifact": "07-diff.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

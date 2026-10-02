@@ -1,0 +1,1 @@
+{"status": "UNAVAILABLE", "reason": "Codex CLI not installed", "authenticated": false}

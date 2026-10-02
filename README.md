@@ -8,6 +8,9 @@ Human -> Engineering Dot -> versioned governance -> Codex / Work / Plugins -> ta
 The Dot is the persistent coordinator. Codex is the default executor for repository engineering. Work handles deep research/artifact-heavy work. Plugins perform narrow external actions under native permissions. This repository owns portable OpenSpec, AGENTS rules, Skills, project adapters, quality gates, reliability/security controls, delegation contracts and validation.
 
 ## Start here
+- `validation/PROJECT-EVOLUTION-2026-10-01.md` (current evidence and operational gaps)
+- `docs/DOT-NATIVE-OPERATION-GATES.md` (executable contracts and limits)
+- `openspec/changes/harden-dot-native-operations/`
 - `docs/00-toc.md` (consolidated documentation: requirements, business rules, use cases, traceability)
 - `docs/DOT-NATIVE-ARCHITECTURE.md`
 - `docs/DOT-RELIABILITY.md`

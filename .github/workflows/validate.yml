@@ -10,6 +10,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml
+      - run: pip install -r requirements-validation.txt
       - run: python scripts/validate.py
       - run: python scripts/validate_hardening.py
+      - run: python scripts/validate_native_operations.py
+      - run: python -m unittest discover -s tests/unit -v
+      - run: python docs/anexos/build/verificar_docs.py
