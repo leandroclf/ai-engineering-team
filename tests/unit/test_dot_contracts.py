@@ -179,7 +179,7 @@ class PreflightTests(unittest.TestCase):
 
     def test_authentication_never_proves_execution(self):
         import subprocess
-        with patch('scripts.preflight.shutil.which', return_value='/codex'), patch('scripts.preflight.subprocess.run', return_value=subprocess.CompletedProcess([], 0, '', '')):
+        with patch('scripts.preflight.shutil.which', return_value='/codex'), patch('scripts.preflight.subprocess.run', side_effect=[subprocess.CompletedProcess([], 0, 'codex-cli 0.159.3', ''), subprocess.CompletedProcess([], 0, '--json --sandbox --ephemeral --output-schema', ''), subprocess.CompletedProcess([], 0, '', '')]):
             self.assertEqual(probe()['status'], 'INCONCLUSIVE')
 
     def test_probe_timeout(self):

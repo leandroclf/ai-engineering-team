@@ -26,6 +26,10 @@ The Dot is the persistent coordinator. Codex is the default executor for reposit
 - `docs/EXECUTION-ENVIRONMENTS.md`
 - `runbooks/CONTAINER-RUNTIMES.md`
 - `validation/FINAL-REPORT.md`
+- `validation/PROJECT-EVOLUTION-REVIEW.md`
+- `openspec/changes/harden-dot-native-operations/`
+
+- `docs/PROVIDER-GUIDANCE-REVIEW.md`
 
 ## Skills
 Core: tech-lead, architect, backend, qa, security, code-review, observability.

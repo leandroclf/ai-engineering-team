@@ -38,3 +38,6 @@ Update 2026-10-01: all three CLIs run in per-account containers; Atlas/Sentinel/
 ## Current reconciliation — 2026-10-01
 
 Earlier OPENAI-CLI-A blockers and the open S02 defect above have been superseded: containers enabled CLI execution, S02 reran 3/3 PASS after invariant checks, and GitHub PR/CI transport ran 3/3. W-001, AS07 and live Dots remain open. `harden-dot-native-operations` adds executable repository contracts; trusted adapter integration and live validation remain pending. See `validation/PROJECT-EVOLUTION-2026-10-01.md`.
+
+## Official provider guidance alignment
+Repository implementation and tests are prepared in `changes/align-provider-official-guidance/`. Follow the P0/P1 acceptance criteria there for trusted action adapters, credential-free tests, immutable evidence, actual CLI compatibility and distinct Dot cancellation/revocation behavior. D8 remains open.

@@ -38,7 +38,7 @@ Credentials live only in the named Docker volumes. Never copy them into the repo
 ```
 python3 scripts/provider_run.py --container --env OPENAI-CLI-A --run-id <id> --scenario S01 --prompt-file <prompt.md> [--check "<cmd>"]
 ```
-The harness clones HEAD into the gitignored `.runs/` directory, which must be under `/home` because Docker Desktop does not share `/tmp`. Only that clone (`/work`) and the run's evidence directory (`/evidence`) are mounted. Inside the container, Codex runs with `--sandbox danger-full-access`, so the container is the boundary.
+The harness clones HEAD into the gitignored `.runs/` directory, which must be under `/home` because Docker Desktop does not share `/tmp`. Only that clone (`/work`) and the run's evidence directory (`/evidence`) are mounted. The image also installs pinned validation dependencies in `/opt/validation`. Inside the container, Codex runs with `--sandbox danger-full-access`, so the container is the boundary.
 
 ## Limits
 - An agent can read its **own** account credentials inside its container. Scan evidence for tokens before committing it.
@@ -50,3 +50,21 @@ The harness clones HEAD into the gitignored `.runs/` directory, which must be un
 scripts/pr_chain.sh <tag> <atlas-prompt> <sentinel-prompt> <argus-prompt>
 ```
 The orchestrator runs on the host with the operator's identity: the SSH alias `github-hotmail` for push and `gh` user `leandroclf` for the PR, statuses and comments. Agents never receive GitHub credentials. Flow: Atlas commits in its clone → branch `validation/<tag>` → draft PR → wait for CI on the head SHA → Sentinel and Argus review `refs/pull/<n>/head` fetched over public HTTPS, and the run fails if the SHA differs → verdicts published as commit statuses `sentinel/review` and `argus/assurance` plus PR comments → PR closed unmerged and branch deleted. Statuses are per-SHA, so a new push to the PR never inherits earlier verdicts. Evidence: `validation/runs/<tag>-transport/transport.yaml`.
+
+## Updated provider review contract
+
+The PR chain requires structured JSON reviews. Codex receives `--output-schema`; Claude receives `--json-schema`, restricted mode and unattended permission denial. Rebuild the image after changing validation dependencies. `--max-turns 30` bounds the Claude invocation; it is not a subscription spending limit.
+
+Before a controlled run, execute `python3 scripts/preflight.py --provider codex` or `--provider claude` in the intended runtime/checkout and preserve the sanitized JSON. Probe commands do not install software, log in or prove account independence. Pin updates require official release review and canary execution; never update a running task implicitly.
+
+Read-only mounts protect checkout writes; running Python tests still executes arbitrary code. The current credential-bearing container is not a safe executor for hostile repository tests. Credential-free test execution and network restrictions are P0 follow-up work. Provider children do not inherit GitHub token/SSH-agent environment variables, but their own credentials on disk remain accessible within their container.
+
+## Stop and revoke
+
+1. Stop the specific run and verify local child processes. POSIX harness timeout now terminates the process group.
+2. Inspect Docker/remote task state independently; killing a CLI client is not evidence the container or remote task stopped.
+3. For a Dot, inspect delegated tasks in Activity and stop them separately. Inspect recurring schedules independently from pausing the main Dot task.
+4. Revoke the relevant access using provider controls, then reconcile in-flight and completed effects. Admin revocation of Dot local access may allow already authorized work to finish.
+5. Re-read authorization revision and external state before allowing another operation. Preserve unresolved cancellation as INCONCLUSIVE.
+
+See the dated official sources in `docs/PROVIDER-GUIDANCE-REVIEW.md`. These are operational instructions; this review did not stop tasks, revoke accounts or remove volumes.

@@ -1,0 +1,28 @@
+test_background_failure_propagates_even_with_pass_verdict (test_harness.ChainTests.test_background_failure_propagates_even_with_pass_verdict) ... ok
+test_ci_polling_is_bounded (test_harness.ChainTests.test_ci_polling_is_bounded) ... ok
+test_failed_ci_does_not_start_reviewers (test_harness.ChainTests.test_failed_ci_does_not_start_reviewers) ... ok
+test_claude_missing_structured_output_is_failure (test_harness.ProviderTests.test_claude_missing_structured_output_is_failure) ... ok
+test_claude_structured_output_is_extracted_and_validated (test_harness.ProviderTests.test_claude_structured_output_is_extracted_and_validated) ... ok
+test_failed_required_check_propagates (test_harness.ProviderTests.test_failed_required_check_propagates) ... ok
+test_missing_executor_preserves_blocked_manifest (test_harness.ProviderTests.test_missing_executor_preserves_blocked_manifest) ... ok
+test_nonzero_provider_skips_check (test_harness.ProviderTests.test_nonzero_provider_skips_check) ... ok
+test_path_traversal_rejected_before_run_creation (test_harness.ProviderTests.test_path_traversal_rejected_before_run_creation) ... ok
+test_pre_failure_never_starts_provider (test_harness.ProviderTests.test_pre_failure_never_starts_provider) ... ok
+test_provider_error_event_cannot_hide_behind_zero_exit (test_harness.ProviderTests.test_provider_error_event_cannot_hide_behind_zero_exit) ... ok
+test_success_still_requires_evaluator (test_harness.ProviderTests.test_success_still_requires_evaluator) ... ok
+test_timeout_preserves_manifest (test_harness.ProviderTests.test_timeout_preserves_manifest) ... ok
+test_explicit_failure_terminal (test_harness.ReviewTests.test_explicit_failure_terminal) ... ok
+test_failed_manifest_cannot_be_published_as_success (test_harness.ReviewTests.test_failed_manifest_cannot_be_published_as_success) ... ok
+test_failed_sha_command_is_error (test_harness.ReviewTests.test_failed_sha_command_is_error) ... ok
+test_historical_evidence_audit (test_harness.ReviewTests.test_historical_evidence_audit) ... ok
+test_inconclusive_terminal_error (test_harness.ReviewTests.test_inconclusive_terminal_error) ... ok
+test_missing_artifacts (test_harness.ReviewTests.test_missing_artifacts) ... ok
+test_missing_provider_exit_is_error (test_harness.ReviewTests.test_missing_provider_exit_is_error) ... ok
+test_provider_failure_overrides_pass (test_harness.ReviewTests.test_provider_failure_overrides_pass) ... ok
+test_stale_result_blocked_even_with_fresh_checkout (test_harness.ReviewTests.test_stale_result_blocked_even_with_fresh_checkout) ... ok
+test_verified_success (test_harness.ReviewTests.test_verified_success) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 2.249s
+
+OK
