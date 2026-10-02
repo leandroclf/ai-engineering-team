@@ -1,0 +1,19 @@
+sequenceDiagram
+  participant Op as Operador
+  participant At as Atlas
+  participant Cx as Codex
+  participant GH as GitHub PR e CI
+  participant Se as Sentinel
+  participant Ar as Argus
+  Op->>At: objetivo e risco
+  At->>Cx: tarefa limitada com envelope
+  Cx->>GH: branch, commits e testes
+  GH-->>At: CI no SHA da head
+  At->>Se: pedido de revisão preso ao SHA
+  Se-->>GH: veredito e achados (somente leitura)
+  At->>Ar: pedido de assurance preso ao SHA
+  Ar-->>GH: veredito e evidência (somente leitura)
+  Note over Se,Ar: Veredito vale apenas para o SHA revisado
+  GH-->>At: statuses sentinel/review e argus/assurance
+  At->>Op: remediar, escalar waiver ou concluir
+  Note over Op,At: R3: confirmação do operador<br/>e aprovações nativas

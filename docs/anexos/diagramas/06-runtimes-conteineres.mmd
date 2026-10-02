@@ -1,0 +1,23 @@
+flowchart TB
+  subgraph HOST["Host do operador"]
+    ORQ["Orquestrador<br/>provider_run.py · pr_chain.sh"]
+    CLONE["Clone descartável do HEAD<br/>.runs/clone-id"]
+    EVD["Evidências<br/>validation/runs/id"]
+  end
+  subgraph DOCKER["Docker Compose: runtimes/compose.yaml"]
+    A["atlas-cli<br/>Codex<br/>volume atlas-home"]
+    S["sentinel-cli<br/>Codex<br/>volume sentinel-home<br/>checkout somente leitura"]
+    R["argus-cli<br/>Claude Code<br/>volume argus-home<br/>checkout somente leitura"]
+  end
+  OAI["OpenAI<br/>assinatura"]
+  ANT["Anthropic<br/>assinatura"]
+  GH["GitHub<br/>PR · CI · commit status"]
+  ORQ --> CLONE
+  CLONE -->|"monta clone e evidências"| DOCKER
+  A --> OAI
+  S --> OAI
+  R --> ANT
+  DOCKER --> EVD
+  ORQ --> GH
+  classDef ouro fill:#EFB41B,stroke:#D98E06,color:#0D0D0E;
+  class GH ouro;

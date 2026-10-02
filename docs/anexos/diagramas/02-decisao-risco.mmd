@@ -1,0 +1,15 @@
+flowchart TD
+  A(["Pedido recebido"]) --> B["Reler instruções mais próximas<br/>e capturar base SHA"]
+  B --> C{"Classe de risco"}
+  C -->|R0 ou R1| D["Executar de forma autônoma<br/>com validação nativa"]
+  C -->|R2| E["Seguir aprovação local<br/>relatar impacto"]
+  E --> F["Revisão independente<br/>por padrão"]
+  C -->|R3| G["PARAR<br/>declarar ação, alvo e impacto"]
+  G --> H{"Confirmação separada<br/>e aprovações nativas?"}
+  H -->|Sim| I["Executar a ação autorizada"]
+  H -->|Não ou sem canal| J(["BLOCKED"])
+  D --> K["Revisar diff e relatar evidência"]
+  F --> K
+  I --> K
+  classDef ouro fill:#EFB41B,stroke:#D98E06,color:#0D0D0E;
+  class C,H,G ouro;

@@ -1,0 +1,14 @@
+flowchart TD
+  A(["Mutação externa"]) --> B["Atribuir task_id e idempotency_key"]
+  B --> C["Executar"]
+  C --> D{"Falha?"}
+  D -->|Não| Z(["Verificar o estado resultante"])
+  D -->|Sim| E{"Transitória?"}
+  E -->|Não: negação, entrada inválida,<br/>autorização, destrutiva ambígua, R3| P(["Parar e reportar BLOCKED"])
+  E -->|Sim| F["Verificar se o estado pretendido já existe"]
+  F -->|Existe| Z
+  F -->|Não existe| G{"Tentativas menores que 3<br/>e estado não ambíguo?"}
+  G -->|Sim| C
+  G -->|Não| H(["Circuito aberto: preservar evidência e pedir intervenção"])
+  classDef ouro fill:#EFB41B,stroke:#D98E06,color:#0D0D0E;
+  class D,E,G ouro;

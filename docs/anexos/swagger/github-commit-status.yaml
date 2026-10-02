@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: GitHub REST API - trecho consumido pelo transporte da cadeia de revisão
+  version: 1.0.0
+  description: |
+    Recorte do contrato do GitHub que scripts/pr_chain.sh consome para publicar o veredito de cada revisor
+    como status de commit vinculado ao SHA da head.
+
+    Este arquivo NÃO descreve uma API do ai-engineering-team (o sistema não expõe endpoints). É um recorte
+    derivado do uso observado no script. O contrato autoritativo é a documentação oficial do GitHub; em caso
+    de divergência, ela prevalece.
+
+    Origem do uso: scripts/pr_chain.sh, função publish().
+servers:
+  - url: https://api.github.com
+    description: GitHub.com
+security:
+  - tokenDoOperador: []
+paths:
+  /repos/{owner}/{repo}/statuses/{sha}:
+    post:
+      operationId: createCommitStatus
+      summary: Publica o veredito de um revisor como status do commit
+      description: |
+        Chamado uma vez por revisor (contextos sentinel/review e argus/assurance) após a revisão do SHA da head.
+        O status vale apenas para o SHA informado; um novo commit não herda o veredito anterior (RN-040).
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema: { type: string }
+          example: leandroclf
+        - name: repo
+          in: path
+          required: true
+          schema: { type: string }
+          example: ai-engineering-team
+        - name: sha
+          in: path
+          required: true
+          description: SHA completo da head revisada
+          schema: { type: string, pattern: '^[0-9a-f]{40}$' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CommitStatusRequest' }
+            example:
+              state: success
+              context: sentinel/review
+              description: "PASS (validation/runs/20261001-pr1-sentinel)"
+      responses:
+        '201':
+          description: Status criado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CommitStatus' }
+        '404':
+          description: Repositório ou SHA inexistente, ou sem acesso
+        '422':
+          description: Validação falhou (por exemplo, state inválido)
+components:
+  securitySchemes:
+    tokenDoOperador:
+      type: http
+      scheme: bearer
+      description: |
+        Token da identidade do operador no gh (usuário com permissão de escrita de status).
+        Os agentes (Atlas, Sentinel, Argus) não recebem este token (RN-052).
+  schemas:
+    CommitStatusRequest:
+      type: object
+      required: [state]
+      properties:
+        state:
+          type: string
+          description: |
+            Mapeamento adotado por pr_chain.sh: PASS e PASS_WITH_FINDINGS viram success; BLOCKED vira failure;
+            INCONCLUSIVE ou ausência de veredito viram pending; SHA divergente do checkout vira error.
+          enum: [error, failure, pending, success]
+        context:
+          type: string
+          description: Identificador do gate
+          example: argus/assurance
+        description:
+          type: string
+          maxLength: 140
+          description: Veredito e caminho da evidência
+        target_url:
+          type: string
+          format: uri
+          nullable: true
+    CommitStatus:
+      type: object
+      properties:
+        id: { type: integer }
+        state: { type: string }
+        context: { type: string }
+        description: { type: string, nullable: true }
+        created_at: { type: string, format: date-time }

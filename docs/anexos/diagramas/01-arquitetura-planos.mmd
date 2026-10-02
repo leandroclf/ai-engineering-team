@@ -1,0 +1,25 @@
+flowchart LR
+  OP["Operador"]
+  NAT["Salvaguardas nativas<br/>plataforma · plugins · provedores<br/>autoridade máxima"]
+  DOT["Engineering Dot<br/>Atlas<br/>coordenação persistente"]
+  GOV["Governança versionada<br/>AGENTS.md · OpenSpec · Skills<br/>gates · contratos · validação"]
+  CODEX["Codex<br/>código · testes · revisão"]
+  WORK["ChatGPT Work<br/>pesquisa · artefatos"]
+  PLUG["Plugins<br/>ação externa estreita"]
+  REPO[("Repositórios alvo<br/>AGENTS.md local")]
+  EXT["Sistemas externos"]
+  EV["Evidência<br/>SHA · checagens · relatório"]
+  APR{"Aprovação<br/>quando exigida"}
+  OP --> DOT
+  DOT --> GOV
+  DOT --> CODEX
+  DOT --> WORK
+  DOT --> PLUG
+  CODEX --> REPO
+  PLUG --> EXT
+  REPO --> EV
+  EV --> APR
+  APR --> OP
+  NAT -.-> DOT
+  classDef ouro fill:#EFB41B,stroke:#D98E06,color:#0D0D0E;
+  class NAT,APR ouro;

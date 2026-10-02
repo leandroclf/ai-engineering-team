@@ -1,0 +1,4 @@
+@font-face { font-family: "Manrope"; src: url("file:///tmp/docfonts/Manrope.ttf"); font-weight: 200 800; }
+.edgeLabel, .edgeLabel p, .edgeLabel span, .edgeLabel div, .edgeLabel .label, .labelBkg { color: #1A1214 !important; fill: #1A1214 !important; }
+.edgeLabel, .labelBkg, .edgeLabel p { background-color: #EEF1F0 !important; }
+.messageText { fill: #1A1214 !important; paint-order: stroke; stroke: #EEF1F0; stroke-width: 5px; stroke-linejoin: round; }

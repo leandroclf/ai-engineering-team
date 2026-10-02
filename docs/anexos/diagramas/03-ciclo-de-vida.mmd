@@ -1,0 +1,19 @@
+flowchart TB
+  subgraph A["Normativo: AGENTS.md, etapas 1 a 5"]
+    direction LR
+    I1["INTAKE"] --> I2["FRESHNESS"] --> I3["DISCOVER"] --> I4["CLASSIFY"] --> I5["LEASE"]
+  end
+  subgraph B["Normativo: AGENTS.md, etapas 6 a 10"]
+    direction LR
+    I6["PLAN"] --> I7["EXECUTE"] --> I8["VERIFY"] --> I9["REVIEW"] --> I10["REPORT"]
+  end
+  subgraph C["Extensão de entrega do design de endurecimento"]
+    direction LR
+    E1["PR"] --> E2["CI"] --> E3["APPROVAL"] --> E4["MERGE"] --> E5["RELEASE"] --> E6["OBSERVE"] --> E7["CLOSE"]
+  end
+  A --> B
+  B -.->|"quando há entrega"| C
+  PARA(["Em qualquer etapa: condição de parada resulta em BLOCKED ou INCONCLUSIVE"])
+  C ~~~ PARA
+  classDef ouro fill:#EFB41B,stroke:#D98E06,color:#0D0D0E;
+  class PARA ouro;

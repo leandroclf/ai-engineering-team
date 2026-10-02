@@ -1,0 +1,16 @@
+flowchart TD
+  A(["Achado CRITICAL ou HIGH"]) --> B{"Resposta do Atlas"}
+  B -->|FIXED| C["Sentinel revisa o novo SHA"]
+  B -->|DISPUTED| D["Reprodução independente<br/>Sentinel e Argus"]
+  B -->|NOT_APPLICABLE| E["Verificação independente"]
+  B -->|ACCEPTED_RISK| F["Waiver do operador"]
+  C --> G{"Fechamento verificado?"}
+  D --> G
+  E --> G
+  G -->|Sim| H(["Achado fechado"])
+  G -->|Não| I(["Permanece aberto"])
+  F --> J["Operador, achados, revisão, escopo<br/>expiração e controles compensatórios"]
+  J --> H
+  X["Silêncio · timeout · nova revisão do PR · voto de maioria"] -.->|não fecha| I
+  classDef ouro fill:#EFB41B,stroke:#D98E06,color:#0D0D0E;
+  class B,G,X ouro;
