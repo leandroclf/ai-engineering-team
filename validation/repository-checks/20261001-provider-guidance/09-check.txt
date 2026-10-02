@@ -1,0 +1,1 @@
+{"provider": "claude", "authenticated": false, "version": null, "reviewed_version": "2.1.287", "missing_flags": [], "status": "UNAVAILABLE", "reason": "CLI not installed"}

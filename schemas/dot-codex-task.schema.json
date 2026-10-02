@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-engineering-team:dot-codex-task:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "project_id",
+    "objective",
+    "risk",
+    "repository",
+    "authorization",
+    "budgets",
+    "required_validation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk": {
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3"
+      ]
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full_name",
+        "branch",
+        "base_sha"
+      ],
+      "properties": {
+        "full_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope_id",
+        "task_id",
+        "project_id",
+        "revision",
+        "repository",
+        "issued_at",
+        "expires_at",
+        "allowed_actions",
+        "denied_actions",
+        "allowed_paths"
+      ],
+      "properties": {
+        "scope_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "repository": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "full_name",
+            "branch",
+            "base_sha"
+          ],
+          "properties": {
+            "full_name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "branch": {
+              "type": "string",
+              "minLength": 1
+            },
+            "base_sha": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$"
+            }
+          }
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "read_repo",
+              "modify_branch",
+              "run_tests",
+              "create_commit",
+              "create_pr"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "denied_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "allowed_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_attempts",
+        "max_elapsed_seconds",
+        "max_external_writes"
+      ],
+      "properties": {
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_elapsed_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_external_writes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "required_validation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}

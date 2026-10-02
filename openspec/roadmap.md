@@ -34,3 +34,10 @@ Operate Atlas on the primary account as Engineering Lead and Sentinel on the sec
 Bind every remaining task to its authorized runtime: CHAT-GITHUB for repository governance/preparation/evidence inspection, OPENAI-CLI-A for Codex execution with the configured OpenAI subscription, OPENAI-DOT-A/B for live Atlas/Sentinel behavior, CLAUDE-CLI for Claude Code with the configured Claude subscription, CROSS-ENV for end-to-end scenarios, and HUMAN for explicit account/approval actions. No silent environment substitution; unavailable runtime evidence remains BLOCKED/INCONCLUSIVE.
 Status 2026-10-01: CLAUDE-CLI/Argus executed and validated (validation/ARGUS-ASSURANCE-REPORT.md); OPENAI-CLI-A blocked by host sandbox restriction; OPENAI-DOT-A/B pending operator.
 Update 2026-10-01: all three CLIs run in per-account containers; Atlas/Sentinel/Argus CLI-layer validation recorded in validation/FINAL-REPORT.md (S02 open, W-001 shared OpenAI user).
+
+## Current reconciliation — 2026-10-01
+
+Earlier OPENAI-CLI-A blockers and the open S02 defect above have been superseded: containers enabled CLI execution, S02 reran 3/3 PASS after invariant checks, and GitHub PR/CI transport ran 3/3. W-001, AS07 and live Dots remain open. `harden-dot-native-operations` adds executable repository contracts; trusted adapter integration and live validation remain pending. See `validation/PROJECT-EVOLUTION-2026-10-01.md`.
+
+## Official provider guidance alignment
+Repository implementation and tests are prepared in `changes/align-provider-official-guidance/`. Follow the P0/P1 acceptance criteria there for trusted action adapters, credential-free tests, immutable evidence, actual CLI compatibility and distinct Dot cancellation/revocation behavior. D8 remains open.

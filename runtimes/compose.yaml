@@ -1,7 +1,8 @@
 # One isolated home volume per account; credentials never touch the repository.
 x-cli: &cli
   build:
-    context: .
+    context: ..
+    dockerfile: runtimes/Dockerfile
     args:
       UID: ${HOST_UID:-1001}
   image: ai-eng-provider-cli:local

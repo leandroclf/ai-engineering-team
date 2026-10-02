@@ -1,0 +1,100 @@
+{
+  "checked_at": "2026-10-02T01:41:54.583754+00:00",
+  "base_commits": [
+    "10f525248b1539c9b99100b1df9b93e9e5fbcd51",
+    "a88bc6eba14394cd54c546eb7a8d71bca993fb84"
+  ],
+  "scope": "local repository code; no authenticated model or Dot execution",
+  "local_docker_available": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "artifact": "01-check.txt"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/unit",
+        "-v"
+      ],
+      "exit_code": 0,
+      "artifact": "02-check.txt"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate.py"
+      ],
+      "exit_code": 0,
+      "artifact": "03-check.txt"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_hardening.py"
+      ],
+      "exit_code": 0,
+      "artifact": "04-check.txt"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/validate_native_operations.py"
+      ],
+      "exit_code": 0,
+      "artifact": "05-check.txt"
+    },
+    {
+      "command": [
+        "python",
+        "docs/anexos/build/verificar_docs.py"
+      ],
+      "exit_code": 0,
+      "artifact": "06-check.txt"
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "scripts/pr_chain.sh"
+      ],
+      "exit_code": 0,
+      "artifact": "07-check.txt"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/preflight.py",
+        "--provider",
+        "codex"
+      ],
+      "exit_code": 2,
+      "artifact": "08-check.txt"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/preflight.py",
+        "--provider",
+        "claude"
+      ],
+      "exit_code": 2,
+      "artifact": "09-check.txt"
+    }
+  ]
+}

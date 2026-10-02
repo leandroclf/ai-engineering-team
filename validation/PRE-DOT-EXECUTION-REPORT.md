@@ -3,6 +3,10 @@
 Status: PARTIALLY VALIDATED
 Scope: maximum validation available without a live Engineering Dot surface.
 
+## Current reconciliation — 2026-10-01
+
+`validation/FINAL-REPORT.md` now preserves Atlas/Sentinel/Argus CLI behavior and three real GitHub PR/CI chains. This report's initial structural-only description is historical. CLI evidence does not close live Dot routing, native approvals, account independence (W-001) or portfolio concurrency. New repository-side contracts and their limits are documented in `docs/DOT-NATIVE-OPERATION-GATES.md`.
+
 ## Confirmed evidence
 - Repository structural CI has executed successfully on the production-hardening change.
 - The repository now contains explicit contracts for freshness, untrusted content, idempotency/retries/circuit breaking, leases, routing, delivery separation, recovery and governance migrations.

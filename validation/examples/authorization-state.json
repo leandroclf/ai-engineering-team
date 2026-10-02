@@ -1,0 +1,16 @@
+{
+  "scope_id": "scope-1",
+  "task_id": "task-1",
+  "project_id": "team",
+  "revision": 1,
+  "revoked": false,
+  "repository": {
+    "full_name": "leandroclf/ai-engineering-team",
+    "branch": "feature/test",
+    "base_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "attempts_used": 0,
+  "elapsed_seconds": 0,
+  "external_writes_used": 0,
+  "circuit_open": false
+}

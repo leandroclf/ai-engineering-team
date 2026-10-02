@@ -1,0 +1,1 @@
+OK: framework, Dot-native and hardening structure validated (76 required artifacts)

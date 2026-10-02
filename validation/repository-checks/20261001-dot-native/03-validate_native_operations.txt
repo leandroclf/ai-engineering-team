@@ -1,0 +1,1 @@
+OK: four JSON schemas and concrete task/state examples validated (repository layer only)

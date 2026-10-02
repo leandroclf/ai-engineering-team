@@ -1,0 +1,45 @@
+test_budgets_and_circuit (test_dot_contracts.AuthorizationTests.test_budgets_and_circuit) ... ok
+test_cross_project_or_task_lease (test_dot_contracts.AuthorizationTests.test_cross_project_or_task_lease) ... ok
+test_denial_overrides_allowlist (test_dot_contracts.AuthorizationTests.test_denial_overrides_allowlist) ... ok
+test_expiry_boundary_and_future_lease (test_dot_contracts.AuthorizationTests.test_expiry_boundary_and_future_lease) ... ok
+test_foreign_current_state (test_dot_contracts.AuthorizationTests.test_foreign_current_state) ... ok
+test_mid_task_revocation_stops_next_write (test_dot_contracts.AuthorizationTests.test_mid_task_revocation_stops_next_write) ... ok
+test_path_escape_sibling_and_empty_scope (test_dot_contracts.AuthorizationTests.test_path_escape_sibling_and_empty_scope) ... ok
+test_r0_and_r3 (test_dot_contracts.AuthorizationTests.test_r0_and_r3) ... ok
+test_revision_conflict (test_dot_contracts.AuthorizationTests.test_revision_conflict) ... ok
+test_schema_rejects_unknown_authority_and_negative_budget (test_dot_contracts.AuthorizationTests.test_schema_rejects_unknown_authority_and_negative_budget) ... ok
+test_stale_branch_base_and_repository (test_dot_contracts.AuthorizationTests.test_stale_branch_base_and_repository) ... ok
+test_timezone_required (test_dot_contracts.AuthorizationTests.test_timezone_required) ... ok
+test_unsupported_actions_not_authorized (test_dot_contracts.AuthorizationTests.test_unsupported_actions_not_authorized) ... ok
+test_valid_bounded_write (test_dot_contracts.AuthorizationTests.test_valid_bounded_write) ... ok
+test_artifact_escape_and_symlink (test_dot_contracts.EvidenceTests.test_artifact_escape_and_symlink) ... ok
+test_artifact_tampering_and_missing (test_dot_contracts.EvidenceTests.test_artifact_tampering_and_missing) ... ok
+test_cross_project_identity (test_dot_contracts.EvidenceTests.test_cross_project_identity) ... ok
+test_failures_scope_r0_and_budget (test_dot_contracts.EvidenceTests.test_failures_scope_r0_and_budget) ... ok
+test_missing_failed_duplicate_command (test_dot_contracts.EvidenceTests.test_missing_failed_duplicate_command) ... ok
+test_nonpass_preserves_failure (test_dot_contracts.EvidenceTests.test_nonpass_preserves_failure) ... ok
+test_stale_final_and_ci (test_dot_contracts.EvidenceTests.test_stale_final_and_ci) ... ok
+test_valid_record (test_dot_contracts.EvidenceTests.test_valid_record) ... ok
+test_authentication_never_proves_execution (test_dot_contracts.PreflightTests.test_authentication_never_proves_execution) ... ok
+test_probe_timeout (test_dot_contracts.PreflightTests.test_probe_timeout) ... ok
+test_unavailable_cli (test_dot_contracts.PreflightTests.test_unavailable_cli) ... ok
+test_both_provider_auth_commands_and_redaction (test_provider_guidance.ProbeTests.test_both_provider_auth_commands_and_redaction) ... ok
+test_failed_auth_is_blocked (test_provider_guidance.ProbeTests.test_failed_auth_is_blocked) ... ok
+test_missing_feature_blocks_before_auth (test_provider_guidance.ProbeTests.test_missing_feature_blocks_before_auth) ... ok
+test_claude_unattended_structured_review (test_provider_guidance.ProviderGuidanceTests.test_claude_unattended_structured_review) ... ok
+test_codex_reviewer_host_is_read_only_and_never_prompts (test_provider_guidance.ProviderGuidanceTests.test_codex_reviewer_host_is_read_only_and_never_prompts) ... ok
+test_container_retains_explicit_external_isolation_contract (test_provider_guidance.ProviderGuidanceTests.test_container_retains_explicit_external_isolation_contract) ... ok
+test_duplicate_result_key_rejected (test_provider_guidance.ProviderGuidanceTests.test_duplicate_result_key_rejected) ... ok
+test_github_authority_is_not_inherited (test_provider_guidance.ProviderGuidanceTests.test_github_authority_is_not_inherited) ... ok
+test_init_and_nested_thinking_and_tokens_sanitized (test_provider_guidance.ProviderGuidanceTests.test_init_and_nested_thinking_and_tokens_sanitized) ... ok
+test_timeout_stops_descendant_with_inherited_pipes (test_provider_guidance.ProviderGuidanceTests.test_timeout_stops_descendant_with_inherited_pipes) ... ok
+test_blocking_finding_cannot_hide_under_pass (test_provider_guidance.StructuredReviewTests.test_blocking_finding_cannot_hide_under_pass) ... ok
+test_cannot_fallback_to_prose_if_json_missing (test_provider_guidance.StructuredReviewTests.test_cannot_fallback_to_prose_if_json_missing) ... ok
+test_required_gate_inconclusive_blocks (test_provider_guidance.StructuredReviewTests.test_required_gate_inconclusive_blocks) ... ok
+test_schema_and_reviewer_identity (test_provider_guidance.StructuredReviewTests.test_schema_and_reviewer_identity) ... ok
+test_valid_review (test_provider_guidance.StructuredReviewTests.test_valid_review) ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 1.544s
+
+OK

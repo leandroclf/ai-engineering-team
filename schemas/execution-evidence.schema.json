@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-engineering-team:execution-evidence:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "project_id",
+    "status",
+    "observed_base_sha",
+    "final_sha",
+    "changed_files",
+    "checks",
+    "ci",
+    "failures",
+    "external_writes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "BLOCKED_PERMISSION",
+        "BLOCKED_APPROVAL",
+        "UNAVAILABLE",
+        "INCOMPATIBLE",
+        "INCONCLUSIVE",
+        "CANCELLED",
+        "EXPIRED_SCOPE"
+      ]
+    },
+    "observed_base_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "final_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command",
+          "exit_code",
+          "artifact",
+          "sha256"
+        ],
+        "properties": {
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "exit_code": {
+            "type": "integer"
+          },
+          "artifact": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "ci": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "head_sha",
+        "status"
+      ],
+      "properties": {
+        "head_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "failure",
+            "pending",
+            "unavailable"
+          ]
+        }
+      }
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "external_writes": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
