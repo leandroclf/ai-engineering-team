@@ -13,3 +13,5 @@ jobs:
       - run: pip install pyyaml
       - run: python scripts/validate.py
       - run: python scripts/validate_hardening.py
+      - run: python -m unittest discover -s tests -p "test_*.py" -v
+      - run: bash -n scripts/pr_chain.sh

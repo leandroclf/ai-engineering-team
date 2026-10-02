@@ -6,12 +6,13 @@ Usage:
 
 The clone is taken from the committed HEAD, so fixtures must be committed first.
 Reasoning/thinking events are dropped; only messages, tool calls and results are kept.
-The manifest is written with status INCONCLUSIVE; the evaluator sets the final status.
+Successful execution remains INCONCLUSIVE pending evaluation; failures/unavailability are recorded.
 """
 import argparse
 import datetime
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -36,6 +37,19 @@ CLAUDE_DENIED = ["Edit", "Write", "NotebookEdit", "WebFetch", "WebSearch", "Agen
 def sh(cmd, cwd, **kw):
     return subprocess.run(cmd, cwd=cwd, shell=isinstance(cmd, str), text=True, capture_output=True,
                           stdin=subprocess.DEVNULL, **kw)
+
+
+def run_observed(cmd, cwd, timeout=1800):
+    """Keep launch failures and timeouts observable instead of losing the run manifest."""
+    try:
+        return sh(cmd, cwd, timeout=timeout)
+    except FileNotFoundError:
+        return subprocess.CompletedProcess(cmd, 127, "", "executor unavailable\n")
+    except subprocess.TimeoutExpired as exc:
+        def decoded(value):
+            return value.decode(errors="replace") if isinstance(value, bytes) else (value or "")
+        return subprocess.CompletedProcess(cmd, 124, decoded(exc.stdout),
+                                           decoded(exc.stderr) + "\nexecution timed out\n")
 
 
 def now():
@@ -70,7 +84,8 @@ def main():
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--scenario", required=True)
     ap.add_argument("--env", required=True, choices=AGENTS)
-    ap.add_argument("--risk", default="R0")
+    ap.add_argument("--risk", default="R0", choices=["R0", "R1", "R2", "R3"])
+    ap.add_argument("--timeout-seconds", type=int, default=1800)
     ap.add_argument("--prompt-file", required=True)
     ap.add_argument("--pre", help="shell command run in the clone before the provider (fixture setup)")
     ap.add_argument("--check", help="evaluator shell command run in the clone after the provider")
@@ -80,6 +95,12 @@ def main():
     ap.add_argument("--workdir", default=str(ROOT / ".runs"), help="parent dir for the disposable clone")
     a = ap.parse_args()
 
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", a.run_id):
+        ap.error("run-id must be a single safe path component")
+    if a.timeout_seconds <= 0:
+        ap.error("timeout-seconds must be positive")
+    prompt = pathlib.Path(a.prompt_file).read_text()
+
     run_dir = ROOT / "validation" / "runs" / a.run_id
     run_dir.mkdir(parents=True, exist_ok=False)
     clone = pathlib.Path(a.workdir) / f"clone-{a.run_id}"
@@ -87,10 +108,9 @@ def main():
     for k, v in (("user.name", "validation-harness"), ("user.email", "harness@invalid")):
         sh(["git", "config", k, v], clone)
     base_sha = sh("git rev-parse HEAD", clone).stdout.strip()
-    pre = sh(a.pre, clone) if a.pre else None
+    pre = run_observed(a.pre, clone, a.timeout_seconds) if a.pre else None
     head_sha = sh("git rev-parse HEAD", clone).stdout.strip()
 
-    prompt = pathlib.Path(a.prompt_file).read_text()
     (run_dir / "prompt.md").write_text(prompt)
     started = now()
     cmd = provider_cmd(a.env, prompt, run_dir, a.container)
@@ -99,8 +119,14 @@ def main():
         ro = ":ro" if a.env in ("OPENAI-CLI-B", "CLAUDE-CLI") else ""
         cmd = COMPOSE + ["-e", "PYTHONDONTWRITEBYTECODE=1", "-v", f"{clone}:/work{ro}",
                          "-v", f"{run_dir}:/evidence", SERVICES[a.env]] + cmd
-    proc = sh(cmd, clone, timeout=1800)
+    proc = (subprocess.CompletedProcess(cmd, pre.returncode, "", "fixture setup failed; provider not started\n")
+            if pre and pre.returncode else run_observed(cmd, clone, a.timeout_seconds))
+    (run_dir / "stderr.txt").write_text(proc.stderr)
+    if pre:
+        (run_dir / "pre.txt").write_text(f"exit={pre.returncode}\n{pre.stdout}{pre.stderr}")
     finished = now()
+    if not (run_dir / "last-message.md").exists():
+        (run_dir / "last-message.md").write_text("")
 
     events = []
     for line in proc.stdout.splitlines():
@@ -119,8 +145,8 @@ def main():
     files_changed = sh(["git", "diff", "--cached", "--name-only", head_sha], clone).stdout.split()
     (run_dir / "diff.patch").write_text(sh(["git", "diff", "--cached", head_sha], clone).stdout)
     checks = [{"command": "<provider exit>", "exit_code": proc.returncode}]
-    if a.check:
-        chk = sh(a.check, clone)
+    if a.check and not proc.returncode:
+        chk = run_observed(a.check, clone, a.timeout_seconds)
         (run_dir / "check.txt").write_text(f"$ {a.check}\nexit={chk.returncode}\n{chk.stdout}{chk.stderr}")
         checks.append({"command": a.check, "exit_code": chk.returncode})
 
@@ -134,14 +160,21 @@ def main():
                              + " ".join(provider_cmd(a.env, "<prompt.md>", pathlib.Path("<run>"), a.container))]
         + ([f"pre: {a.pre} (exit {pre.returncode})"] if pre else []),
         evidence_locations=[f"validation/runs/{a.run_id}/{n}" for n in sorted(p.name for p in run_dir.iterdir())],
-        notes="status pending evaluator review",
+        status="FAIL" if (pre and pre.returncode) or any(c["exit_code"] != 0 for c in checks[1:]) or proc.returncode not in (0, 124, 127)
+               else "BLOCKED" if proc.returncode == 127 else "INCONCLUSIVE",
+        failures=(["fixture setup failed"] if pre and pre.returncode else [])
+                 + ([f"provider exit {proc.returncode}"] if proc.returncode else [])
+                 + (["required check failed"] if len(checks) > 1 and checks[-1]["exit_code"] else []),
+        notes="executor unavailable" if proc.returncode == 127 else "execution timed out" if proc.returncode == 124
+              else "execution failed" if proc.returncode else "status pending evaluator review",
     )
     (run_dir / "manifest.yaml").write_text(yaml.safe_dump(manifest, sort_keys=False, allow_unicode=True))
     print(json.dumps({"run_id": a.run_id, "exit": proc.returncode, "files_changed": files_changed,
                       "checks": checks, "clone": str(clone)}))
     if proc.returncode and not events:
         sys.stderr.write(proc.stderr[-2000:])
+    return 1 if any(c["exit_code"] for c in checks) else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

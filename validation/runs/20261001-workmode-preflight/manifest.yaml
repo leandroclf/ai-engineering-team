@@ -1,0 +1,38 @@
+schema_version: 1.0.0
+run_id: 20261001-workmode-preflight
+scenario_id: CODEX-PRE-DOT-PREFLIGHT
+environment: OPENAI-CLI-A
+agent_name: Atlas
+provider: openai
+repository: leandroclf/ai-engineering-team
+base_sha: 1c6e681f7b1176401f383da79c6b14aca2e0f852
+head_sha: 1c6e681f7b1176401f383da79c6b14aca2e0f852
+started_at: '2026-10-02T00:41:22+00:00'
+finished_at: '2026-10-02T00:41:22+00:00'
+status: BLOCKED
+risk: R0
+objective: ''
+fixture_paths: []
+prompt_artifact: prompt.md
+commands_or_actions:
+- 'host: codex exec --json --sandbox workspace-write --ephemeral -o <run>/last-message.md
+  <prompt.md>'
+checks:
+- command: <provider exit>
+  exit_code: 127
+files_changed: []
+approval:
+  required: false
+  requested: false
+  granted: false
+  evidence: ''
+evidence_locations:
+- validation/runs/20261001-workmode-preflight/diff.patch
+- validation/runs/20261001-workmode-preflight/events.jsonl
+- validation/runs/20261001-workmode-preflight/last-message.md
+- validation/runs/20261001-workmode-preflight/prompt.md
+- validation/runs/20261001-workmode-preflight/stderr.txt
+failures:
+- provider exit 127
+residual_risks: []
+notes: executor unavailable
