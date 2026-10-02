@@ -1,0 +1,14 @@
+{
+  // Regras do lint de Markdown da documentação.
+  // MD013 (comprimento de linha) desligada: tabelas e parágrafos longos são intencionais e o texto quebra na renderização.
+  // MD033 permite apenas âncoras <a id> e <br>, usados pelos blocos gerados.
+  // MD024 só compara títulos irmãos; os documentos repetem nomes de campos em seções diferentes.
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD033": { "allowed_elements": ["a", "br"] },
+    "MD024": { "siblings_only": true },
+    "MD041": false
+  },
+  "globs": ["docs/0[0-8]-*.md", "docs/anexos/identidade/README.md", "docs/anexos/swagger/README.md"]
+}

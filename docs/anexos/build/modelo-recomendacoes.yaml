@@ -1,0 +1,251 @@
+# Registro de recomendações (seção 3.14 e 3.16). Aplicada = a alteração existe nos arquivos listados.
+# Pendente = depende de decisão ou informação indisponível; motivo, decisão e próximo passo são obrigatórios.
+recomendacoes:
+  - id: REC-001
+    titulo: Consolidar glossário e siglas do domínio
+    problema: Os termos Atlas, Sentinel, Argus, Dot, lease, waiver, veredito, gate, SHA, envelope e as siglas R0 a R3 são usados em dezenas de arquivos sem definição única.
+    justificativa: Termos sem definição central geram interpretações divergentes entre agentes e leitores.
+    acao: Glossário e siglas completos criados, incluindo os termos novos identificados durante a análise.
+    arquivos: [docs/01-contexto.md]
+    secao: "01-contexto.md, Glossário e siglas"
+    status: Aplicada
+  - id: REC-002
+    titulo: Consolidar os vocabulários de status
+    problema: Existem cinco vocabulários distintos (status de mudança no OpenSpec, status de run, veredito de revisão, status de resultado Codex para Dot e marcador NOT RUN) sem tabela de correspondência.
+    justificativa: Usar PASS, DONE e VALIDATED como sinônimos induz falsa conclusão, risco que o próprio framework combate.
+    acao: Tabela consolidada de vocabulários criada, com significado e onde cada um se aplica.
+    arquivos: [docs/01-contexto.md]
+    secao: "01-contexto.md, Vocabulários de status"
+    status: Aplicada
+  - id: REC-003
+    titulo: Documentar a hierarquia entre as variantes do ciclo de vida
+    problema: O ciclo de vida aparece em três versões (AGENTS.md com 10 etapas; design do bootstrap com 7 etapas; design de endurecimento com 15 etapas incluindo PR, CI, aprovação, merge e release).
+    justificativa: Sem hierarquia declarada, não está claro qual é normativa.
+    acao: Documentadas as três variantes com a regra de leitura (AGENTS.md normativo para o trabalho; demais como extensões de contexto) e diagrama do ciclo.
+    arquivos: [docs/02-visao-geral.md, docs/anexos/diagramas/03-ciclo-de-vida.mmd]
+    secao: "02-visao-geral.md, Ciclo de vida do trabalho"
+    status: Aplicada
+  - id: REC-004
+    titulo: Harmonizar as variantes do ciclo de vida nos documentos de origem
+    problema: Os documentos de origem continuam divergentes entre si; a hierarquia está apenas documentada na nova documentação.
+    justificativa: A fonte da verdade deveria declarar a hierarquia, e não só a documentação derivada.
+    acao: Proposta de marcar o ciclo do AGENTS.md como normativo e os demais como visões estendidas.
+    arquivos: []
+    secao: "openspec/changes/bootstrap-agentic-engineering-team/design.md e openspec/changes/harden-engineering-dot/design.md"
+    status: Pendente
+    pendencia:
+      motivo: Altera documentos de design do OpenSpec, que são fontes normativas, e a instrução proíbe alterar o comportamento do sistema sem autorização específica.
+      decisao: O mantenedor confirmar que o ciclo do AGENTS.md é o único normativo.
+      proximo_passo: Abrir mudança OpenSpec que acrescente nota de hierarquia aos dois designs e reexecutar python scripts/validate.py.
+  - id: REC-005
+    titulo: Atribuir identificadores estáveis e matriz de rastreabilidade
+    problema: Apenas 24 requisitos têm identificador no OpenSpec (AGENT, AUTO, ORCH, PORT, QUAL), e o traceability.md da fonte cobre 22 deles (PORT-001 e PORT-003 ficaram sem cenário); as demais políticas (frescor, confiabilidade, dupla revisão, assurance, execução) não são rastreáveis a cenários ou critérios.
+    justificativa: Sem identificadores estáveis não há como relacionar regra, requisito, caso de uso e critério.
+    acao: Criados RF, RNF, RN, UC e CA com origem verificável e matriz regra x requisito x caso de uso x critério x fonte, gerada de um modelo único com verificador automático.
+    arquivos: [docs/03-requisitos-funcionais.md, docs/05-regras-de-negocio.md, docs/06-casos-de-uso.md, docs/07-matriz-rastreabilidade.md, docs/anexos/build/modelo.py]
+    secao: "03, 05, 06 e 07"
+    status: Aplicada
+  - id: REC-006
+    titulo: Formalizar os requisitos posteriores como especificação OpenSpec
+    problema: O diretório openspec/specs cobre só cinco capacidades originais; Atlas e Sentinel, endurecimento, garantia entre fornecedores, execução por CLI e contêineres não têm spec com identificadores.
+    justificativa: O README do OpenSpec determina acrescentar deltas de spec quando o comportamento muda.
+    acao: Os identificadores RF e RN desta documentação estão prontos para servir de base, mas não foram gravados em openspec/specs.
+    arquivos: []
+    secao: "openspec/specs/"
+    status: Pendente
+    pendencia:
+      motivo: Gravar em openspec/specs altera artefatos normativos que governam o comportamento dos agentes.
+      decisao: Aprovar a criação de uma mudança OpenSpec que importe os RF e RN como specs.
+      proximo_passo: Criar openspec/changes/formalize-requirements com proposal, design, tasks e deltas de spec, e rodar os validadores.
+  - id: REC-007
+    titulo: Atualizar a descrição dos validadores em docs/VALIDATION.md
+    problema: O documento afirma que scripts/validate.py verifica apenas artefatos obrigatórios, frontmatter de skills e marcadores do AGENTS.md. Hoje ele também exige fixtures de execução e o status único dos manifests de run, e o CI roda também scripts/validate_hardening.py.
+    justificativa: Documentação desatualizada subestima o que o CI prova e o que ele não prova.
+    acao: Reescrita a descrição, incluindo o segundo validador, as checagens novas, o harness e os limites do que a validação estrutural prova.
+    arquivos: [docs/VALIDATION.md]
+    secao: "docs/VALIDATION.md"
+    status: Aplicada
+  - id: REC-008
+    titulo: Ligar o README à documentação completa
+    problema: A lista Start here do README não referencia a documentação consolidada, a matriz de ambientes de execução, os runbooks de contêiner nem os relatórios de validação.
+    justificativa: Quem chega pelo README não encontra a documentação nem a evidência de validação.
+    acao: Acrescentados ao README links para docs/00-toc.md, docs/EXECUTION-ENVIRONMENTS.md, runbooks/CONTAINER-RUNTIMES.md e validation/FINAL-REPORT.md.
+    arquivos: [README.md]
+    secao: "README.md, Start here"
+    status: Aplicada
+  - id: REC-009
+    titulo: Alinhar o status das propostas OpenSpec ao estado das tarefas
+    problema: A proposta bootstrap-agentic-engineering-team consta como PLANNED enquanto suas fases estáticas estão marcadas como concluídas, e adopt-dot-native-architecture consta como PLANNED enquanto seu tasks.md declara IN_PROGRESS.
+    justificativa: O vocabulário de status do OpenSpec (PLANNED, IN_PROGRESS, BLOCKED, VALIDATED, DONE) perde valor se os status divergem.
+    acao: Divergência documentada; nenhum status foi alterado.
+    arquivos: []
+    secao: "openspec/changes/*/proposal.md"
+    status: Pendente
+    pendencia:
+      motivo: O status correto depende da decisão sobre o que conta como VALIDATED enquanto há tarefas ao vivo abertas, e o campo é metadado normativo.
+      decisao: Definir o status de cada mudança (por exemplo, IN_PROGRESS enquanto houver validação ao vivo pendente).
+      proximo_passo: Atualizar a linha Status das proposals após a decisão.
+  - id: REC-010
+    titulo: Alinhar a precedência do POLICY-MANIFEST ao AGENTS.md
+    problema: templates/POLICY-MANIFEST.yaml lista 6 níveis de precedência e omite os padrões gerais (nível 7 do AGENTS.md), além de usar nomes diferentes (por exemplo, native_platform_and_safety).
+    justificativa: O validador exige apenas que o primeiro item seja a plataforma nativa; o restante pode divergir sem detecção.
+    acao: Divergência documentada em 05-regras-de-negocio.md na regra RN-001; o template não foi alterado.
+    arquivos: []
+    secao: "templates/POLICY-MANIFEST.yaml"
+    status: Pendente
+    pendencia:
+      motivo: O template é versionado por schema_version, e acrescentar um item é mudança MINOR que exige a política de migração.
+      decisao: Aprovar a adição de general_defaults ao fim da lista.
+      proximo_passo: Editar o template, incrementar governance_version e estender scripts/validate_hardening.py para comparar com o AGENTS.md.
+  - id: REC-011
+    titulo: Alinhar o comando de validação do registro de projetos ao CI
+    problema: templates/PROJECT-REGISTRY.yaml declara python scripts/validate.py como validação do projeto, mas o CI também roda scripts/validate_hardening.py e instala pyyaml.
+    justificativa: Quem seguir o registro executa menos verificações que o CI.
+    acao: Divergência documentada em 02-visao-geral.md; o template não foi alterado.
+    arquivos: []
+    secao: "templates/PROJECT-REGISTRY.yaml"
+    status: Pendente
+    pendencia:
+      motivo: O template é versionado e consumido pelo Dot.
+      decisao: Decidir se o registro lista um ou os dois comandos.
+      proximo_passo: Atualizar o campo validation.command e registrar a dependência pyyaml.
+  - id: REC-012
+    titulo: Registrar lacunas e propostas dos requisitos não funcionais
+    problema: Não há metas definidas para desempenho, disponibilidade, escalabilidade e usabilidade.
+    justificativa: Requisito sem meta não é verificável; inventar metas seria falsificar a especificação.
+    acao: Lacunas registradas como tal, com valores observados reais e propostas marcadas como sujeitas à validação.
+    arquivos: [docs/04-requisitos-nao-funcionais.md]
+    secao: "04-requisitos-nao-funcionais.md"
+    status: Aplicada
+  - id: REC-013
+    titulo: Aprovar e fixar metas numéricas dos requisitos não funcionais
+    problema: As propostas de RNF-008 a RNF-011 aguardam aprovação.
+    justificativa: Sem decisão, os requisitos permanecem sem critério numérico.
+    acao: Propostas descritas em 04-requisitos-nao-funcionais.md.
+    arquivos: []
+    secao: "04-requisitos-nao-funcionais.md"
+    status: Pendente
+    pendencia:
+      motivo: As metas dependem de decisão do operador e de mais medições.
+      decisao: Aprovar, ajustar ou descartar cada proposta.
+      proximo_passo: Coletar mais execuções, fixar as metas no OpenSpec e acrescentar critérios de aceitação.
+  - id: REC-014
+    titulo: Documentar o contrato HTTP consumido pelo transporte via GitHub
+    problema: O sistema não expõe endpoint próprio, mas scripts/pr_chain.sh grava commit status pela API REST do GitHub sem contrato documentado.
+    justificativa: A interface consumida é a base do gate de revisão por SHA e deve ter contrato verificável.
+    acao: Criada a definição OpenAPI do trecho consumido (POST de commit status) e registrado que a API própria não existe.
+    arquivos: [docs/anexos/swagger/github-commit-status.yaml, docs/anexos/swagger/README.md]
+    secao: "02-visao-geral.md, Dependências e integrações, e anexos/swagger"
+    status: Aplicada
+  - id: REC-015
+    titulo: Eliminar a dependência da conta OpenAI compartilhada entre Atlas e Sentinel
+    problema: O Atlas e o Sentinel estão autenticados no mesmo usuário OpenAI (waiver W-001, validade até 2026-10-31), o que não comprova independência entre contas.
+    justificativa: A independência é premissa da arquitetura; sem ela, as revisões do Sentinel não são conclusivas sobre isolamento.
+    acao: Risco registrado nesta documentação e vinculado ao waiver W-001.
+    arquivos: []
+    secao: "08-observacoes-analises.md"
+    status: Pendente
+    pendencia:
+      motivo: Requer novo login interativo do operador numa segunda conta OpenAI.
+      decisao: Fornecer a segunda conta ou renovar o waiver W-001.
+      proximo_passo: Autenticar o sentinel-cli na segunda conta, verificar identidades distintas por hash do sub e reexecutar os cenários AS.
+  - id: REC-016
+    titulo: Exigir os statuses de revisão por branch protection
+    problema: Os statuses sentinel/review e argus/assurance são publicados, mas nada impede merge sem eles.
+    justificativa: Sem proteção de branch, o gate de revisão independente é apenas informativo.
+    acao: Nenhuma alteração feita nas configurações do repositório.
+    arquivos: []
+    secao: "Configurações do repositório"
+    status: Pendente
+    pendencia:
+      motivo: Altera configurações do repositório, ação que exige autorização expressa e permissão de administração.
+      decisao: Autorizar a regra de proteção da branch main.
+      proximo_passo: Configurar required status checks para validate, sentinel/review e argus/assurance.
+  - id: REC-017
+    titulo: Executar a validação ao vivo dos Dots e dos cenários restantes
+    problema: Atlas e Sentinel como Dots, aprovação nativa, concorrência de leases, H01, H03 a H10 e AS07 não foram exercitados.
+    justificativa: Sem execução, o comportamento permanece INCONCLUSIVE e não pode ser marcado PASS.
+    acao: Lacuna registrada por requisito e caso de uso em 03-requisitos-funcionais.md e 06-casos-de-uso.md.
+    arquivos: []
+    secao: "03 e 06"
+    status: Pendente
+    pendencia:
+      motivo: Depende da criação dos Dots nas contas ChatGPT do operador.
+      decisao: Instanciar o Atlas e o Sentinel conforme os runbooks.
+      proximo_passo: Executar templates/DOT-LIVE-VALIDATION-RUNBOOK.md e preservar a evidência em validation/runs.
+  - id: REC-018
+    titulo: Obter a tipografia principal da marca
+    problema: A tipografia principal oficial é Neue Haas Grotesk (Adobe Fonts), indisponível neste ambiente.
+    justificativa: A regra pede seguir a identidade oficial sem inventar substituições.
+    acao: Os PDFs usam Manrope, a tipografia secundária oficial, como decisão técnica de apresentação, registrada como tal.
+    arquivos: [docs/anexos/identidade/README.md]
+    secao: "anexos/identidade/README.md"
+    status: Pendente
+    pendencia:
+      motivo: A fonte é licenciada pela Adobe e não está instalada na máquina.
+      decisao: Fornecer a fonte licenciada ou aprovar o uso de Manrope.
+      proximo_passo: Instalar Neue Haas Grotesk e regenerar os PDFs com python docs/anexos/build/exportar.py.
+  - id: REC-019
+    titulo: Usar o logotipo oficial para fundo claro
+    problema: Na primeira inspeção do diretório de identidade, o logotipo com texto grafite só aparecia como imagem rasterizada dentro do manual, e não como arquivo.
+    justificativa: Recriar o logotipo contraria a regra de usar somente a versão oficial; faltava um arquivo oficial para páginas claras.
+    acao: Inspeção completa do diretório localizou o arquivo oficial no template MODELO ATA DE REUNIÃO (DOCX); ele foi copiado sem alteração e usado nas páginas internas, junto com a padronagem clara oficial. A assinatura Powered by BBTS SkillTech do cabeçalho do template não foi usada. Os arquivos ficam apenas localmente e não são versionados (REC-022).
+    arquivos: [docs/anexos/identidade/README.md, docs/anexos/identidade/hiveplace-logotipo-horizontal-fundo-claro.png, docs/anexos/identidade/padrao-hexagonos-claro.png]
+    secao: "anexos/identidade/README.md"
+    status: Aplicada
+  - id: REC-020
+    titulo: Definir autoria e classificação documental
+    problema: Nenhum artefato define o autor oficial nem a classificação dos documentos.
+    justificativa: A instrução proíbe inventar autoria e classificação.
+    acao: Registrado Não informado no front matter e nas capas.
+    arquivos: [docs/00-toc.md]
+    secao: "Front matter e capas"
+    status: Pendente
+    pendencia:
+      motivo: A informação não existe nos artefatos.
+      decisao: Informar autor e classificação (por exemplo, a etiqueta interna usada nos materiais da marca).
+      proximo_passo: Atualizar o front matter de todos os documentos e regenerar os PDFs.
+  - id: REC-021
+    titulo: Instalar e configurar o Vale
+    problema: O Vale não está instalado, e não há estilo oficial de Português do Brasil definido.
+    justificativa: A instrução pede conformidade com Vale ou ferramenta equivalente quando disponível.
+    acao: Executados markdownlint (formatação) e o verificador próprio de links, YAML e identificadores; a análise textual do Vale não foi executada.
+    arquivos: []
+    secao: "08-observacoes-analises.md, Verificações executadas"
+    status: Pendente
+    pendencia:
+      motivo: Não há binário nem configuração .vale.ini no ambiente.
+      decisao: Escolher os estilos do Vale para Português do Brasil.
+      proximo_passo: Instalar o Vale, adicionar .vale.ini e rodar sobre docs/.
+  - id: REC-022
+    titulo: Manter ativos de marca e PDFs fora do repositório público
+    problema: O repositório leandroclf/ai-engineering-team é público e os PNGs de identidade e os PDFs gerados embutem logotipo, símbolo e padronagens da HIVEPlace.
+    justificativa: Publicar material de marca de empresa em repositório pessoal público é decisão do operador, que optou por não publicá-lo.
+    acao: Os PNGs de identidade e todos os PDFs foram incluídos no .gitignore e permanecem só na máquina de origem; o README de identidade e os Markdown, que apenas descrevem a marca, são versionados. A documentação registra como regenerar os PDFs.
+    arquivos: [.gitignore, docs/anexos/identidade/README.md, docs/00-toc.md]
+    secao: ".gitignore e anexos/identidade"
+    status: Aplicada
+  - id: REC-023
+    titulo: Definir se o limite de retentativas conta tentativas totais ou adicionais
+    problema: docs/DOT-RELIABILITY.md fixa "3 attempts" (tentativas) para falhas transitórias, enquanto templates/TASK-ENVELOPE.yaml usa o campo max_retries com valor 3 (retentativas). Com a primeira execução, 3 retentativas somam 4 tentativas.
+    justificativa: A fonte permite duas leituras com resultados diferentes no mesmo cenário (H04); escolher uma delas arbitrariamente alteraria o comportamento.
+    acao: Divergência documentada em RN-025 sem escolher uma leitura.
+    arquivos: []
+    secao: "docs/DOT-RELIABILITY.md e templates/TASK-ENVELOPE.yaml"
+    status: Pendente
+    pendencia:
+      motivo: Os dois documentos são normativos e versionados, e a evidência disponível não indica a intenção.
+      decisao: O mantenedor decidir se o limite é de tentativas totais ou de retentativas.
+      proximo_passo: Alinhar o nome do campo ou o texto da política, incrementar a versão do template e cobrir com o cenário H04.
+  - id: REC-024
+    titulo: Esclarecer o enquadramento de mudanças de dependência em R2
+    problema: AGENTS.md e docs/SECURITY.md tratam dependências como R2; docs/workflows/dependency-change.md restringe a "mudanças materiais de dependências de runtime"; tests/scenarios.md (item 4) diz que mudança de dependência é no mínimo R2.
+    justificativa: Sem critério de materialidade, o mesmo ajuste pode ser classificado em R1 ou R2, mudando a exigência de revisão independente.
+    acao: Divergência documentada em RN-004 sem definir o critério.
+    arquivos: []
+    secao: "docs/workflows/dependency-change.md"
+    status: Pendente
+    pendencia:
+      motivo: Definir materialidade é decisão de governança que altera a classificação de risco.
+      decisao: Definir se toda mudança de dependência é R2 ou qual critério torna uma mudança material.
+      proximo_passo: Atualizar o workflow e o AGENTS.md pela política de migração e acrescentar cenário de teste.

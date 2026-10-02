@@ -1,0 +1,63 @@
+/* Estilo dos PDFs. Cores: paleta oficial do manual V.3 (ver docs/anexos/identidade/README.md).
+   Tons de destaque das caixas (--tint-*) são derivados da paleta: decisão técnica de apresentação, não definição oficial. */
+:root {
+  --preto: #0D0D0E; --marrom-escuro: #332528; --dourado: #EFB41B; --dourado-escuro: #D98E06; --marrom: #5D2E07;
+  --grafite: #1A1214; --grafite-2: #1A1A1C; --cinza: #404146; --branco-gelo: #EEF1F0;
+  --tint-atencao: #FBF1D6; --tint-ok: #EEF1F0; --tint-alt: #F3EAE3;
+}
+* { box-sizing: border-box; }
+html { font-family: "Manrope", sans-serif; }
+body { font-size: 9.2pt; line-height: 1.5; color: var(--grafite); margin: 0; overflow-wrap: break-word; }
+
+/* Capa: página nomeada sem margens e sem caixas de margem (cabeçalho e rodapé) */
+@page capa { size: A4; margin: 0; background: none; }
+.nb { white-space: nowrap; }
+.capa { page: capa; position: relative; z-index: 10; width: 210mm; height: 297mm; overflow: hidden; background: var(--marrom-escuro);
+  color: var(--branco-gelo); page-break-after: always; break-after: page; }
+.capa .padrao { position: absolute; right: -35mm; top: 10mm; width: 190mm; height: 197mm; opacity: .55;
+  background: url("{{PADRAO_ESCURO}}") no-repeat center / contain; }
+.capa .logo { position: absolute; left: 22mm; top: 24mm; width: 72mm; }
+.capa .bloco { position: absolute; left: 22mm; right: 22mm; top: 112mm; }
+.capa .rotulo { color: var(--dourado); font-weight: 700; font-size: 10pt; letter-spacing: .18em; text-transform: uppercase; }
+.capa h1 { margin: 6mm 0 4mm; font-size: 30pt; line-height: 1.15; font-weight: 800; color: #fff; border: 0; padding: 0; }
+.capa .sub { font-size: 13pt; font-weight: 300; color: var(--branco-gelo); max-width: 140mm; }
+.capa .filete { width: 28mm; height: 1.2mm; background: var(--dourado); margin-top: 9mm; }
+.capa table.meta { position: absolute; left: 22mm; bottom: 24mm; border-collapse: collapse; font-size: 9pt; }
+.capa table.meta td { padding: 1.3mm 8mm 1.3mm 0; border: 0; color: var(--branco-gelo); background: transparent; }
+.capa table.meta td:first-child { color: var(--dourado); font-weight: 700; }
+.capa table.meta tr:nth-child(even) td { background: transparent; }
+
+h1, h2, h3, h4 { color: var(--marrom-escuro); font-weight: 800; line-height: 1.25; break-after: avoid; }
+h1 { font-size: 20pt; margin: 0 0 5mm; padding-bottom: 2.5mm; border-bottom: 1.2pt solid var(--dourado); }
+h2 { font-size: 13.5pt; margin: 8mm 0 3mm; padding-bottom: 1.2mm; border-bottom: .6pt solid var(--cinza); }
+h3 { font-size: 10.5pt; margin: 5.5mm 0 2mm; }
+h4 { font-size: 9.5pt; margin: 4mm 0 1.5mm; }
+p { margin: 0 0 2.6mm; }
+a { color: var(--marrom); text-decoration: none; border-bottom: .4pt solid var(--dourado-escuro); }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin: 0 0 1mm; }
+strong { font-weight: 700; }
+img { max-width: 100%; max-height: 205mm; display: block; margin: 3mm auto; }
+hr { border: 0; border-top: .6pt solid var(--cinza); margin: 5mm 0; }
+
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 4.5mm; font-size: 7.6pt; line-height: 1.38; page-break-inside: auto; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th { background: var(--marrom-escuro); color: var(--branco-gelo); text-align: left; font-weight: 700; padding: 1.6mm 2mm; border: .4pt solid var(--marrom-escuro); }
+td { padding: 1.4mm 2mm; border: .4pt solid #C9CDCC; vertical-align: top; }
+tbody tr:nth-child(even) td { background: var(--branco-gelo); }
+
+code { font-family: "DejaVu Sans Mono", monospace; font-size: .86em; background: var(--branco-gelo); padding: .2mm .9mm; border-radius: .6mm; color: var(--grafite); }
+pre { background: var(--branco-gelo); border-left: 1.2mm solid var(--dourado); margin: 2mm 0 4mm; padding: 2.4mm 3mm; white-space: pre-wrap; overflow-wrap: anywhere; break-inside: avoid; }
+pre code { background: transparent; padding: 0; font-size: 7.6pt; line-height: 1.4; }
+td code { font-size: .92em; overflow-wrap: anywhere; }
+td a { white-space: nowrap; }
+
+li.atencao, p.atencao { background: var(--tint-atencao); border-left: 1.1mm solid var(--dourado-escuro); padding: 1.6mm 2.4mm; list-style: none; margin-left: -6mm; }
+li.confirmado, p.confirmado { background: var(--tint-ok); border-left: 1.1mm solid var(--cinza); padding: 1.6mm 2.4mm; list-style: none; margin-left: -6mm; }
+li.alterado, p.alterado { background: var(--tint-alt); border-left: 1.1mm solid var(--marrom); padding: 1.6mm 2.4mm; list-style: none; margin-left: -6mm; }
+p.atencao, p.confirmado, p.alterado { margin-left: 0; }
+.nav { font-size: 8pt; color: var(--cinza); margin-bottom: 4mm; }
+
+/* Em paisagem, o texto corrido não ocupa a largura toda (legibilidade); tabelas continuam em largura total. */
+.paisagem p, .paisagem ul, .paisagem ol, .paisagem pre { max-width: 205mm; }
