@@ -1,0 +1,188 @@
+catalog_version: 1.0.0
+schema_version: 1.0.0
+repository: leandroclf/ai-engineering-team
+license: repository-governance
+publisher: ai-engineering-team
+skills:
+  - id: tech-lead
+    path: skills/tech-lead
+    version: 1.1.0
+    status: stable
+    category: orchestration
+    tags: [planning, risk, evidence, lifecycle]
+    owner: engineering-governance
+    risk: R1
+    requires: []
+    composes_with: [architect, qa, security, code-review, observability]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [objective, repository-context, acceptance-criteria]
+    outputs: [plan, selected-capabilities, validation-report, residual-risks]
+    quality_gates: [freshness, risk-classification, executed-validation, evidence]
+  - id: architect
+    path: skills/architect
+    version: 1.1.0
+    status: stable
+    category: design
+    tags: [architecture, boundaries, trade-offs, migration]
+    owner: engineering-governance
+    risk: R2
+    requires: []
+    composes_with: [backend, security, observability, code-review]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [objective, repository-context, constraints]
+    outputs: [architecture-options, decision-record, compatibility-risks]
+    quality_gates: [alternatives, trade-offs, migration-impact]
+  - id: backend
+    path: skills/backend
+    version: 1.1.0
+    status: stable
+    category: implementation
+    tags: [api, data, concurrency, idempotency]
+    owner: engineering-governance
+    risk: R2
+    requires: []
+    composes_with: [architect, qa, security, observability]
+    supported_surfaces: [codex, local-ai-team]
+    inputs: [change-request, contracts, repository-conventions]
+    outputs: [implementation, tests, compatibility-notes]
+    quality_gates: [input-validation, error-contract, concurrency, regression-tests]
+  - id: qa
+    path: skills/qa
+    version: 1.1.0
+    status: stable
+    category: quality
+    tags: [testing, regression, risk-based-validation, failure-modes]
+    owner: engineering-governance
+    risk: R1
+    requires: []
+    composes_with: [backend, architect, security, observability]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [requirements, changed-surface, failure-modes]
+    outputs: [test-strategy, test-cases, executed-results, gaps]
+    quality_gates: [changed-behavior, boundaries, failures, honest-results]
+  - id: security
+    path: skills/security
+    version: 1.1.0
+    status: stable
+    category: security
+    tags: [threat-model, auth, secrets, supply-chain]
+    owner: engineering-governance
+    risk: R2
+    requires: []
+    composes_with: [architect, backend, qa, observability]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [change-request, trust-boundaries, data-classification]
+    outputs: [threats, mitigations, security-findings, residual-risk]
+    quality_gates: [least-privilege, secret-safety, injection, dependency-review]
+  - id: code-review
+    path: skills/code-review
+    version: 1.1.0
+    status: stable
+    category: assurance
+    tags: [review, regression, scope, evidence]
+    owner: engineering-governance
+    risk: R1
+    requires: []
+    composes_with: [architect, backend, qa, security, observability]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [diff, objective, validation-evidence]
+    outputs: [findings, severity, disposition, residual-risks]
+    quality_gates: [concrete-locations, impact-ranking, no-fabricated-findings]
+  - id: observability
+    path: skills/observability
+    version: 1.1.0
+    status: stable
+    category: operations
+    tags: [logs, metrics, traces, slo, alerts]
+    owner: engineering-governance
+    risk: R2
+    requires: []
+    composes_with: [architect, backend, security, qa]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [change-request, runtime-signals, service-objectives]
+    outputs: [signals, dashboards, alerts, slo-impact]
+    quality_gates: [diagnosability, cardinality, correlation, alertability]
+  - id: java-spring
+    path: skills/java-spring
+    version: 1.1.0
+    status: stable
+    category: stack
+    tags: [java, spring, maven, gradle, webflux]
+    owner: engineering-governance
+    risk: R2
+    requires: [backend]
+    composes_with: [qa, security, observability]
+    supported_surfaces: [codex, local-ai-team]
+    inputs: [java-repository, spring-version, build-tool]
+    outputs: [stack-aligned-change, tests, build-results]
+    quality_gates: [native-build, reactive-boundaries, dependency-compatibility]
+  - id: node-typescript
+    path: skills/node-typescript
+    version: 1.1.0
+    status: stable
+    category: stack
+    tags: [node, typescript, npm, pnpm, yarn]
+    owner: engineering-governance
+    risk: R2
+    requires: [backend]
+    composes_with: [qa, security, observability]
+    supported_surfaces: [codex, local-ai-team]
+    inputs: [node-repository, package-manager, runtime]
+    outputs: [stack-aligned-change, tests, typecheck-results]
+    quality_gates: [lockfile, strict-types, async-errors, native-scripts]
+  - id: python-fastapi
+    path: skills/python-fastapi
+    version: 1.1.0
+    status: stable
+    category: stack
+    tags: [python, fastapi, pydantic, async]
+    owner: engineering-governance
+    risk: R2
+    requires: [backend]
+    composes_with: [qa, security, observability]
+    supported_surfaces: [codex, local-ai-team]
+    inputs: [python-repository, python-version, package-manager]
+    outputs: [stack-aligned-change, schemas, tests]
+    quality_gates: [sync-async-boundary, schema-compatibility, native-tests]
+  - id: aws
+    path: skills/aws
+    version: 1.1.0
+    status: stable
+    category: platform
+    tags: [aws, iam, networking, encryption, queues]
+    owner: engineering-governance
+    risk: R3
+    requires: [security, observability]
+    composes_with: [architect, backend, qa]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [aws-repository, environment, data-classification]
+    outputs: [iac-change, permission-model, operational-controls]
+    quality_gates: [least-privilege, encryption, retry-idempotency, rollback]
+  - id: kubernetes
+    path: skills/kubernetes
+    version: 1.1.0
+    status: stable
+    category: platform
+    tags: [kubernetes, helm, kustomize, rollout, reliability]
+    owner: engineering-governance
+    risk: R3
+    requires: [security, observability]
+    composes_with: [architect, backend, qa]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [cluster-manifests, environment, service-objectives]
+    outputs: [manifest-change, rollout-plan, health-gates]
+    quality_gates: [resources, probes, security-context, dry-run]
+  - id: github-workflow
+    path: skills/github-workflow
+    version: 1.1.0
+    status: stable
+    category: delivery
+    tags: [git, github, pull-request, ci, release]
+    owner: engineering-governance
+    risk: R2
+    requires: [code-review]
+    composes_with: [qa, security, observability]
+    supported_surfaces: [codex, dot, local-ai-team]
+    inputs: [repository-state, branch-policy, validation-results]
+    outputs: [branch, commit, pull-request, ci-evidence]
+    quality_gates: [fresh-base, scoped-commits, required-checks, explicit-merge]
