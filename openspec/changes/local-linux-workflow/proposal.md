@@ -1,6 +1,6 @@
 # Local Linux workflow
 
-Status: IN_IMPLEMENTATION; authenticated acceptance required before production readiness.
+Status: VALIDATED_REPOSITORY_AND_CONTAINER; authenticated acceptance required before production readiness.
 
 ## Objective
 From the root of an existing Git repository, an operator can issue one request and obtain a planned, implemented, tested and independently reviewed branch. Atlas and Sentinel use Codex; Argus uses Claude. A small deterministic CLI coordinates official executors, without replacing Dots or inventing provider agents.

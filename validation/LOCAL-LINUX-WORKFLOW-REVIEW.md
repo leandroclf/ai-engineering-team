@@ -10,6 +10,8 @@ Deterministic tests exercise actual Git clone/commits/import and subprocess fail
 
 The CI runtime job builds real pinned provider CLIs, probes help/login state without login, and runs a real container canary asserting non-root execution, no account file/API environment/socket, blocked outbound network, writable temporary checkout and unchanged mounted source. CI completion must be observed on the published SHA before reporting PASS.
 
+Observed: commit `99a84d7a46c2cc20933b42bbc535653bd2fd4a1c`, 82 tests PASS (23 harness + 59 unit, including 19 new local-workflow tests). Structural/hardening/schema/docs/shell checks PASS. CI push [37082236871](https://github.com/leandroclf/ai-engineering-team/actions/runs/37082236871) and PR [37082259099](https://github.com/leandroclf/ai-engineering-team/actions/runs/37082259099) completed success. Installer ran on Ubuntu runner, installed command returned 0.1.0, offline container printed `offline credential-free boundary PASS` and `source_unchanged: true`. Both official CLI pins installed successfully; no authenticated model task ran.
+
 ## Limits that must remain visible
 LIVE acceptance on the operator host is open. Account independence, subscription availability, real structured-output transport, native revocation and remote cancellation cannot be inferred from mocks. Interrupted or ambiguous external writes require manual reconciliation. Native before-tool enforcement remains follow-up; Atlas can execute commands under provider policy, despite the instruction that host owns test execution. Host/user/Docker daemon are trusted. No automatic merge/deploy or guarantee of autonomous production readiness.
 

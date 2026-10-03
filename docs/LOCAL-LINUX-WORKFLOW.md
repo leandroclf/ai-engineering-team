@@ -7,7 +7,7 @@ Release inicial: 0.1.0. CLI para tarefas supervisionadas e ciclos locais limitad
 Pré-requisitos: Linux, Git, Python 3.10+ com venv, Docker Engine/Compose acessível ao usuário; `gh` é necessário somente para PR. Acesso ao daemon Docker é uma autoridade ampla do host: não entregar socket ao agente. O instalador não usa sudo, não muda grupos e não instala pacotes do sistema.
 
 ```bash
-git clone https://github.com/leandroclf/ai-engineering-team.git
+git clone --branch feat/local-linux-workflow https://github.com/leandroclf/ai-engineering-team.git
 cd ai-engineering-team
 bash scripts/install-local.sh
 export PATH="$HOME/.local/bin:$PATH"
@@ -15,6 +15,8 @@ ai-team --help
 ```
 
 Mantenha o checkout do framework; o link instalado depende dele. Atualize deliberadamente via Git e repita instalação/build, sem atualização durante uma tarefa. `.venv` não é versionado. O instalador preserva um comando ai-team preexistente de outra instalação.
+
+A branch acima contém a entrega da PR #12. Depois da integração, uma instalação nova poderá usar main. Não confundir a publicação da branch com merge ou implantação.
 
 ## Autenticar
 
@@ -42,6 +44,29 @@ ai-team init --test-image meu-site-tests:local \
 `meu-site-tests:local` precisa existir e conter ferramentas/dependências necessárias para executar sem rede. Prepare a imagem de testes conforme a stack do site; não colocar credenciais no Dockerfile nem na imagem. Para Python padrão, uma imagem Python previamente baixada pode bastar; para Node com dependências, use imagem própria com cache offline e inclua a cópia das dependências no comando. Não executar npm ci com expectativa de internet neste runner.
 
 Configuração fica em `$XDG_STATE_HOME/ai-team/projects/<id>/config.json` (padrão `~/.local/state`). O caminho é exibido pelo init. Verifique os comandos antes de usar: são shell dentro do container de testes, nunca no host. O init não sobrescreve configuração existente. Limites: `--timeout` por etapa, `--max-cycles` até cinco e `--max-seconds` até oito horas; padrão 900 segundos/3 ciclos/2 horas.
+
+### Exemplo de imagem para um site npm
+
+Se seu projeto usa `package-lock.json`, prepare este Dockerfile de testes fora do framework (ajuste a versão Node ao projeto):
+
+```dockerfile
+FROM node:22-bookworm-slim
+WORKDIR /deps
+COPY package.json package-lock.json ./
+RUN npm ci
+WORKDIR /work
+```
+
+Construa deliberadamente no repositório alvo, sem incluir arquivos de credenciais:
+
+```bash
+docker build -f Dockerfile.tests -t meu-site-tests:local .
+ai-team init --test-image meu-site-tests:local \
+  --check 'cp -R /deps/node_modules /work/node_modules' \
+  --check 'npm run lint' --check 'npm test' --check 'npm run build'
+```
+
+Esse exemplo requer que os scripts existam no package.json. O build da imagem obtém dependências com rede antes da tarefa; a execução dos checks fica offline. Se Atlas alterar o lockfile, reconstrua a imagem e configure uma nova tarefa: a imagem de uma tarefa iniciada é imutável. Não reutilize dependências antigas como evidência para um novo lockfile.
 
 ## Pedir trabalho
 
