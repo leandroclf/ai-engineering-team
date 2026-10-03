@@ -10,6 +10,8 @@ status: "Rascunho para revisão"
 
 # Requisitos não funcionais
 
+> Baseline de requisitos/analises: revisão `791ac89`, 2026-10-01. Identificadores e recomendações históricas são preservados. Para operação atual, use [guia Linux](LOCAL-LINUX-WORKFLOW.md), [visão geral atualizada](02-visao-geral.md) e [reconciliação documental](DOCUMENTATION-REVIEW.md). Esta baseline não certifica o fluxo local nem comportamento ao vivo.
+
 Navegação: [Índice](00-toc.md) · anterior: [03 Requisitos funcionais](03-requisitos-funcionais.md) · próximo: [05 Regras de negócio](05-regras-de-negocio.md)
 
 ## Como ler

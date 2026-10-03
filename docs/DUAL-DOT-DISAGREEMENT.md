@@ -1,5 +1,7 @@
 # Atlas/Sentinel Disagreement and Waiver Protocol
 
+This is the native governance protocol. The local CLI requires blocking findings to be resolved and verified in its JSON schema; it has no waiver import command. Do not edit local state or review output to bypass a blocked gate. See [local workflow](LOCAL-LINUX-WORKFLOW.md).
+
 A disagreement is a first-class engineering artifact.
 
 Sentinel findings contain claim, severity, affected revision/path, reproduction/evidence, expected property and remediation guidance when known. Atlas responds with FIXED, DISPUTED, ACCEPTED_RISK or NOT_APPLICABLE and evidence.

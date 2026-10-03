@@ -1,5 +1,9 @@
 # Claude Assurance Runbook
 
+## Local Linux entry point
+
+Use `ai-team login argus` and `ai-team doctor` after [installation](../docs/LOCAL-LINUX-WORKFLOW.md). The coordinator supplies read-only checkout, exact SHA and a required JSON review schema; Argus does not execute checkout tests. Both local reviewers are mandatory. The broader assurance templates below apply to native/harness protocols; the CLI uses [provider-review.schema.json](../schemas/provider-review.schema.json).
+
 ## Mandatory execution model
 All Anthropic assurance/engineering steps in this architecture are executed through **Claude Code CLI using the operator's already-configured Claude subscription account**. OpenAI/Codex engineering steps are executed through the **official OpenAI/Codex CLI using the operator's already-configured OpenAI subscription account**.
 

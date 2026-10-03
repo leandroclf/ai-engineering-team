@@ -1,5 +1,7 @@
 # Dual-Dot Authority Matrix
 
+Scope: native Dot governance. Local `ai-team` requires both Sentinel and Argus for all tasks; it implements no waiver/permission expansion command or automatic merge. See [local contract](LOCAL-LINUX-WORKFLOW.md).
+
 | Action | Atlas | Sentinel | Operator |
 |---|---|---|---|
 | Intake/prioritize | Owns | Advises | Overrides |

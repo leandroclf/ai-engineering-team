@@ -1,5 +1,9 @@
 # ai-engineering-team — OpenSpec Project
 
+## Implemented operation
+
+The Linux `ai-team` CLI supplies a bounded local coordinator around official Codex/Claude CLIs, isolated checks and explicit branch/PR delivery. It is not a persistent proprietary model runtime. See [local operation change](changes/local-linux-workflow/tasks.md) and [Linux guide](../docs/LOCAL-LINUX-WORKFLOW.md). Native Dot/portfolio behavior and authenticated operator-host acceptance remain separate goals.
+
 ## Vision
 Create a reusable agentic software-engineering operating model for Codex. A Tech Lead coordinates specialized capabilities and applies repository-local context, quality gates, evidence-based validation, and controlled autonomy.
 

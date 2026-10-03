@@ -1,4 +1,6 @@
 # Engineering Dot Operating Model
+
+Scope: native persistent Dots. The implemented local `ai-team` command runs bounded tasks on the Linux host; it does not install schedules or instantiate Dots. See [local workflow](LOCAL-LINUX-WORKFLOW.md).
 ## Loop
 Observe approved project context -> identify bounded useful work -> classify/route -> delegate when needed -> collect evidence -> report -> incorporate feedback -> update specs/rules when justified.
 

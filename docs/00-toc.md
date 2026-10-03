@@ -10,6 +10,12 @@ status: "Rascunho para revisão"
 
 # Documentação técnica do ai-engineering-team
 
+## Operação atual — 2026-10-03
+
+O CLI Linux foi integrado à main pela PR #12 (`68f7f60`). Comece pelo [guia Linux](LOCAL-LINUX-WORKFLOW.md), [checklist local](../templates/LOCAL-WORKFLOW-BOOTSTRAP.md), [onboarding](PROJECT-ONBOARDING.md), [validação](VALIDATION.md) e [revisão documental](DOCUMENTATION-REVIEW.md). Os templates de Dots e o harness histórico têm entradas próprias. Aceitação autenticada no host do operador continua [pendente](../openspec/changes/local-linux-workflow/tasks.md).
+
+O conjunto numerado abaixo preserva a baseline de requisitos de 2026-10-01; a visão geral foi reconciliada com a implementação atual. Contagens, recomendações e evidências da análise original não devem ser interpretadas como inventário ou certificação atual.
+
 ## Identificação do documento
 
 | Campo | Valor |
@@ -21,7 +27,7 @@ status: "Rascunho para revisão"
 | Versão | 1.0.0 |
 | Classificação | Não informada |
 | Status | Rascunho para revisão |
-| Revisão do repositório analisada | `791ac89` (branch `main`) |
+| Revisão da baseline analisada | `791ac89` (branch `main`) |
 
 O autor e a classificação não constam nos artefatos analisados e não foram inventados (REC-020). Esta documentação foi produzida por análise assistida por IA a pedido do operador, sem aprovação humana de conteúdo registrada.
 
@@ -48,7 +54,7 @@ Anexos:
 | [anexos/identidade/](anexos/identidade/) | Registro de origem, uso, decisões e pendências da identidade visual (os arquivos de imagem não são versionados) |
 | [anexos/build/](anexos/build/) | Modelo de rastreabilidade, verificador, gerador de seções e exportador de PDF |
 
-## Escopo analisado
+## Escopo analisado na baseline
 
 Os **157 arquivos versionados** fora de `validation/runs/`, na revisão `791ac89`, foram lidos. O diretório `validation/runs/` (104 runs com manifest em 107 diretórios, 18 MB) foi tratado como **dados**: o status de todos os manifests foi agregado, e os relatórios e eventos foram lidos individualmente apenas dos runs que sustentam as conclusões desta documentação.
 

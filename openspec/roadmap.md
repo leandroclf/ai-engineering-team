@@ -41,3 +41,11 @@ Earlier OPENAI-CLI-A blockers and the open S02 defect above have been superseded
 
 ## Official provider guidance alignment
 Repository implementation and tests are prepared in `changes/align-provider-official-guidance/`. Follow the P0/P1 acceptance criteria there for trusted action adapters, credential-free tests, immutable evidence, actual CLI compatibility and distinct Dot cancellation/revocation behavior. D8 remains open.
+
+## M11 — Local Linux workflow (2026-10-03)
+
+Implemented and merged via PR #12 (`68f7f60`): install once, role logins, external target config, independent clone, host commits, isolated offline checks, two exact-head reviews, bounded repair/recovery and explicit delivery. Real credential-free Docker/installation canaries passed in CI. Authenticated operator-host acceptance and account independence remain open in [local tasks](changes/local-linux-workflow/tasks.md). This does not close live Dot or trusted per-tool adapter gates.
+
+## M12 — Documentation and bootstrap alignment
+
+Reconcile current local operation with native Dot templates and historical validation harness; update installation from main, onboarding, recovery, delivery and documentation navigation. Harden bootstrap preflight/destination/build ordering and include executable regression/link checks. Track acceptance in [documentation alignment](changes/align-workflow-documentation/tasks.md).

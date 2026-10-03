@@ -1,5 +1,7 @@
 # Routing Matrix
 
+The table describes native platform routing. Local `ai-team` has a fixed bounded implementation/check/two-review contract rather than dynamic Dot routing; see [local workflow](LOCAL-LINUX-WORKFLOW.md). Specialist skills are still selected according to task need.
+
 | Work | Default surface | Escalate when |
 |---|---|---|
 | Persistent coordination, portfolio triage, proactive follow-up | Engineering Dot | repository mutation is needed |

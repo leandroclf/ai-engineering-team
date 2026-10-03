@@ -4,11 +4,12 @@ Release inicial: 0.1.0. CLI para tarefas supervisionadas e ciclos locais limitad
 
 ## Instalar uma vez
 
-Pré-requisitos: Linux, Git, Python 3.10+ com venv, Docker Engine/Compose acessível ao usuário; `gh` é necessário somente para PR. Acesso ao daemon Docker é uma autoridade ampla do host: não entregar socket ao agente. O instalador não usa sudo, não muda grupos e não instala pacotes do sistema.
+Pré-requisitos: Linux, Git, Python 3.10+ com venv/ensurepip e Docker Engine acessível ao usuário; `gh` é necessário somente para PR. Docker Compose é usado pelo harness histórico, não pelo CLI local. Acesso ao daemon Docker é uma autoridade ampla do host: não entregar socket ao agente. O instalador não usa sudo, não muda grupos e não instala pacotes do sistema.
 
 ```bash
-git clone --branch feat/local-linux-workflow https://github.com/leandroclf/ai-engineering-team.git
+git clone --branch main https://github.com/leandroclf/ai-engineering-team.git
 cd ai-engineering-team
+bash scripts/install-local.sh --check
 bash scripts/install-local.sh
 export PATH="$HOME/.local/bin:$PATH"
 ai-team --help
@@ -16,7 +17,9 @@ ai-team --help
 
 Mantenha o checkout do framework; o link instalado depende dele. Atualize deliberadamente via Git e repita instalação/build, sem atualização durante uma tarefa. `.venv` não é versionado. O instalador preserva um comando ai-team preexistente de outra instalação.
 
-A branch acima contém a entrega da PR #12. Depois da integração, uma instalação nova poderá usar main. Não confundir a publicação da branch com merge ou implantação.
+O fluxo 0.1.0 foi integrado à main na PR #12. `--check` verifica plataforma, executáveis, Python, acesso ao daemon e conflito do destino sem instalar nada; não verifica login nem dependências offline do alvo. `--help` mostra as opções. O build precisa terminar com sucesso antes de publicar um novo link. Falhas podem deixar a venv ou camadas Docker: corrija a causa e repita o instalador; não apague dados de contas como recuperação.
+
+Por padrão o destino é `~/.local/bin/ai-team`; `AI_TEAM_BIN_DIR` permite outro diretório do usuário. Ajuste PATH para esse diretório. Arquivos, diretórios e links quebrados de outra instalação são preservados. O bootstrap não altera seu perfil de shell, não faz login e precisa de rede para obter pacotes/imagem. Para atualizar, encerre tarefas, confira o checkout do framework, atualize via Git e repita preflight/instalação. Os IDs das imagens já congelados em tarefas não são atualizados.
 
 ## Autenticar
 
@@ -29,11 +32,11 @@ ai-team doctor
 
 Cada função usa seu próprio volume `ai-team-<role>-home`, distinto dos volumes antigos de Compose. Atlas/Sentinel devem usar contas distintas para satisfazer W-001; usar janelas privadas distintas no login. Argus usa a assinatura configurada do Claude. Não há API key nem escolha implícita de modelo introduzida pelo coordenador. Login é feito diretamente na interface oficial; não envie credenciais ao chat.
 
-Doctor verifica executáveis, imagem, capacidades e disponibilidade de login; não comprova contas distintas, acesso ao projeto ou correção das respostas. Logins consomem a assinatura conforme as regras do provedor. Timeout/turnos não são limite de cobrança.
+Doctor verifica executáveis, imagem, capacidades e disponibilidade de login; retorna código 2 se requisitos ou logins obrigatórios faltarem. A ausência de gh não bloqueia trabalho local. Doctor não comprova contas distintas, acesso ao projeto ou correção das respostas. Logins consomem a assinatura conforme as regras do provedor. Timeout/turnos não são limite de cobrança.
 
 ## Configurar o repositório alvo
 
-Na raiz do seu site, com checkout limpo e branch nomeada:
+Na raiz do seu site, com checkout limpo, branch nomeada e origin configurado. Salve/commite o trabalho existente antes de iniciar; não use stash/reset automático para contornar a proteção. O exemplo simples abaixo pressupõe dependências disponíveis na imagem; para npm, use a imagem e os checks completos da próxima seção:
 
 ```bash
 cd ~/projetos/meu-site
@@ -57,7 +60,7 @@ RUN npm ci
 WORKDIR /work
 ```
 
-Construa deliberadamente no repositório alvo, sem incluir arquivos de credenciais:
+Salve o exemplo como `Dockerfile.tests`, revise o contexto de build e configure `.dockerignore` para excluir credenciais. Commite os arquivos de configuração no alvo antes de `run`, pois o checkout deve estar limpo. Construa deliberadamente no repositório alvo:
 
 ```bash
 docker build -f Dockerfile.tests -t meu-site-tests:local .
@@ -115,4 +118,21 @@ Atlas recebe a instrução de não executar código de testes no container auten
 4. Entregar branch/PR e observar CI do SHA final; configurar proteção de merge com autorização específica.
 5. Somente então aumentar escopo e autonomia; manter merge/deploy separados.
 
-Planejamento: `openspec/changes/local-linux-workflow/`. Referências verificadas: [Codex não interativo](https://learn.chatgpt.com/docs/non-interactive-mode), [Claude CLI](https://code.claude.com/docs/en/cli-reference), [Docker run](https://docs.docker.com/engine/containers/run/).
+## Referência de comandos e diagnóstico
+
+| Comando | Uso |
+| --- | --- |
+| `ai-team --help`, `ai-team <comando> --help`, `ai-team --version` | Consultar a interface instalada |
+| `ai-team doctor` | Probes de ferramentas, imagem e três logins |
+| `ai-team login atlas`, `ai-team login sentinel`, `ai-team login argus` | Login interativo de uma função por vez |
+| `ai-team init --test-image IMAGEM --check COMANDO` | Configuração externa; repetir checks na ordem de execução |
+| `ai-team run 'pedido'` | Tarefa supervisionada; `--background` desacopla o processo local |
+| `ai-team status [task-id]` | Listar ou inspecionar tarefas |
+| `ai-team stop task-id`, `ai-team resume task-id` | Parada local e retomada em checkpoint seguro |
+| `ai-team deliver task-id`, `--push`, `--pr` | Branch local, publicação ou PR draft explícitos |
+
+Erros de instalação: confirme Python com venv/ensurepip, serviço Docker e acesso do usuário; use o gerenciador de pacotes da distribuição para corrigir pré-requisitos. Se o checkout do framework foi movido ou removido, reinstale a partir do novo caminho e resolva o link anterior deliberadamente. Não execute o instalador com sudo para contornar acesso ao daemon.
+
+Estado/evidências usam `$XDG_STATE_HOME/ai-team` (padrão `~/.local/state/ai-team`), com configuração por projeto e clone/logs por tarefa. Preserve o diretório para recuperação; logs podem conter dados sensíveis e não há expurgo automático. Os volumes de login Docker têm ciclo de vida separado. Faça backup privado das evidências necessárias, sem versionar credenciais.
+
+Planejamento: [tarefas e aceitação](../openspec/changes/local-linux-workflow/tasks.md). Referências registradas na revisão de provedores: [Codex não interativo](https://learn.chatgpt.com/docs/non-interactive-mode), [Claude CLI](https://code.claude.com/docs/en/cli-reference), [Docker run](https://docs.docker.com/engine/containers/run/).

@@ -1,5 +1,11 @@
 # Sentinel — Secondary Account Setup
 
+## Local Linux
+
+Use `ai-team login sentinel` after [installation](../docs/LOCAL-LINUX-WORKFLOW.md), with a distinct OpenAI account from Atlas, then `ai-team doctor`. This configures the read-only reviewer CLI volume; it does not instantiate a Sentinel Dot.
+
+## Native Dot setup
+
 1. Sign into the secondary eligible OpenAI account and create/name the Dot Sentinel.
 2. Apply templates/SENTINEL-BOOTSTRAP.md plus applicable Custom Rules.
 3. Connect GitHub with read/review minimum privilege where available.

@@ -14,9 +14,9 @@ Navegação: [Índice](00-toc.md) · anterior: [01 Contexto](01-contexto.md) · 
 
 ## Natureza da solução
 
-✅ **Confirmado:** o ai-engineering-team é um conjunto de **artefatos declarativos** (Markdown e YAML) acompanhados de scripts de validação e orquestração. Não há servidor, banco de dados nem interface própria. O próprio `docs/VALIDATION.md` registra que o framework é "primariamente Markdown declarativo".
+✅ **Confirmado na implementação atual:** o projeto combina governança declarativa (Markdown/YAML/JSON) com o CLI Linux `ai-team`, scripts de validação e harness. Não há servidor, banco de dados ou interface web próprios. A interface de operação é a linha de comando; [instalação e fluxo atual](LOCAL-LINUX-WORKFLOW.md).
 
-O comportamento dos agentes é governado por texto: o que está em `AGENTS.md`, nas skills, nos templates e nas specs **é** o comportamento do sistema. Por isso alterar esses arquivos equivale a alterar código de produção, e a recomendação de não mexer nos artefatos normativos sem autorização (REC-004, REC-006, REC-009, REC-010 e REC-011) decorre dessa natureza.
+AGENTS, skills, templates e specs definem políticas; sua presença não prova cumprimento pelo agente. O código do coordenador e as permissões nativas determinam os controles executáveis. Alterações normativas exigem avaliação de impacto e validação compatível; as recomendações REC-004, REC-006, REC-009, REC-010 e REC-011 pertencem à análise da baseline.
 
 ## Arquitetura
 
@@ -40,27 +40,33 @@ As camadas lógicas do design de bootstrap complementam esse quadro: L0 governan
 | Contrato dos agentes | `AGENTS.md` | Missão, precedência, ciclo de vida, risco, roteamento, confiabilidade, concorrência, regras de engenharia, definição de pronto, recuperação e relatório |
 | Skills (13) | `skills/` | Núcleo: tech-lead, architect, backend, qa, security, code-review, observability. Stack: java-spring, node-typescript, python-fastapi, aws, kubernetes. Fluxo: github-workflow |
 | Políticas e arquitetura | `docs/*.md`, `docs/adr/`, `docs/workflows/` | Frescor, isolamento, confiabilidade, concorrência, entrega, recuperação, roteamento, plugins, dupla revisão, garantia entre fornecedores, ambientes de execução e fluxos de trabalho |
-| Templates e contratos | `templates/` (23 arquivos) | Envelope de tarefa, lease, evidência, manifest de política, registro de projetos, pedido e resultado de revisão, waiver, bootstrap do Atlas e do Sentinel, relatório de conclusão |
-| Runbooks | `runbooks/` (4) | Configuração do Atlas e do Sentinel, garantia pelo Claude e runtimes em contêiner |
-| OpenSpec | `openspec/` | Visão do projeto, roadmap, 5 specs de capacidade e 6 mudanças com proposta, design e tarefas |
+| Templates e contratos | `templates/` | Envelope de tarefa, lease, evidência, manifest de política, registro de projetos, pedido e resultado de revisão, waiver, bootstrap do Atlas e do Sentinel, relatório de conclusão |
+| Runbooks | `runbooks/` | Configuração do Atlas e do Sentinel, garantia pelo Claude e runtimes em contêiner |
+| OpenSpec | `openspec/` | Visão do projeto, roadmap, specs de capacidade e mudanças versionadas com proposta, design e tarefas |
 | Validação | `validation/`, `tests/scenarios.md` | Cenários, fixtures, manifests e relatórios de execução, waivers |
-| Scripts | `scripts/` (4) | `validate.py` e `validate_hardening.py` (CI), `provider_run.py` (harness) e `pr_chain.sh` (transporte por GitHub) |
+| Scripts e CLI | `scripts/`, `bin/ai-team` | Instalador, coordenador local, preflight, contratos, validadores e harness/transporte histórico |
 | Runtimes | `runtimes/` | `Dockerfile` e `compose.yaml` dos três contêineres |
-| CI | `.github/workflows/validate.yml` | Executa os dois validadores em push e PR |
+| CI | `.github/workflows/validate.yml` | Executa validadores, testes, documentação e canaries Docker/instalação em push e PR |
 
 ## Tecnologias e dependências
 
 | Item | Detalhe | Evidência |
 | --- | --- | --- |
 | Linguagens | Markdown e YAML (artefatos); Python 3 (validadores e harness); Bash (`pr_chain.sh`); Dockerfile e Compose | `scripts/`, `runtimes/` |
-| Biblioteca Python | PyYAML, usada por `validate.py`, `validate_hardening.py` e `provider_run.py` | `.github/workflows/validate.yml` (`pip install pyyaml`) |
-| CI | GitHub Actions, `ubuntu-latest`, `actions/checkout@v4`, `actions/setup-python@v5` com Python 3.12 | `.github/workflows/validate.yml` |
-| Imagem dos contêineres | `node:22-bookworm-slim` com git, python3, python3-yaml, ripgrep e ca-certificates | `runtimes/Dockerfile` |
+| Bibliotecas Python | PyYAML 6.0.3 e jsonschema 4.26.0, fixadas | `requirements-validation.txt` |
+| CI | GitHub Actions, `ubuntu-latest`, checkout/setup-python v7 fixados por SHA, Python 3.12 | `.github/workflows/validate.yml` |
+| Imagem dos contêineres | `node:22-bookworm-slim` com Git, Python/venv, dependências de validação, ripgrep e ca-certificates | `runtimes/Dockerfile` |
 | CLIs de provedor | `@openai/codex` 0.159.3 e `@anthropic-ai/claude-code` 2.1.287, versões fixadas por argumento de build | `runtimes/Dockerfile` |
-| Isolamento do contêiner | Usuário sem root com UID do host, rootfs somente leitura, `/tmp` em tmpfs, `cap_drop: ALL`, `no-new-privileges` | `runtimes/compose.yaml` |
-| Orquestração local | Docker Compose, CLI `gh`, Git | `scripts/pr_chain.sh`, `scripts/provider_run.py` |
+| Isolamento do contêiner | Local: UID 1001, rootfs somente leitura, tmpfs, capabilities removidas, limites e Git metadata read-only; Compose histórico admite UID do host | `scripts/local_team.py`, `runtimes/compose.yaml` |
+| Orquestração local | Linux, Python 3.10+ com venv/ensurepip, Git e Docker Engine; gh para PR; Compose apenas no harness histórico | `scripts/install-local.sh`, `scripts/local_team.py`, `scripts/pr_chain.sh` |
 
-⚠️ **Atenção:** a dependência PyYAML não tem versão fixada nem arquivo de requisitos; o CI instala a versão corrente. A imagem base é referenciada por tag, não por digest. Nenhuma das duas condições está registrada como decisão.
+⚠️ **Limite atual:** dependências diretas de validação e versões dos CLIs são fixadas, mas a imagem base continua por tag e dependências transitivas podem variar. Cada tarefa local congela os IDs das imagens disponíveis no início; isso não torna todo build reproduzível.
+
+## Fluxo local implementado
+
+`ai-team init` configura checks e imagem offline fora do alvo. `run` cria clone independente, solicita plano/implementação Atlas, faz commit no host, checks offline e revisões Sentinel/Argus no mesmo SHA; correções respeitam ciclos e prazo. `deliver` importa branch e pode publicar/abrir PR draft, sem trocar o checkout do alvo. GitHub CI, autorização de merge e deploy são posteriores. Consulte [entrega](DELIVERY-LIFECYCLE.md) e [recuperação](SESSION-STATE.md).
+
+Os diagramas abaixo descrevem a arquitetura normativa e o harness da baseline de 2026-10-01; não representam todos os detalhes do CLI local.
 
 ## Ciclo de vida do trabalho
 
@@ -108,11 +114,11 @@ Fonte editável: [07-retentativa-circuito.mmd](anexos/diagramas/07-retentativa-c
 
 ![Runtimes em contêineres](anexos/diagramas/06-runtimes-conteineres.png)
 
-Fonte editável: [06-runtimes-conteineres.mmd](anexos/diagramas/06-runtimes-conteineres.mmd). Regras: RN-042, RN-043 e RN-052. O orquestrador roda no host com a identidade do operador; os agentes rodam nos contêineres e **não recebem credenciais do GitHub**.
+Fonte editável: [06-runtimes-conteineres.mmd](anexos/diagramas/06-runtimes-conteineres.mmd). Regras: RN-042, RN-043 e RN-052. No harness histórico, o transporte usa Git/gh do operador e filtra variáveis de GitHub/SSH-agent dos filhos. Isso não cobre credenciais embutidas em arquivos/imagens. No CLI local, checks offline não recebem volumes de contas nem socket Docker; agentes podem ler suas próprias credenciais.
 
 ## Protótipos e mockups
 
-Não há protótipos, telas, wireframes nem capturas de tela deste sistema: ele não possui interface própria. As visualizações disponíveis são os sete diagramas desta documentação, listados acima, com fonte editável em `docs/anexos/diagramas/`.
+Não há interface gráfica/web própria ou capturas de tela do CLI local. As visualizações disponíveis são os sete diagramas desta documentação, listados acima, com fonte editável em `docs/anexos/diagramas/`.
 
 ⚠️ **Atenção:** as imagens do diretório de identidade visual (cartões, publicações, telas de exemplo) são aplicações de **marca** e não representam este sistema; foram usadas somente como referência de identidade (ver [anexos/identidade/README.md](anexos/identidade/README.md)).
 
@@ -121,7 +127,7 @@ Não há protótipos, telas, wireframes nem capturas de tela deste sistema: ele 
 | Integração | Natureza | Uso | Contrato | Evidência |
 | --- | --- | --- | --- | --- |
 | GitHub (repositório, PR, CI) | Sistema terceiro | Hospeda o repositório, executa o CI e recebe os statuses por SHA | Parcial: [github-commit-status.yaml](anexos/swagger/github-commit-status.yaml) cobre o status de commit | `scripts/pr_chain.sh`, `.github/workflows/validate.yml` |
-| CLI `gh` | Ferramenta | Cria e fecha PR, comenta, lista execuções do CI e chama a API de status | Contrato da CLI não documentado | `scripts/pr_chain.sh` |
+| CLI `gh` | Ferramenta | Local: abre PR draft na entrega; harness: cria/fecha fixtures, comenta e publica statuses | Flags documentadas no guia local; transporte histórico separado | `scripts/local_team.py`, `scripts/pr_chain.sh` |
 | Codex CLI (OpenAI) | Serviço de provedor | Atlas e Sentinel no plano de execução, por assinatura | Fornecido pelo provedor | `runtimes/Dockerfile`, `scripts/provider_run.py` |
 | Claude Code CLI (Anthropic) | Serviço de provedor | Argus, por assinatura | Fornecido pelo provedor | `runtimes/Dockerfile`, `scripts/provider_run.py` |
 | Docker e Compose | Infraestrutura local | Contêineres por conta com volumes de credenciais | `runtimes/compose.yaml` | `runbooks/CONTAINER-RUNTIMES.md` |
@@ -131,4 +137,4 @@ Não há protótipos, telas, wireframes nem capturas de tela deste sistema: ele 
 
 Não há banco de dados, fila, microsserviço ou serviço de autenticação próprios. A autenticação é de responsabilidade de cada CLI (login interativo por assinatura), com credenciais mantidas só nos volumes Docker por conta.
 
-⚠️ **Atenção:** `templates/PROJECT-REGISTRY.yaml` declara `python scripts/validate.py` como validação do projeto, enquanto o CI executa também `scripts/validate_hardening.py` e instala PyYAML. A divergência está registrada como REC-011.
+REC-011 registrou divergência de comandos na baseline. O registro de exemplo aponta agora para [VALIDATION.md](VALIDATION.md), que lista as verificações atuais. Não usar a configuração YAML de portfólio como substituta de `ai-team init`.

@@ -1,5 +1,7 @@
 # Engineering Dot Bootstrap
 
+Scope: configure a native persistent Dot. This is a prompt template, not a Linux installer. For the implemented host workflow use [LOCAL-WORKFLOW-BOOTSTRAP](LOCAL-WORKFLOW-BOOTSTRAP.md).
+
 ## Mission
 Coordinate software engineering across approved projects using ai-engineering-team as the engineering policy source and Codex as the default executor for repository changes.
 

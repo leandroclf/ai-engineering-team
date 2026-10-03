@@ -6,7 +6,7 @@ Status: ACTIVE
 Bind every remaining executable task to the environment that is actually authorized to execute it. A task MUST NOT be silently moved to another environment merely because that environment is convenient.
 
 ## Named agent roster
-The architecture uses these canonical names everywhere:
+The names identify responsibilities. In the native Dot architecture:
 
 - **Atlas** — primary OpenAI Engineering Lead Dot, running in the operator's primary OpenAI account.
 - **Sentinel** — secondary OpenAI Quality & Security Dot, running in the operator's second OpenAI account.
@@ -14,13 +14,16 @@ The architecture uses these canonical names everywhere:
 
 Canonical flow: **Atlas -> Codex -> GitHub/OpenSpec/CI -> Sentinel -> Argus (Claude) -> Atlas/operator**.
 
+The implemented local CLI uses Atlas/Sentinel as Codex CLI roles and Argus as a Claude Code role; it does not create live Dots. Local flow: independent clone -> Atlas -> host commit -> offline tests -> Sentinel/Argus -> bounded repair -> explicit branch/PR delivery. Both reviews precede delivery, with GitHub CI afterwards.
+
 Names MUST be used consistently in OpenSpec, runbooks, evidence and final reports. Generic terms such as "Claude bot", "primary Dot" or "secondary Dot" may explain the provider/runtime, but do not replace the canonical agent name.
 
 ## Environment labels
 - **CHAT-GITHUB** — this ChatGPT environment using the connected GitHub app. Allowed: inspect repository state, edit governance/docs/contracts/scripts, create branches/commits/PRs, inspect CI evidence and merge when repository policy permits.
 - **OPENAI-CLI-A / Atlas execution plane** — official OpenAI/Codex CLI authenticated with the operator's configured primary OpenAI subscription account. Required for Atlas/Codex repository-execution behavioral work.
 - **OPENAI-CLI-B / Sentinel execution plane** — official OpenAI/Codex CLI authenticated with the operator's secondary OpenAI account. Used for Sentinel's independent repository checks; it does not replace the live Sentinel Dot.
-- Provider CLIs SHOULD run in the isolated per-account containers in `runbooks/CONTAINER-RUNTIMES.md` (`atlas-cli`, `sentinel-cli`, `argus-cli`). This is still CLI/subscription execution, not an API substitution.
+- **LOCAL-LINUX** — operator Linux host running `ai-team`; Docker isolates provider roles and offline checks. Installation and login follow [LOCAL-LINUX-WORKFLOW](LOCAL-LINUX-WORKFLOW.md). Live host acceptance requires LOCAL-LINUX + the three CLI environments + HUMAN.
+- Provider CLIs use separate account containers. `ai-team` uses `ai-team-<role>-home`; the historical Compose harness uses project-prefixed `atlas-home`, `sentinel-home`, `argus-home` volumes. See [CONTAINER-RUNTIMES](../runbooks/CONTAINER-RUNTIMES.md). These logins are not automatically shared.
 - **OPENAI-DOT-A / Atlas** — live Atlas Dot in the primary OpenAI account. Required for native Dot coordination, memory/context, native approval and Dot->Codex behavior.
 - **OPENAI-DOT-B / Sentinel** — live Sentinel Dot in the secondary OpenAI account. Required for independent cross-account review and real Sentinel permission behavior.
 - **CLAUDE-CLI / Argus** — official Claude Code CLI authenticated with the operator's configured Claude subscription account. Required for Anthropic assurance execution.
@@ -65,4 +68,4 @@ CHAT-GITHUB can complete repository-side preparation, consistency audits, struct
 CHAT-GITHUB cannot authenticate as the operator inside local provider CLIs, instantiate a Dot in another account, manufacture live Dot behavior, or convert missing provider evidence into PASS.
 
 ## Closure discipline
-Every final report must state which environment produced each piece of evidence. A GitHub CI success proves repository/structural checks only; it does not prove live Dot, Codex CLI or Claude CLI behavior.
+Every final report must state which environment produced each piece of evidence. CI exercises repository contracts, bootstrap and real credential-free Docker canaries, including CLI version/help probes. It does not prove authenticated model behavior, account independence, live Dots or operator-host acceptance.

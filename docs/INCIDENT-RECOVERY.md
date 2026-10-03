@@ -1,5 +1,7 @@
 # Incident, Rollback and Recovery
 
+For local `ai-team`, use `status TASK` and `stop TASK`, preserve the task directory and inspect Docker/provider activity separately. Resume only a safe RUNNING checkpoint; reconcile DELIVERY_PENDING against remote state manually. Do not delete login volumes or use broad Docker pruning as automatic recovery. See [local recovery](LOCAL-LINUX-WORKFLOW.md).
+
 When automation may have caused harm:
 1. Stop further mutations and open the circuit.
 2. Capture task id, timestamps, project, commits/actions, approvals and observed impact.

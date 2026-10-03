@@ -1,6 +1,10 @@
 # ADR-0001: Dot-native runtime boundary
 Status: Accepted
 
+## Implementation clarification — 2026-10-03
+
+The [local Linux coordinator](../LOCAL-LINUX-WORKFLOW.md) wraps bounded official CLI invocations and explicit delivery. Its private task checkpoints and background process do not implement Dot persistence, a service or an always-on scheduler. The original decision below remains the native architecture boundary; local operation is specified separately in [OpenSpec](../../openspec/changes/local-linux-workflow/design.md).
+
 ## Context
 The project began as a Codex-native engineering framework. Its final objective is to bootstrap and govern an Engineering Dot while using Codex for deep repository execution.
 
