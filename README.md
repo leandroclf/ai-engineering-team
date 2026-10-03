@@ -41,6 +41,7 @@ O CLI local não instancia Dots, não é um serviço sempre ativo e não substit
 - [Arquitetura de Dots](docs/DOT-NATIVE-ARCHITECTURE.md), [contratos executáveis](docs/DOT-NATIVE-OPERATION-GATES.md) e [guias dos provedores](docs/PROVIDER-GUIDANCE-REVIEW.md)
 - [Documentação consolidada e baseline de requisitos](docs/00-toc.md)
 - [Marketplace de skills](skills/README.md) e [catálogo versionado](skills/catalog.yaml)
+- [Benchmarks e avaliação de skills](docs/SKILL-BENCHMARKS.md) e [contrato interno de avaliação](evaluation/benchmarks.yaml)
 
 ## Governança e prontidão
 

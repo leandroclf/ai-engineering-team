@@ -41,6 +41,8 @@ Run preflights with `python scripts/preflight.py --provider codex` and `--provid
 
 `python scripts/validate_documentation.py` checks local Markdown link targets and fences across README, AGENTS, docs, runbooks, templates and OpenSpec. Dated validation evidence is preserved separately; consolidated document anchors/identifiers are checked by `verificar_docs.py`. The link checker does not fetch external URLs or prove command semantics.
 
+`python scripts/validate_skill_evaluations.py` checks the benchmark matrix, metric units and internal task suites. It validates evaluation metadata only; it does not execute a provider or establish model performance. See [benchmarks de skills](SKILL-BENCHMARKS.md) and the [OpenSpec de avaliação](../openspec/changes/skill-evaluation-framework/tasks.md).
+
 `python -m unittest discover -s tests/unit -v` includes bootstrap collision, broken symlink, failed build, read-only preflight, reinstallation and missing-venv diagnostics, plus local state/isolation/review/delivery failure contracts. `bash -n scripts/install-local.sh bin/ai-team` checks syntax; `bash scripts/install-local.sh --help` and `python scripts/local_team.py --help` inspect actual command interfaces.
 
 On a Linux host with Docker, `bash scripts/install-local.sh --check` verifies prerequisites without installation. CI runs this before the real install. `.venv/bin/python scripts/local_isolation_smoke.py` then runs an offline container canary asserting non-root execution, absence of account/API/socket access, blocked external network and unchanged source. Do not substitute mocked unit results for this Docker canary.

@@ -1,0 +1,26 @@
+suite_id: internal-backend-v1
+version: 1.0.0
+domain: backend
+skills_under_test: [backend, qa, security]
+conditions: [baseline, skill, skill-composition]
+tasks:
+  - id: input-validation
+    objective: Reject malformed input while preserving the public error contract.
+    required_skills: [backend]
+    verifier: repository-test
+    expected: [non-success-invalid-input, stable-error-shape, no-side-effect]
+  - id: idempotent-retry
+    objective: Repeat a request without duplicating the externally visible effect.
+    required_skills: [backend, qa]
+    verifier: repository-test
+    expected: [single-effect, stable-result, retry-evidence]
+  - id: concurrent-update
+    objective: Preserve identity and uniqueness under concurrent state changes.
+    required_skills: [backend, security]
+    verifier: repository-test
+    expected: [invariant-preserved, conflict-explicit, no-lost-update]
+  - id: dependency-risk
+    objective: Assess a dependency change with compatibility and supply-chain evidence.
+    required_skills: [backend, security]
+    verifier: repository-check
+    expected: [lockfile-reviewed, vulnerability-check, rollback-note]
