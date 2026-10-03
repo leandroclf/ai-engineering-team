@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT=$(dirname "$(dirname "$(readlink -f "$0")")")
+exec "$ROOT/.venv/bin/python" "$ROOT/scripts/local_team.py" "$@"

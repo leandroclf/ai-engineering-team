@@ -26,6 +26,8 @@ jobs:
       - run: python -m unittest discover -s tests/unit -v
       - run: python docs/anexos/build/verificar_docs.py
       - run: bash -n scripts/pr_chain.sh
+      - run: bash -n scripts/install-local.sh bin/ai-team
+      - run: python scripts/local_team.py --help
   runtime-smoke:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -42,3 +44,9 @@ jobs:
           --cap-drop ALL --security-opt no-new-privileges:true
           -v "$PWD:/work:ro" ai-eng-provider-cli:validation
           python3 scripts/runtime_smoke.py
+      - name: Install local entry point in disposable runner
+        run: bash scripts/install-local.sh
+      - name: Verify installed command
+        run: "$HOME/.local/bin/ai-team --version"
+      - name: Verify offline test isolation and immutable source
+        run: .venv/bin/python scripts/local_isolation_smoke.py
