@@ -15,7 +15,7 @@ Atlas/OpenAI planning, Argus/Claude implementation, Sentinel/OpenAI validation, 
 
 ## Runtime verification
 
-Docker/provider CLIs are unavailable in this workspace. CI is configured to build pinned runtime, probe CLI capabilities without auth, run installer/offline check canaries and exercise read/write mounts for all four stages without account volumes or inference. CI outcome must be recorded after execution.
+Docker/provider CLIs are unavailable in this workspace. GitHub CI executed the real runtime checks on commit `6c239b2b1b0bac39053de2712bf2d9b4a2069f22`: [PR run 37107965577](https://github.com/leandroclf/ai-engineering-team/actions/runs/37107965577), both framework and runtime-smoke jobs PASS. The pinned runtime build, unauthenticated CLI capability probes, installation, offline check isolation and all four stage read/write mount canaries passed. No provider inference or account login was executed.
 
 ## Limits and remaining operator acceptance
 
