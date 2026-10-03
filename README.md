@@ -40,6 +40,7 @@ O CLI local não instancia Dots, não é um serviço sempre ativo e não substit
 - [Planejamento local e aceitação pendente](openspec/changes/local-linux-workflow/tasks.md) e [roadmap](openspec/roadmap.md)
 - [Arquitetura de Dots](docs/DOT-NATIVE-ARCHITECTURE.md), [contratos executáveis](docs/DOT-NATIVE-OPERATION-GATES.md) e [guias dos provedores](docs/PROVIDER-GUIDANCE-REVIEW.md)
 - [Documentação consolidada e baseline de requisitos](docs/00-toc.md)
+- [Marketplace de skills](skills/README.md) e [catálogo versionado](skills/catalog.yaml)
 
 ## Governança e prontidão
 

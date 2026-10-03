@@ -26,6 +26,7 @@ jobs:
       - run: python -m unittest discover -s tests/unit -v
       - run: python docs/anexos/build/verificar_docs.py
       - run: python scripts/validate_documentation.py
+      - run: python scripts/validate_skills.py
       - run: bash -n scripts/pr_chain.sh
       - run: bash -n scripts/install-local.sh bin/ai-team
       - run: bash scripts/install-local.sh --help
