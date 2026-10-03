@@ -1,5 +1,9 @@
 # Atlas + Sentinel Architecture
 
+## Local CLI contract
+
+The [local workflow](LOCAL-LINUX-WORKFLOW.md) uses these responsibilities without instantiating Dots: Atlas implements, host commits/tests offline, Sentinel and Argus review the same immutable SHA before delivery. Both reviews are mandatory for every local task, a stricter gate than the native routing defaults below. Separate login volumes do not prove distinct accounts; the operator must verify identity.
+
 ## Purpose
 Create complementary engineering intelligence instead of two identical agents.
 

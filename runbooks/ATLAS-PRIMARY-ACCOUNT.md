@@ -1,5 +1,11 @@
 # Atlas — Primary Account Setup
 
+## Local Linux
+
+Use `ai-team login atlas` after [installation](../docs/LOCAL-LINUX-WORKFLOW.md), then `ai-team doctor`. This configures a Codex CLI volume, not a Dot. Confirm Atlas/Sentinel accounts are distinct.
+
+## Native Dot setup
+
 1. Create the primary Dot and name it Atlas.
 2. Apply templates/ATLAS-BOOTSTRAP.md plus applicable DOT-CUSTOM-RULES.
 3. Connect GitHub/Codex with only approved repositories.

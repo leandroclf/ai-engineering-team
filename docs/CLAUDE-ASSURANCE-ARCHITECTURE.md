@@ -1,5 +1,9 @@
 # Claude Independent Assurance Layer
 
+## Implemented local path
+
+In [ai-team](LOCAL-LINUX-WORKFLOW.md), Argus is mandatory for each task, uses restricted Claude Code with Read/Grep/Glob, and returns the JSON review schema enforced by the coordinator. Host checks run separately without credentials. The selected-risk routing and optional Action/SDK modes below describe native/future architecture; they are not activated by local installation. CLI structured output is not proof of account identity or a correct review.
+
 ## Decision
 Add Claude as a **third, vendor-diverse assurance layer**, not as another general-purpose coordinator.
 

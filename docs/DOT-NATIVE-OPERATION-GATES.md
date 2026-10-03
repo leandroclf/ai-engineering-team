@@ -2,6 +2,8 @@
 
 Status: repository-side implementation; live integration pending.
 
+The [Linux CLI](LOCAL-LINUX-WORKFLOW.md) now adds bounded task coordination and real offline test isolation. It does not connect `authorize()` to each internal provider tool call, so the trusted native adapter gap below remains open. Full current repository/CI commands are in [VALIDATION](VALIDATION.md).
+
 This adds deterministic contract checks to the existing native Dot architecture. It is not a scheduler, authorization server or substitute for native/provider approvals. The canonical flow remains Atlas -> Codex -> GitHub/CI -> Sentinel -> Argus.
 
 ## Trust boundaries

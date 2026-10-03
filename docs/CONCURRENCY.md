@@ -1,5 +1,7 @@
 # Concurrency, Leases and Conflict Control
 
+Local `ai-team` implements project/run filesystem locks on one host. These are not distributed portfolio leases or per-tool native authorization. Separate hosts can still overlap on the same remote; reconcile GitHub state before delivery. See [local operation](LOCAL-LINUX-WORKFLOW.md).
+
 Mutating tasks SHOULD acquire a logical lease.
 
 Lease key: project_id + repository + change_surface.

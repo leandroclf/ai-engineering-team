@@ -1,4 +1,6 @@
 # Project Agent Adapter
+
+Adapt only after reading existing instructions. For local `ai-team`, this file belongs in the target repository when needed; installation and `init` do not copy it automatically. Keep real checks here and configure their offline equivalents explicitly through `ai-team init`. See [onboarding](../docs/PROJECT-ONBOARDING.md).
 ## System purpose
 <what this repository does>
 ## Architecture

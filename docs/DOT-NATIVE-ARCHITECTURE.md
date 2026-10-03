@@ -1,5 +1,9 @@
 # Dot-Native Architecture
 
+## Implemented local alternative
+
+The [local Linux CLI](LOCAL-LINUX-WORKFLOW.md) is a bounded coordinator around official provider CLIs, with external project config, isolated clones/checks and explicit delivery. It does not recreate Dot persistence or always-on services. Native Dot behavior and local host acceptance are separate evidence gates.
+
 ## Final objective
 Use this repository as the engineering operating system and bootstrap source for an OpenAI Engineering Dot.
 

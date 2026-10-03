@@ -26,6 +26,7 @@
 - [x] CI offline boundary canary, failure/review/timeout/lock cases.
 - [x] Linux setup, first task, diagnostics, recovery and limitations documented.
 - [x] Publish branch/PR #12 and observe exact-head CI (99a84d7; push and pull_request PASS).
+- [x] Merge PR #12 into main (`68f7f60`); final exact-head CI passed for `0925340`.
 - [ ] LIVE: real logins and first task on operator Linux host.
 - [ ] LIVE: distinct Atlas/Sentinel accounts, stop/revoke and provider failure scenarios.
 

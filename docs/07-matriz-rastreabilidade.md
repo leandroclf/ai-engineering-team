@@ -10,6 +10,8 @@ status: "Rascunho para revisão"
 
 # Matriz de rastreabilidade
 
+> Baseline de requisitos/analises: revisão `791ac89`, 2026-10-01. Identificadores e recomendações históricas são preservados. Para operação atual, use [guia Linux](LOCAL-LINUX-WORKFLOW.md), [visão geral atualizada](02-visao-geral.md) e [reconciliação documental](DOCUMENTATION-REVIEW.md). Esta baseline não certifica o fluxo local nem comportamento ao vivo.
+
 Navegação: [Índice](00-toc.md) · anterior: [06 Casos de uso](06-casos-de-uso.md) · próximo: [08 Observações e análises](08-observacoes-analises.md)
 
 ## Como ler
