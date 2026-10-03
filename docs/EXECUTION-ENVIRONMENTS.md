@@ -14,7 +14,7 @@ The names identify responsibilities. In the native Dot architecture:
 
 Canonical flow: **Atlas -> Codex -> GitHub/OpenSpec/CI -> Sentinel -> Argus (Claude) -> Atlas/operator**.
 
-The implemented local CLI uses Atlas/Sentinel as Codex CLI roles and Argus as a Claude Code role; it does not create live Dots. Local flow: independent clone -> Atlas -> host commit -> offline tests -> Sentinel/Argus -> bounded repair -> explicit branch/PR delivery. Both reviews precede delivery, with GitHub CI afterwards.
+The current local CLI uses Atlas/OpenAI planning, Argus/Claude implementation, Sentinel/OpenAI validation and Atlas/Claude review; it does not create live Dots. [Isolated stages](ISOLATED-AGENT-STAGES.md) supersede the earlier local mapping; other mappings below describe historical harness/native Dot design. Local flow: independent clone -> Atlas plan -> Argus implement -> host commit -> offline tests -> Sentinel validate -> Atlas/Claude review -> bounded repair/replan -> explicit branch/PR delivery. Both assessments precede delivery, with GitHub CI afterwards.
 
 Names MUST be used consistently in OpenSpec, runbooks, evidence and final reports. Generic terms such as "Claude bot", "primary Dot" or "secondary Dot" may explain the provider/runtime, but do not replace the canonical agent name.
 

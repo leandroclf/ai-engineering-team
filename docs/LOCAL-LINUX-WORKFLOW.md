@@ -1,6 +1,6 @@
 # Operação local Linux — ai-team
 
-Release inicial: 0.1.0. CLI para tarefas supervisionadas e ciclos locais limitados; não é certificação de produção autônoma. A aceitação com contas reais e um projeto do operador permanece obrigatória.
+Versão atual: 0.2.0, com [quatro etapas isoladas](ISOLATED-AGENT-STAGES.md). CLI para tarefas supervisionadas e ciclos locais limitados; não é certificação de produção autônoma. A aceitação com contas reais e um projeto do operador permanece obrigatória.
 
 ## Instalar uma vez
 
@@ -24,15 +24,16 @@ Por padrão o destino é `~/.local/bin/ai-team`; `AI_TEAM_BIN_DIR` permite outro
 ## Autenticar
 
 ```bash
-ai-team login atlas
+ai-team login atlas --stage plan
 ai-team login sentinel
 ai-team login argus
+ai-team login atlas --stage review
 ai-team doctor
 ```
 
-Cada função usa seu próprio volume `ai-team-<role>-home`, distinto dos volumes antigos de Compose. Atlas/Sentinel devem usar contas distintas para satisfazer W-001; usar janelas privadas distintas no login. Argus usa a assinatura configurada do Claude. Não há API key nem escolha implícita de modelo introduzida pelo coordenador. Login é feito diretamente na interface oficial; não envie credenciais ao chat.
+Cada etapa usa `ai-team-<role>-<stage>-home`, distinto dos volumes antigos. Atlas autentica OpenAI em plan e Claude em review; Argus usa Claude em implement e Sentinel usa OpenAI em validate. Não copiar credenciais entre volumes. Atlas/Sentinel devem usar contas distintas para satisfazer W-001; usar janelas privadas distintas no login. Argus usa a assinatura configurada do Claude. Modelos e esforços são explícitos por etapa; consulte [perfis](ISOLATED-AGENT-STAGES.md). Login é feito diretamente na interface oficial; não envie credenciais ao chat.
 
-Doctor verifica executáveis, imagem, capacidades e disponibilidade de login; retorna código 2 se requisitos ou logins obrigatórios faltarem. A ausência de gh não bloqueia trabalho local. Doctor não comprova contas distintas, acesso ao projeto ou correção das respostas. Logins consomem a assinatura conforme as regras do provedor. Timeout/turnos não são limite de cobrança.
+Doctor verifica executáveis, imagem, capacidades e disponibilidade dos quatro logins; retorna código 2 se requisitos ou logins obrigatórios faltarem. A ausência de gh não bloqueia trabalho local. Doctor não comprova contas distintas, acesso ao projeto ou correção das respostas. Logins consomem a assinatura conforme as regras do provedor. Timeout/turnos não são limite de cobrança.
 
 ## Configurar o repositório alvo
 
@@ -47,6 +48,8 @@ ai-team init --test-image meu-site-tests:local \
 `meu-site-tests:local` precisa existir e conter ferramentas/dependências necessárias para executar sem rede. Prepare a imagem de testes conforme a stack do site; não colocar credenciais no Dockerfile nem na imagem. Para Python padrão, uma imagem Python previamente baixada pode bastar; para Node com dependências, use imagem própria com cache offline e inclua a cópia das dependências no comando. Não executar npm ci com expectativa de internet neste runner.
 
 Configuração fica em `$XDG_STATE_HOME/ai-team/projects/<id>/config.json` (padrão `~/.local/state`). O caminho é exibido pelo init. Verifique os comandos antes de usar: são shell dentro do container de testes, nunca no host. O init não sobrescreve configuração existente. Limites: `--timeout` por etapa, `--max-cycles` até cinco e `--max-seconds` até oito horas; padrão 900 segundos/3 ciclos/2 horas.
+
+Para migrar uma configuração existente, encerre tarefas e repita o comando init com `--upgrade`, imagem e todos os checks explícitos. O coordenador salva backup privado da configuração anterior. Config/tarefas usam versão 2; tarefas antigas não são convertidas nem retomadas/entregues sob o novo fluxo. Modelos e esforços ficam na configuração e são congelados por tarefa; flags `--plan-model`, `--implement-model`, `--validate-model`, `--review-model` e `--*-effort` permitem escolhas deliberadas do mesmo provedor. Não há fallback automático. Defaults e limites: [contrato de etapas](ISOLATED-AGENT-STAGES.md).
 
 ### Exemplo de imagem para um site npm
 
@@ -69,7 +72,7 @@ ai-team init --test-image meu-site-tests:local \
   --check 'npm run lint' --check 'npm test' --check 'npm run build'
 ```
 
-Esse exemplo requer que os scripts existam no package.json. O build da imagem obtém dependências com rede antes da tarefa; a execução dos checks fica offline. Se Atlas alterar o lockfile, reconstrua a imagem e configure uma nova tarefa: a imagem de uma tarefa iniciada é imutável. Não reutilize dependências antigas como evidência para um novo lockfile.
+Esse exemplo requer que os scripts existam no package.json. O build da imagem obtém dependências com rede antes da tarefa; a execução dos checks fica offline. Se Argus alterar o lockfile, reconstrua a imagem e configure uma nova tarefa: a imagem de uma tarefa iniciada é imutável. Não reutilize dependências antigas como evidência para um novo lockfile.
 
 ## Pedir trabalho
 
@@ -82,7 +85,7 @@ ai-team stop <task-id>
 ai-team resume <task-id>
 ```
 
-Fluxo: cópia Git independente → Atlas/plano/implementação → commit do host → testes offline → Sentinel → Argus → correção limitada → REVIEWED. O checkout original permanece intacto. O clone e evidências ficam no diretório da tarefa exibido por status. Não copiar o framework para cada projeto. Instruções AGENTS/OpenSpec do alvo são lidas pelo executor.
+Fluxo: cópia Git independente → Atlas/OpenAI planeja → host registra OpenSpec → Argus/Claude implementa → commit do host → testes offline → Sentinel/OpenAI valida → Atlas/Claude revisa em nova sessão → correção ou replanejamento limitado → REVIEWED. O checkout original permanece intacto. O clone e evidências ficam no diretório da tarefa exibido por status. Não copiar o framework para cada projeto. Instruções AGENTS/OpenSpec do alvo são lidas pelo executor.
 
 Resume aceita somente uma tarefa RUNNING com checkpoint conhecido e sem processo ativo registrado. Uma interrupção no meio da etapa, pasta de staging parcial ou efeito externo incerto exige inspeção; não há repetição automática. Uma tarefa FAILED/STOPPED exige um novo pedido depois de resolver a causa. O prazo original não é estendido por retomada.
 
@@ -108,11 +111,11 @@ Stop registra pedido local, termina processo e remove container correspondente. 
 
 O coordenador valida suas etapas, não cada tool call interno. Aprovações nativas continuam obrigatórias; R3 não deve ser automatizado via prompt. Integração fina de leases com cada ação e testes reais de revogação seguem no OpenSpec.
 
-Atlas recebe a instrução de não executar código de testes no container autenticado, mas o Codex ainda dispõe de ferramentas de execução. O isolamento é mecânico para a etapa de checks do host; a proibição dentro do agente é política e precisa de um adaptador nativo para enforcement por ferramenta. Esta versão é candidata a uso supervisionado em repositórios confiáveis, não uma garantia de segurança para código hostil.
+Argus implementa com ferramentas de arquivo sem Bash/Agent/MCP. Atlas planeja e Sentinel valida com sandbox Codex read-only e checkout somente leitura; execução de código do alvo nesses contextos continua proibida por política. O isolamento é mecânico para a etapa de checks do host; a proibição dentro do agente é política e precisa de um adaptador nativo para enforcement por ferramenta. Esta versão é candidata a uso supervisionado em repositórios confiáveis, não uma garantia de segurança para código hostil.
 
 ## Aceitação antes de uso produtivo
 
-1. Doctor com três logins disponíveis e confirmação de contas Atlas/Sentinel distintas.
+1. Doctor com quatro logins disponíveis e confirmação de contas Atlas/Sentinel distintas.
 2. Primeira tarefa pequena no seu site, com checks offline aprovados, dois pareceres e diff inspecionado.
 3. Testar falha de checks, parecer inválido, timeout, stop, interrupção e retomada.
 4. Entregar branch/PR e observar CI do SHA final; configurar proteção de merge com autorização específica.
@@ -123,8 +126,8 @@ Atlas recebe a instrução de não executar código de testes no container auten
 | Comando | Uso |
 | --- | --- |
 | `ai-team --help`, `ai-team <comando> --help`, `ai-team --version` | Consultar a interface instalada |
-| `ai-team doctor` | Probes de ferramentas, imagem e três logins |
-| `ai-team login atlas`, `ai-team login sentinel`, `ai-team login argus` | Login interativo de uma função por vez |
+| `ai-team doctor` | Probes de ferramentas, imagem e quatro logins |
+| `ai-team login atlas --stage plan`, `ai-team login atlas --stage review`, `ai-team login sentinel`, `ai-team login argus` | Quatro contextos de login isolados |
 | `ai-team init --test-image IMAGEM --check COMANDO` | Configuração externa; repetir checks na ordem de execução |
 | `ai-team run 'pedido'` | Tarefa supervisionada; `--background` desacopla o processo local |
 | `ai-team status [task-id]` | Listar ou inspecionar tarefas |

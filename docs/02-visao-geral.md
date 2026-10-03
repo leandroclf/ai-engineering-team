@@ -64,7 +64,7 @@ As camadas lógicas do design de bootstrap complementam esse quadro: L0 governan
 
 ## Fluxo local implementado
 
-`ai-team init` configura checks e imagem offline fora do alvo. `run` cria clone independente, solicita plano/implementação Atlas, faz commit no host, checks offline e revisões Sentinel/Argus no mesmo SHA; correções respeitam ciclos e prazo. `deliver` importa branch e pode publicar/abrir PR draft, sem trocar o checkout do alvo. GitHub CI, autorização de merge e deploy são posteriores. Consulte [entrega](DELIVERY-LIFECYCLE.md) e [recuperação](SESSION-STATE.md).
+`ai-team init` configura checks e imagem offline fora do alvo. `run` cria clone independente, solicita planejamento Atlas/OpenAI e implementação Argus/Claude em sessões separadas, faz commits no host, checks offline, validação Sentinel/OpenAI e revisão Atlas/Claude no mesmo SHA; correções respeitam ciclos e prazo. `deliver` importa branch e pode publicar/abrir PR draft, sem trocar o checkout do alvo. GitHub CI, autorização de merge e deploy são posteriores. Consulte [entrega](DELIVERY-LIFECYCLE.md) e [recuperação](SESSION-STATE.md).
 
 Os diagramas abaixo descrevem a arquitetura normativa e o harness da baseline de 2026-10-01; não representam todos os detalhes do CLI local.
 

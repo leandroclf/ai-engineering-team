@@ -1,0 +1,200 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "1.0.0"
+      ]
+    },
+    "reviewer": {
+      "type": "string",
+      "enum": [
+        "atlas",
+        "sentinel"
+      ]
+    },
+    "head_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "PASS_WITH_FINDINGS",
+        "FAIL",
+        "BLOCKED",
+        "INCONCLUSIVE"
+      ]
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "PASS_WITH_FINDINGS",
+            "FAIL",
+            "BLOCKED",
+            "INCONCLUSIVE",
+            "NOT_REQUESTED"
+          ]
+        },
+        "security": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "PASS_WITH_FINDINGS",
+            "FAIL",
+            "BLOCKED",
+            "INCONCLUSIVE",
+            "NOT_REQUESTED"
+          ]
+        },
+        "architecture": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "PASS_WITH_FINDINGS",
+            "FAIL",
+            "BLOCKED",
+            "INCONCLUSIVE",
+            "NOT_REQUESTED"
+          ]
+        },
+        "observability": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "PASS_WITH_FINDINGS",
+            "FAIL",
+            "BLOCKED",
+            "INCONCLUSIVE",
+            "NOT_REQUESTED"
+          ]
+        }
+      },
+      "required": [
+        "quality",
+        "security",
+        "architecture",
+        "observability"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM",
+              "LOW",
+              "INFO"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "RESOLVED"
+            ]
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "summary": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "severity",
+          "status",
+          "verified",
+          "summary"
+        ]
+      }
+    },
+    "checks_executed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "residual_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "plan_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan_status": {
+      "type": "string",
+      "enum": [
+        "VALID",
+        "REPLAN_REQUIRED"
+      ]
+    },
+    "acceptance_results": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AC[0-9]+$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL",
+              "INCONCLUSIVE"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "evidence"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "reviewer",
+    "head_sha",
+    "verdict",
+    "gates",
+    "findings",
+    "checks_executed",
+    "residual_risks",
+    "plan_id",
+    "plan_status",
+    "acceptance_results"
+  ]
+}

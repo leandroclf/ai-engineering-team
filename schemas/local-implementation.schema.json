@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "plan_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "status": {"type": "string", "enum": ["COMPLETE", "BLOCKED", "REPLAN_REQUIRED"]},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 8000}
+  },
+  "required": ["plan_id", "status", "summary"]
+}

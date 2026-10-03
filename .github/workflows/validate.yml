@@ -56,3 +56,5 @@ jobs:
         run: "$HOME/.local/bin/ai-team --version"
       - name: Verify offline test isolation and immutable source
         run: .venv/bin/python scripts/local_isolation_smoke.py
+      - name: Verify four stage mount boundaries without credentials or inference
+        run: .venv/bin/python scripts/local_stage_isolation_smoke.py
