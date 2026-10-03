@@ -38,7 +38,7 @@ As camadas lógicas do design de bootstrap complementam esse quadro: L0 governan
 | Componente | Caminho | Função |
 | --- | --- | --- |
 | Contrato dos agentes | `AGENTS.md` | Missão, precedência, ciclo de vida, risco, roteamento, confiabilidade, concorrência, regras de engenharia, definição de pronto, recuperação e relatório |
-| Skills (13) | `skills/` | Pacotes catalogados por categoria, versão, maturidade, dependências, risco, contratos e gates em [`catalog.yaml`](../skills/catalog.yaml); procedimentos em `SKILL.md` |
+| Skills (13) | `skills/` | Núcleo: tech-lead, architect, backend, qa, security, code-review, observability. Stack: java-spring, node-typescript, python-fastapi, aws, kubernetes. Fluxo: github-workflow |
 | Políticas e arquitetura | `docs/*.md`, `docs/adr/`, `docs/workflows/` | Frescor, isolamento, confiabilidade, concorrência, entrega, recuperação, roteamento, plugins, dupla revisão, garantia entre fornecedores, ambientes de execução e fluxos de trabalho |
 | Templates e contratos | `templates/` | Envelope de tarefa, lease, evidência, manifest de política, registro de projetos, pedido e resultado de revisão, waiver, bootstrap do Atlas e do Sentinel, relatório de conclusão |
 | Runbooks | `runbooks/` | Configuração do Atlas e do Sentinel, garantia pelo Claude e runtimes em contêiner |

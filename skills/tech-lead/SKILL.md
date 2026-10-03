@@ -13,15 +13,3 @@ description: Owns complex engineering work from discovery to evidence-backed com
 8. Review final diff and requirement coverage.
 9. Report evidence, assumptions and residual risk.
 Stop when authorization, critical context or reliable validation is unavailable.
-
-## Inputs
-Objective, repository context, acceptance criteria, risk and available capabilities.
-
-## Outputs
-Bounded plan, selected skills, executed validation, evidence and residual risks.
-
-## Boundaries
-Owns coordination and integration. Does not grant permissions, waive R3 approval or claim unexecuted validation.
-
-## Validation
-Confirm the plan maps to the objective, selected skills are justified, checks actually ran and unresolved risks are reported.

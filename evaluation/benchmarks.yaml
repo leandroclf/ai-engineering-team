@@ -1,0 +1,82 @@
+catalog_version: 1.0.0
+evaluation_contract: skill-evaluation-v1
+benchmarks:
+  - id: skillsbench
+    name: SkillsBench
+    kind: external-research
+    purpose: skill-ablation
+    source: https://arxiv.org/abs/2602.12670
+    status: reference
+    direct_skill_measurement: true
+    verifier: deterministic-task-verifier
+    limitations: [external-task-domain, protocol-adaptation, license-review]
+  - id: swe-bench
+    name: SWE-bench
+    kind: external-benchmark
+    purpose: software-engineering-outcome
+    source: https://www.swebench.com/
+    status: adapter-planned
+    direct_skill_measurement: false
+    verifier: repository-tests
+    limitations: [agent-confound, environment-cost, repository-specific-tests]
+  - id: gta
+    name: General Tool Agents
+    kind: external-research
+    purpose: tool-selection-and-execution
+    source: https://arxiv.org/abs/2407.08713
+    status: reference
+    direct_skill_measurement: false
+    verifier: executable-tool-chain
+    limitations: [non-engineering-domain, environment-cost, tool-availability]
+  - id: toolfailbench
+    name: ToolFailBench
+    kind: external-research
+    purpose: tool-failure-diagnosis
+    source: https://arxiv.org/abs/2607.04686
+    status: reference
+    direct_skill_measurement: false
+    verifier: trace-classification
+    limitations: [recent-method, judge-dependence, tool-domain]
+  - id: general-agentbench
+    name: General AgentBench
+    kind: external-research
+    purpose: multi-skill-composition
+    source: https://arxiv.org/abs/2602.18998
+    status: reference
+    direct_skill_measurement: false
+    verifier: task-outcome
+    limitations: [skill-attribution, context-ceiling, verification-gap]
+  - id: internal-contract-v1
+    name: Internal Skill Contract v1
+    kind: repository-contract
+    purpose: catalog-regression
+    source: repository
+    status: required
+    direct_skill_measurement: true
+    verifier: deterministic-task-verifier
+    limitations: [repository-defined, limited-domain]
+metrics:
+  - id: verified_pass_rate
+    unit: ratio
+    required: true
+  - id: baseline_delta
+    unit: percentage-points
+    required: true
+  - id: tool_error_rate
+    unit: ratio
+    required: true
+  - id: regression_rate
+    unit: ratio
+    required: true
+  - id: evidence_completeness
+    unit: ratio
+    required: true
+  - id: elapsed_seconds
+    unit: seconds
+    required: false
+  - id: input_tokens
+    unit: tokens
+    required: false
+  - id: output_tokens
+    unit: tokens
+    required: false
