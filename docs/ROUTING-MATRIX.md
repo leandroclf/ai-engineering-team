@@ -1,6 +1,6 @@
 # Routing Matrix
 
-The table describes native platform routing. Local `ai-team` has a fixed bounded implementation/check/two-review contract rather than dynamic Dot routing; see [local workflow](LOCAL-LINUX-WORKFLOW.md). Specialist skills are still selected according to task need.
+The table describes native platform routing. Local `ai-team` uses fixed isolated plan/implement/validate/review stages rather than dynamic Dot/model routing; see [stage assignments](ISOLATED-AGENT-STAGES.md) and [local workflow](LOCAL-LINUX-WORKFLOW.md). Specialist skills are still selected according to task need.
 
 | Work | Default surface | Escalate when |
 |---|---|---|

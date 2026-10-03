@@ -1,5 +1,9 @@
 # Roadmap
 
+## Current local workflow — isolated stages (0.2.0)
+
+Atlas/OpenAI planning -> Argus/Claude implementation -> offline host checks -> Sentinel/OpenAI validation -> isolated Atlas/Claude review. Fixed explicit models per stage; existing three agents/coordinator; no gateway, model router or extra service. Track implementation and separate operator acceptance in [isolated stage tasks](changes/isolated-agent-stages/tasks.md). The milestones below retain their original historical evidence.
+
 ## M0 — Specification baseline
 OpenSpec project and governance baseline. Implemented.
 

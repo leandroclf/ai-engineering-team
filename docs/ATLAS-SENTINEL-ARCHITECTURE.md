@@ -2,7 +2,7 @@
 
 ## Local CLI contract
 
-The [local workflow](LOCAL-LINUX-WORKFLOW.md) uses these responsibilities without instantiating Dots: Atlas implements, host commits/tests offline, Sentinel and Argus review the same immutable SHA before delivery. Both reviews are mandatory for every local task, a stricter gate than the native routing defaults below. Separate login volumes do not prove distinct accounts; the operator must verify identity.
+The [local workflow](LOCAL-LINUX-WORKFLOW.md) uses these responsibilities without instantiating Dots: Atlas/OpenAI plans, Argus/Claude implements, host commits/tests offline, Sentinel/OpenAI validates and an isolated Atlas/Claude session reviews the same immutable SHA and plan before delivery. The sections below retain the native Dot design/historical responsibilities; the current local contract is [isolated stages](ISOLATED-AGENT-STAGES.md). Both reviews are mandatory for every local task, a stricter gate than the native routing defaults below. Separate login volumes do not prove distinct accounts; the operator must verify identity.
 
 ## Purpose
 Create complementary engineering intelligence instead of two identical agents.

@@ -1,6 +1,6 @@
 # ai-engineering-team
 
-Fluxo de engenharia com Atlas (implementação/Codex), Sentinel (revisão/Codex em outra conta) e Argus (revisão/Claude Code), usando governança versionada e evidências por SHA.
+Fluxo com três agentes e quatro etapas isoladas: Atlas/OpenAI planeja, Argus/Claude implementa, Sentinel/OpenAI valida e Atlas/Claude revisa em nova sessão. Modelos fixos por etapa, sem gateway ou roteador dinâmico; evidências por SHA e plano.
 
 ## Começar no Linux
 
@@ -12,9 +12,10 @@ cd ai-engineering-team
 bash scripts/install-local.sh --check
 bash scripts/install-local.sh
 export PATH="$HOME/.local/bin:$PATH"
-ai-team login atlas
+ai-team login atlas --stage plan
 ai-team login sentinel
 ai-team login argus
+ai-team login atlas --stage review
 ai-team doctor
 ```
 
@@ -26,7 +27,7 @@ No alvo, prepare uma imagem de testes com dependências offline e configure chec
 
 | Modo | Entrada | Coordenação e evidência |
 | --- | --- | --- |
-| Local Linux, implementado | `ai-team` no alvo | Coordenador limitado em Python; Docker por função; checks sem credenciais; dois pareceres antes da entrega |
+| Local Linux, implementado | `ai-team` no alvo | Coordenador Python; planejamento Atlas; implementação Argus; checks offline; validação Sentinel e revisão Atlas/Claude |
 | Dots nativos | [Bootstrap do Engineering Dot](templates/ENGINEERING-DOT-BOOTSTRAP.md) | Coordenação persistente na plataforma, sob permissões nativas; aceitação ao vivo continua separada |
 | Harness de validação | [Runbook dos containers](runbooks/CONTAINER-RUNTIMES.md) | Fixtures por CLI e transporte experimental `pr_chain.sh`; não é a entrada do usuário para trabalhar em um site |
 
@@ -35,6 +36,7 @@ O CLI local não instancia Dots, não é um serviço sempre ativo e não substit
 ## Documentação
 
 - [Instalação, comandos, recuperação e limites](docs/LOCAL-LINUX-WORKFLOW.md)
+- [Responsabilidades e modelos por etapa](docs/ISOLATED-AGENT-STAGES.md)
 - [Onboarding de projetos](docs/PROJECT-ONBOARDING.md) e [ambientes de execução](docs/EXECUTION-ENVIRONMENTS.md)
 - [Entrega e aprovação](docs/DELIVERY-LIFECYCLE.md), [validação](docs/VALIDATION.md) e [revisão documental](docs/DOCUMENTATION-REVIEW.md)
 - [Planejamento local e aceitação pendente](openspec/changes/local-linux-workflow/tasks.md) e [roadmap](openspec/roadmap.md)
@@ -47,6 +49,6 @@ O CLI local não instancia Dots, não é um serviço sempre ativo e não substit
 
 R0: leitura; R1: mudanças locais reversíveis; R2: dependências, infraestrutura e segurança; R3: produção, ações destrutivas ou irreversíveis. R3 exige autorização específica e todas as aprovações nativas. Leia [AGENTS.md](AGENTS.md) e as instruções do alvo antes de modificar código.
 
-Os agentes conseguem ler suas próprias credenciais no container. Os checks do coordenador usam um container separado, offline e sem volumes de contas. A restrição de executar testes dentro do agente ainda é política; não existe enforcement de cada ferramenta interna. A aceitação com contas reais distintas e um projeto no Linux do operador permanece aberta. CI e testes controlados não certificam produção autônoma.
+Os agentes conseguem ler suas próprias credenciais no container. Os checks do coordenador usam um container separado, offline e sem volumes de contas. Argus/Claude usa somente ferramentas de arquivo, sem Bash/Agent/MCP; planejamento e pareceres recebem checkout somente leitura. Esses controles não equivalem a DLP completo. A aceitação com contas reais distintas e um projeto no Linux do operador permanece aberta. CI e testes controlados não certificam produção autônoma.
 
 Skills disponíveis: tech-lead, architect, backend, qa, security, code-review, observability, java-spring, node-typescript, python-fastapi, aws, kubernetes e github-workflow. O framework deve manter a governança portátil e usar as ferramentas oficiais dos provedores.

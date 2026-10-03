@@ -10,7 +10,7 @@ The Tech Lead MUST produce an internal actionable plan for non-trivial tasks and
 
 ### ORCH-003 Selective delegation
 
-The local Linux capability defines two mandatory independent review gates (Sentinel and Argus). These fixed acceptance gates do not mean invoking all specialist skills; specialist selection remains proportional to the task. See [local operation contract](../../changes/local-linux-workflow/specs/local-operation/spec.md).
+The local Linux capability defines mandatory isolated planning (Atlas/OpenAI), implementation (Argus/Claude), validation (Sentinel/OpenAI) and review (Atlas/Claude) stages. These fixed acceptance gates do not mean invoking all specialist skills; specialist selection remains proportional to the task. The current contract is [isolated stages](../../../docs/ISOLATED-AGENT-STAGES.md); the [initial local contract](../../changes/local-linux-workflow/specs/local-operation/spec.md) describes version 0.1.
 
 The orchestrator MUST select only capabilities that materially improve the task. It MUST NOT invoke all specialist roles by default.
 

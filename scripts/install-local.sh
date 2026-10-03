@@ -39,4 +39,4 @@ if [ -e "$BIN_DIR/ai-team" ] || [ -L "$BIN_DIR/ai-team" ]; then
 else
   ln -sT "$ROOT/bin/ai-team" "$BIN_DIR/ai-team"
 fi
-echo "Installed. Add $BIN_DIR to PATH, then run ai-team doctor."
+echo "Installed. Add $BIN_DIR to PATH. Login atlas --stage plan, argus, sentinel, and atlas --stage review; then run ai-team doctor."

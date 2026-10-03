@@ -8,11 +8,12 @@ import subprocess
 import sys
 
 REQUIRED_FLAGS = {
-    'codex': ('--json', '--sandbox', '--ephemeral', '--output-schema'),
+    'codex': ('--json', '--sandbox', '--ephemeral', '--output-schema', '--model', '--config'),
     # Claude 2.1.287 accepts --max-turns in print mode, but its help output omits it.
     # Keep help-based capability checks limited to flags advertised by this build.
     'claude': ('--output-format', '--json-schema', '--permission-mode',
-               '--permission-prompts', '--restricted', '--strict-mcp-config'),
+               '--permission-prompts', '--restricted', '--strict-mcp-config', '--model',
+               '--effort', '--tools', '--allowedTools', '--disallowedTools', '--add-dir', '--no-session-persistence'),
 }
 REVIEWED_VERSIONS = {'codex': '0.159.3', 'claude': '2.1.287'}
 
@@ -55,4 +56,3 @@ if __name__ == '__main__':
     result = probe(parser.parse_args().provider)
     print(json.dumps(result))
     sys.exit(0 if result['authenticated'] else 2)
-
